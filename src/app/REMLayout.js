@@ -6,7 +6,7 @@
  * @param {Number} [fontscale = 1] - 有的业务希望能放大一定比例的字体;
  */
 const win = window;
-export default win.flex = (normal, baseFontSize, fontscale) => {
+export default (normal, baseFontSize, fontscale) => {
   const _baseFontSize = baseFontSize || 100;
   const _fontscale = fontscale || 1;
 
