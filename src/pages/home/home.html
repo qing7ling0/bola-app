@@ -1,19 +1,14 @@
-<ion-content class="page-home">
-  <div class="page-home-logo"><img src="assets/imgs/logo.png" class="page-home-logo-img" /></div>
-  <ion-list>
-
-    <ion-item>
-      <ion-label fixed>Username</ion-label>
-      <ion-input type="text" value=""></ion-input>
-    </ion-item>
-  
-    <ion-item>
-      <ion-label fixed>Password</ion-label>
-      <ion-input type="password"></ion-input>
-    </ion-item>
-  
-  </ion-list><ion-item>
-      <ion-label>Date</ion-label>
-      <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="myDate"></ion-datetime>
-    </ion-item>
-</ion-content>
+<div class="login-body">
+  <div class="container">
+    <form class="form-signin" action="index.html">
+      <div class="form-signin-heading text-center"> <img src="images/login-logo.png" class="img-responsive" alt=""/> </div>
+      <div class="login-wrap">
+        <input type="text" class="form-control" placeholder="账号" autofocus>
+        <input type="password" class="form-control" placeholder="密码">
+        <button class="btn btn-login btn-block" type="submit">进 入</button>
+        <p class="forgot-password"><a href="#"> 忘记密码？</a></p>
+        <div class="registration"><a class="" href="registration.html"> 注册新用户 </a> </div>
+      </div>
+    </form>
+  </div>
+</div>
