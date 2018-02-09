@@ -1,14 +1,11 @@
 <ion-content class="login-body">
   <div class="container">
-    <form class="form-signin" #loginForm="ngForm" novalidate>
+    <form class="form-signin" [formGroup]="accountGroup">
       <div class="form-signin-heading text-center"> <img src="assets/images/login-logo.png" class="img-responsive" alt=""/> </div>
       <div class="login-wrap">
-        <input type="text" class="form-control" name="account" [(ngModel)]="account.account" #account="ngModel" placeholder="账号" spellcheck="false" autocapitalize="off"
-        required />
-        <input type="password" class="form-control" name="password"  [(ngModel)]="account.password" #password="ngModel" placeholder="密码" />
-        <button class="btn btn-login btn-block" type="submit" (click)="login(loginForm)">进 入</button>
-        <p class="forgot-password"><a href="#"> 忘记密码？</a></p>
-        <div class="registration"><a class="" href="registration.html"> 注册新用户 </a> </div>
+        <input type="text" class="form-control" formControlName="account" placeholder="账号" >
+        <input type="password" class="form-control" formControlName="password"  placeholder="密码" >
+        <button class="btn btn-login btn-block" type="submit" (click)="login(accountGroup)">进 入</button>
       </div>
     </form>
   </div>
