@@ -3,11 +3,13 @@ export class NetUtils {
   static request(url: string, options:any): Promise<any> {
     return fetch(url, options)
       .then((response) => {
-          return response.json();
+        let auth = response.headers.get('auth');
+        console.log('auth=' + auth);
+        return response.json();
       })
       .catch((error) => {
-          console.log(error);
-          return {code:-1, message:'网络连接失败', data:{}}
+        console.log(error);
+        return {code:-1, message:'网络连接失败', data:{}}
       });
   };
 
@@ -27,14 +29,16 @@ export class NetUtils {
     return NetUtils.request(url, fetchOptions);
   }
 
-  static graphqlJson(url: string, data: any) : Promise<any> {
+  static graphqlJson(url: string, data: any, token: string) : Promise<any> {
     console.log('graphqlJson url' + url + '; data=' + data);
     var fetchOptions = {
       method: 'POST',
       headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/graphql'
+          'Content-Type': 'application/graphql',
+          'token':token
       },
+      mode:"cros",
       credentials: 'include',
       body: data
     };

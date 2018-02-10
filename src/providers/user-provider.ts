@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Events } from 'ionic-angular';
+import { Events, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { User } from '../interfaces/user'
@@ -13,15 +13,17 @@ import { API } from '../api/api'
 export class UserProvider {
   constructor(
     public events: Events,
-    public storage: Storage
+    public storage: Storage,
+    public toastCtrl: ToastController,
+    public api: API
   ) {}
 
   login(account: string, password: string): void {
     this.setAccount(account, password);
-    API.reqLogin(account, password, true).then((data)=>{
-      this.events.publish('user:login');
-    }).catch((error)=>{
-      console.log('dddd' + error)
+    this.api.reqLogin(account, password, false).then((data)=>{
+      if(data.code === 0) {
+        this.events.publish('user:login');
+      } 
     });
   };
 
