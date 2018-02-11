@@ -2,19 +2,18 @@
   <!-- main content start-->
   <div class="main-content" >
 
+    <!-- <header [headerData]="headerData"></header> -->
     <header [headerData]="headerData"></header>
-    <!-- header section end-->
 
     <!--body wrapper start-->
     <div class="wrapper">
       <ul class="nav custom-nav">
         <li *ngFor="let nav of navs">
-          <a (click)="onNavClicked(nav)"><span>{{nav.label}}</span></a>
+          <a (click)="onNavClicked(nav)"><i class="{{nav.icon}}"></i> <span>{{nav.label}}订单</span></a>
         </li>
       </ul>
     </div>
     <!--body wrapper end-->
 
   </div>
-  <!-- main content end-->
 </ion-content>

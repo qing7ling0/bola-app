@@ -14,7 +14,7 @@ import { UserProvider } from '../providers/user-provider';
 import { MyApp } from './app.component';
 import { ShopPageModule } from '../pages/shop/shop.module';
 import { HomePageModule } from '../pages/home/home.module';
-
+import { OrderCreateModule } from '../pages/order-create/order-create.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { HomePageModule } from '../pages/home/home.module';
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     HomePageModule,
-    ShopPageModule
+    ShopPageModule,
+    OrderCreateModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

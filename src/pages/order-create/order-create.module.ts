@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ShopPage } from './shop';
+import { OrderCreatePage } from './order-create';
 import { BoalCommonModule } from '../../common/common.module'
+import { OrderShoesPage } from './shoes/shoes'
 
 @NgModule({
   declarations: [
-    ShopPage
+    OrderCreatePage,
+    OrderShoesPage
   ],
   imports: [
     IonicPageModule, BoalCommonModule
@@ -13,6 +15,6 @@ import { BoalCommonModule } from '../../common/common.module'
   exports: [
     IonicPageModule, BoalCommonModule
   ],
-  entryComponents:[ShopPage]
+  entryComponents:[OrderCreatePage]
 })
-export class ShopPageModule {}
+export class OrderCreateModule {}

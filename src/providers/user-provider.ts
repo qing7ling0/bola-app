@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Events, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
-import { User } from '../interfaces/user'
+import { User } from '../interface/user'
 import { NetUtils } from '../utils/net-utils'
 import * as constants from '../constants/constants'
 import { API } from '../api/api'
@@ -23,7 +23,7 @@ export class UserProvider {
     this.api.reqLogin(account, password, false).then((data)=>{
       if(data.code === 0) {
         this.events.publish('user:login');
-      } 
+      }
     });
   };
 

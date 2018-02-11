@@ -19,14 +19,14 @@ export class API {
 
   object2String(object: any): string {
     if (object === undefined || object === null) return '""';
-    
+
     let ret = '';
     if (Utils.IsObject(object)) {
       let str = '';
       for(let key in object) {
         if (object[key] !== undefined && object[key] !== null) {
           str = str + (str.length>0?',':'') +  key + ':' + this.object2String(object[key]);
-        } 
+        }
       }
       ret = ret + '{' + str + '}';
     } else if (Utils.IsArray(object)) {
@@ -95,13 +95,13 @@ export class API {
           message:data.message,
           duration:1500,
           position:'middle'
-        })
+        }).present();
       } else if (data.code < 0) {
         this.toastCtrl.create({
           message:'请求失败！',
           duration:1500,
           position:'middle'
-        })
+        }).present();
       }
 
       return data;
@@ -110,7 +110,7 @@ export class API {
         message:'请求失败！',
         duration:1500,
         position:'middle'
-      })
+      }).present();
       return {code:-1, message:'请求失败！', data:[]};
     });
   }

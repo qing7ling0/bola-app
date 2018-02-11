@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, Events, ToastController } from 'ionic-angular';
-import { FormBuilder, FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ShopPage } from '../shop/shop'
 import { UserProvider } from '../../providers/user-provider'
 import * as constants from '../../constants/constants'
+
 
 @Component({
   selector: 'page-home',
@@ -33,11 +34,12 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidLoad() {
-    // this.accountGroup = new FormGroup({
-    //   account: new FormControl(),
-    //   password: new FormControl()
-    // });
-    console.log('ionViewDidLoad');
+    this.userProvider.getLastLoginAccount().then((data: any)=>{
+      this.account.account = data.account;
+      this.account.password = data.password;
+      this.accountGroup.controls.account.setValue(data.account);
+      this.accountGroup.controls.password.setValue(data.password);
+    });
   }
 
   login(form: FormGroup) {
