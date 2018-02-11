@@ -35,10 +35,10 @@ export class HomePage implements OnInit {
 
   ionViewDidLoad() {
     this.userProvider.getLastLoginAccount().then((data: any)=>{
-      this.account.account = data.account;
-      this.account.password = data.password;
-      this.accountGroup.controls.account.setValue(data.account);
-      this.accountGroup.controls.password.setValue(data.password);
+      if (data) {
+        this.accountGroup.controls.account.setValue(data.account);
+        this.accountGroup.controls.password.setValue(data.password);
+      }
     });
   }
 
