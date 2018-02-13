@@ -87,3 +87,13 @@ $colors: (
 @import "roboto";
 @import "noto-sans";
 
+.label-group {
+  display: flex;
+}
+.label-group .label {
+  font-size: 14px;
+}
+.label-group .text {
+  flex: 1;
+  font-size: 14px;
+}

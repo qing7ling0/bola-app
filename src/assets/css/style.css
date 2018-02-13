@@ -526,6 +526,9 @@ hr {
 	padding: 8px 0 0 15px;
 	border-top: 1px solid #b1b1b1;
 }
+.row .form-group {
+	display: flex;
+}
 .row .form-group label {
 	position: absolute;
 	top: 8px;
@@ -691,6 +694,8 @@ hr {
 	border-bottom: 1px dashed #8c8c8c;
 	padding-top: 7px;
 	padding-bottom: 4px;
+	flex:1;
+	max-width: 100%;
 }
 .row .form-group .special-radio {
 	padding-left: 54px;
