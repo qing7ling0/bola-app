@@ -11,6 +11,7 @@ import * as orderTypes from './orderTypes'
 
 @Injectable()
 export class API {
+  static auth: string;
   constructor(
     public events: Events,
     public toastCtrl: ToastController,
@@ -45,6 +46,7 @@ export class API {
   }
 
   reqLogin(account: string, password: string, check:boolean): Promise<any> {
+    API.auth = "";
     const graphqlValue =  `
       mutation Login {
         login(account:"${account}",password:"${password}",check:${check?true:false})${graphqlTypes.userType}
@@ -54,6 +56,7 @@ export class API {
   }
 
   reqLogout(): Promise<any> {
+    API.auth = "";
     const graphqlValue =  `
       mutation Mutation {
         logout {
@@ -64,12 +67,95 @@ export class API {
     return this.graphqlJson(constants.API_SERVER_ADDRESS, graphqlValue)
   }
 
-  httpGraphqlJson(url: string, data: any, token: string) : Promise<any> {
+
+  getDefaultList(tag:string, type: any, conditions: any=null, pageIndex:number=-1, pageSize:number=constants.DEFAULT_PAGE_SIZE) {
+    
+    let _conditions = '';
+    if (!Utils.ObjectIsEmpty(conditions)) {
+      _conditions = `, conditions: "${encodeURIComponent(JSON.stringify(conditions))}"`
+    }
+
+    if (pageIndex === undefined || pageIndex === null) {
+      pageIndex = -1;
+      pageSize = 0;
+    } 
+    
+    let query = `
+      query Query {
+        ${tag}(page:${pageIndex}, pageSize:${pageSize} ${_conditions})${graphqlTypes.pageListType(type)}
+      }
+    `;
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, query);
+  }
+  
+  getDefaultProfileById(id, tag, type) {
+    let query = `
+      query Query {
+        ${tag}(id:"${id}")${type}
+      }
+    `;
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, query);
+  }
+
+  getDefaultProfile(conditions, tag, type) {
+    let query = `
+      query Query {
+        ${tag}(conditions:"${encodeURIComponent(JSON.stringify(conditions))}")${type}
+      }
+    `;
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, query);
+  }
+  
+  addDefault(tag, type, data) {
+    let name = tag;
+    let index = tag.lastIndexOf('List');
+    if (index !== -1) {
+      name = tag.substring(0, index);
+    }
+    console.log(JSON.stringify(data));
+    let mut = `
+      mutation Mutation {
+        ${name}Add(doc:${this.object2String(data)})${type}
+      }
+    `
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut);
+  }
+
+  deleteDefault(tag, ids) {
+    let name = tag;
+    let index = tag.lastIndexOf('List');
+    if (index !== -1) {
+      name = tag.substring(0, index);
+    }
+    let mut = `
+      mutation Mutation {
+        ${name}Remove(ids:${this.object2String(ids)})
+      }
+    `    
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut);
+  }
+
+  updateDefault(tag, id, data) {
+    let name = tag;
+    let index = tag.lastIndexOf('List');
+    if (index !== -1) {
+      name = tag.substring(0, index);
+    }
+    
+    let mut = `
+      mutation Mutation {
+        ${name}Update(doc:${this.object2String(data)}, id:"${id}") ${graphqlTypes.resultType}
+      }
+    `    
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut);
+  }
+
+  httpGraphqlJson(url: string, data: any) : Promise<any> {
     console.log('graphqlJson url' + url + '; data=' + data);
     let headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/graphql',
-      'token':token
+      'auth':API.auth
     });
     var options = {
       headers: headers,
@@ -79,7 +165,9 @@ export class API {
       .toPromise()
       .then((response) => {
         let auth = response.headers.get('auth');
-        console.log('auth=' + auth);
+        if (auth) {
+          API.auth = auth;
+        }
         return response.json();
       })
       .catch((error) => {
@@ -89,7 +177,7 @@ export class API {
   }
 
   graphqlJson(url: string, value: any) : Promise<any> {
-    return this.httpGraphqlJson(url, value, '').then((data)=>{
+    return this.httpGraphqlJson(url, value).then((data)=>{
       if(data.code > 0 && data.message) {
         this.toastCtrl.create({
           message:data.message,

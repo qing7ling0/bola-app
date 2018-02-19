@@ -60,9 +60,12 @@ hr {
 .form-signin .checkbox a, .form-signin .checkbox a:hover {
 	color: #fff;
 }
+.form-control {
+	font-size: 14px;
+}
 .form-signin .form-control {
 	position: relative;
-	font-size: 16px;
+	font-size: 14px;
 	height: auto;
 	padding: 4px 0;
 	-webkit-box-sizing: border-box;
@@ -535,10 +538,19 @@ hr {
 	font-weight: normal;
 	margin: 0;
 }
+.row .form-group .required {
+	padding:0;
+	margin:0;
+	color:red;
+	position: absolute;
+	left:0px;
+	top:50%;
+	transform: translateY(-50%);
+	font-size: 12px;
+}
 .row .form-group .form-control {
 	padding-top: 6px;
 	padding-left: 54px;
-	line-height: 28px;
 }
 .special-select {
 	border: 1px solid #818181;
@@ -643,13 +655,12 @@ hr {
 .data-customized .radio-bala {
 	display: inline-block;
 	position: relative;
-	width: 84px;
 	height: 26px;
 	color: #c1c3ce;
 	border: 1px solid #ccced7;
 	margin-right: 15px;
 	margin-bottom: 12px;
-	padding: 2px 0;
+	padding: 2px 5px;
 	text-align: center;
 	font-size: 12px;
 }
@@ -688,9 +699,8 @@ hr {
 	background-color: transparent;
 }
 .row .form-group .form-text {
-	font-weight: 500;
 	padding-left: 52px;
-	font-size: 16px;
+	font-size: 14px;
 	border-bottom: 1px dashed #8c8c8c;
 	padding-top: 7px;
 	padding-bottom: 4px;
@@ -3894,3 +3904,24 @@ ol.comment-list {
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
+
+
+
+
+
+.text-input {
+	margin: 0;
+  color:#323232;
+}
+.text-input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color:#c1c3ce;
+ }
+ .text-input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:#c1c3ce;
+ }
+ .text-input::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:#c1c3ce;
+ }
+ .text-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color:#c1c3ce;
+ }

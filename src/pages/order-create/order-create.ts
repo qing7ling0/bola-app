@@ -22,11 +22,6 @@ export class OrderCreatePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userGroup = this.formBuilder.group({
-      account: ['', [Validators.required, Validators.minLength(constants.ACCOUNT_MIN_LENGTH), Validators.maxLength(constants.ACCOUNT_MAX_LENGTH)]],
-      password: ['', [Validators.required, Validators.minLength(constants.ACCOUNT_MIN_LENGTH), Validators.maxLength(constants.ACCOUNT_MAX_LENGTH)]],
-    });
-    console.log('ngOnInit');
   }
 
   onNavClicked(nav: any) : void {

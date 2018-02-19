@@ -7,200 +7,179 @@
 
     <!--body wrapper start-->
     <div class="wrapper">
-      <div class="mobileNumber-confirm">
-        <label class="pull-left" for="mobileNumber">手机号</label>
-        <input type="text" class="form-control" id="mobileNumber" placeholder="输入手机号码">
-        <button type="submit" class="btn pull-right">确认</button>
-      </div>
-      <div class="panel panel-special">
-        <div class="panel-heading">
-          <h3 class="panel-title">基本信息</h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-xs-8">
-              <div class="form-group">
-                <label class="control-label">姓 &nbsp;名</label>
-                <p class="form-text">王老吉</p>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="form-group">
-                <label class="control-label">性 &nbsp;别</label>
-                <p class="form-text">男</p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-8">
-              <div class="form-group">
-                <label class="control-label">生 &nbsp;日</label>
-                <p class="form-text">2000年12月30日</p>
-              </div>
-            </div>
-            <div class="col-xs-8">
-              <div class="form-group">
-                <label class="control-label">手 &nbsp;机</label>
-                <p class="form-text">15012345678</p>
-              </div>
-            </div>
-            <div class="col-xs-8">
-              <div class="form-group">
-                <label class="control-label">微 &nbsp;信</label>
-                <p class="form-text">15012345678</p>
-              </div>
-            </div>
-          </div>
-          <div class="mtop10"></div>
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">国 &nbsp;家</label>
-                <input class="form-control" placeholder="输入国家" type="text">
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">城 &nbsp;市</label>
-                <input class="form-control" placeholder="输入城市" type="text">
-              </div>
-            </div>
-            <div class="col-xs-12">
-              <div class="form-group">
-                <label class="control-label">地 &nbsp;址</label>
-                <input class="form-control" placeholder="输入地址" type="text">
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">邮 &nbsp;编</label>
-                <input class="form-control" placeholder="输入邮编" type="text">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">折 &nbsp;扣</label>
-                <input class="form-control" placeholder="输入折扣" type="text">
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">余 &nbsp;额</label>
-                <p class="form-text">123456.00 元</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <order-customer-edit #customerControl [onChange]="onCustomerChange"></order-customer-edit>
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">订单数据</h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">款 &nbsp;&nbsp; 号</label>
-                <input class="form-control" placeholder="输入数字" type="text">
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">规 &nbsp;&nbsp; 格</label>
-                <input class="form-control" placeholder="500" type="text">
-              </div>
-            </div>
+        <form [formGroup]="footerGroup">
+          <div class="panel-heading">
+            <h3 class="panel-title">脚型数据</h3>
           </div>
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">楦 &nbsp;&nbsp; 型</label>
-                <input class="form-control" placeholder="输入数字" type="text">
-              </div>
+          <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label class="control-label">尺 &nbsp;&nbsp; 码</label>
+                    <ion-input type="number" formControlName="s_foot_size" class="form-text" placeholder="请输入尺码"></ion-input>
+                  </div>
+                </div>
             </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">材 &nbsp;&nbsp; 质</label>
-                <div class="special-select"><span class="select-defaule">类别选择</span><span class="fa fa-angle-right"></span></div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="row"><div class="col-xs-12 col-sm-6">左脚数据</div></div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">长 &nbsp;&nbsp; 度</label>
+                      <ion-input formControlName="s_left_length" class="form-text" placeholder="请输入左脚长度"></ion-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">趾 &nbsp;&nbsp; 围</label>
+                      <ion-input formControlName="s_left_zhiWei" class="form-text" placeholder="请输入左脚趾围" ></ion-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">附 &nbsp;&nbsp; 维</label>
+                      <ion-input formControlName="s_left_fuWei" class="form-text" placeholder="请输入左脚附维" ></ion-input>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">颜 &nbsp;&nbsp; 色</label>
-                <div class="special-select"><span class="select-defaule">颜色选择</span><span class="fa fa-angle-right"></span></div>
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">内里色</label>
-                <div class="special-select"><span class="select-current">颜色选择</span><span class="fa fa-angle-right"></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">底侧色</label>
-                <div class="special-select"><span class="select-defaule">颜色选择</span><span class="fa fa-angle-right"></span></div>
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">底板色</label>
-                <div class="special-select"><span class="select-defaule">颜色选择</span><span class="fa fa-angle-right"></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">贴 &nbsp;&nbsp; 底</label>
-                <div class="special-select"><span class="select-defaule">贴底选择</span><span class="fa fa-angle-right"></span></div>
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">A</label>
-                <input class="form-control" placeholder="输入数字" type="text">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">色卡编号</label>
-                <input class="form-control" placeholder="输入编号" type="text">
-              </div>
-            </div>
-            <div class="col-xs-6">
-              <div class="form-group">
-                <label class="control-label">是否水洗</label>
-                <div class="special-radio">
-                  <div class="radio selected">是</div>
-                  <div class="radio">否</div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="row"><div class="col-xs-12 col-sm-6">右脚数据</div></div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">长 &nbsp;&nbsp; 度</label>
+                      <ion-input formControlName="s_right_length" class="form-text" placeholder="请输入右脚长度"></ion-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">趾 &nbsp;&nbsp; 围</label>
+                      <ion-input formControlName="s_right_zhiWei" class="form-text" placeholder="请输入右脚趾围"></ion-input>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label class="control-label">附 &nbsp;&nbsp; 维</label>
+                      <ion-input formControlName="s_right_fuWei" class="form-text" placeholder="请输入右脚附维"></ion-input>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-xs-12">
-              <div class="service-charges text-center">护理 费用：<span>12345678.00</span></div>
+          </div>  
+        </form>       
+      </div>
+      <div class="panel panel-default">
+        <form [formGroup]="orderGroup">
+          <div class="panel-heading">
+            <h3 class="panel-title">订单数据</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">货 &nbsp;&nbsp; 号</label>
+                  <input class="form-control" formControlName="NID" placeholder="输入货号" type="text" >
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">规 &nbsp;&nbsp; 格</label>
+                  <bola-select formControlName="s_gui_ge" class="form-text" placeholder="请选择规格" [source]="baseDatas.guiGeList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">楦 &nbsp;&nbsp; 号</label>
+                  <bola-select formControlName="s_xuan_hao" class="form-text" placeholder="请选择楦号" [source]="baseDatas.xuanHaoList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">材 &nbsp;&nbsp; 质</label>
+                  <bola-select formControlName="s_material" class="form-text" placeholder="请选择材质" [source]="baseDatas.materialList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">颜 &nbsp;&nbsp; 色</label>
+                  <bola-select formControlName="s_out_color" class="form-text" placeholder="请选择颜色" [source]="baseDatas.outColorList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">内里色</label>
+                  <bola-select formControlName="s_in_color" class="form-text" placeholder="请选择内里色" [source]="baseDatas.inColorList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">底侧色</label>
+                  <bola-select formControlName="s_bottom_side_color" class="form-text" placeholder="请选择底侧色" [source]="baseDatas.bottomSideColorList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">底板色</label>
+                  <bola-select formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" [source]="baseDatas.bottomColorList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">贴 &nbsp;&nbsp; 底</label>
+                  <bola-select formControlName="s_tie_di" class="form-text" placeholder="请选择贴底" [source]="baseDatas.shoesTieBianList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">价 &nbsp;&nbsp; 格</label>
+                  <ion-input formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">根 &nbsp;&nbsp; 高</label>
+                  <bola-select formControlName="s_gen_gao" class="form-text" placeholder="请选择跟高" [source]="baseDatas.genGaoList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
             </div>
           </div>
+        </form>
+        <form #loginForm="ngForm">
           <div class="panel panel-info data-photo">
             <div class="panel-heading"> <span class="info-square"></span>
               <h3 class="panel-title">拍照信息</h3>
             </div>
             <div class="panel-body">
-              <div class="form-group">
-                <div class="photo-current"><img src="images/photo-01.jpg" class="img-responsive"></div>
-                <textarea class="form-control" placeholder="填写说明文字"></textarea>
+              <div *ngFor="let pic of pics;let i = index;" class="form-group">
+                <div *ngIf="pic.file" class="photo-current"><img src="{{UPLOAD_URL+pic.file}}}" class="img-responsive"></div>
+                <div *ngIf="pic.file===''" class="photo-default" (click)="onBtnPickerClicked(pic)"><span class="fa fa-camera"></span></div>
+                <textarea class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" >{{pic.desc}}</textarea>
               </div>
-              <div class="form-group">
-                <div class="photo-default"><span class="fa fa-camera"></span></div>
-                <textarea class="form-control" placeholder="填写说明文字"></textarea>
+              <div class="order-pic-btn-container">
+                <button ion-button color="dark" full class="order-pic-btn-add" (click)="btnPicAddClicked()">添加</button>
               </div>
             </div>
           </div>
@@ -220,11 +199,10 @@
               <div class="form-group">
                 <label class="control-label">收 费 内 容</label>
                 <div class="special-radio">
-                  <div class="radio-bala">内增皮料 <span class="check-circle"></span></div>
-                  <div class="radio-bala selected">特大码皮料 <span class="check-circle"></span></div>
+                  <div *ngFor="let data of customs;let i = index;" class="radio-bala{{data.selected?' selected':''}}" (click)="onCustomClicked(data)">{{data.name}} <span class="check-circle"></span></div>
                 </div>
               </div>
-              <div class="service-charges text-right">金 额：<span>12345678.00</span></div>
+              <div class="service-charges text-right">金 额：<span>{{customPrice}}元</span></div>
             </div>
           </div>
           <div class="panel panel-info data-urgentu">
@@ -235,16 +213,16 @@
               <div class="row">
                 <div class="col-xs-12">
                   <div class="form-group">
-                    <label class="control-label">加 急 天 数</label>
-                    <input class="form-control" placeholder="输入天数" type="text">
+                    <label class="control-label">加急天数</label>
+                    <bola-select class="form-text" [(ngModel)]="urgent" [ngModelOptions]="{standalone: true}" placeholder="请选择加急类型" [source]="baseDatas.urgentList||[]" [onChanged]="onUrgentChange"></bola-select>
                   </div>
-                  <div class="service-charges text-right">金 额：<span>12345678.00</span></div>
+                  <div class="service-charges text-right">金 额：<span>{{currentUrgentData&&currentUrgentData.price||0}}元</span></div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="order-action"> <a href="#" class="btn">立即创建</a> <a href="#" class="btn">加入购物车</a> </div>
-        </div>
+        </form>
+        <div class="order-action"> <a href="#" class="btn" (click)="createOrder()">立即创建</a> <a href="#" class="btn" (click)="addToCart()">加入购物车</a> </div>
       </div>
     </div>
     <!--body wrapper end-->

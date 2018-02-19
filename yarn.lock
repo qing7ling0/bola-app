@@ -66,6 +66,14 @@
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@ionic-native/core/-/core-4.4.0.tgz#fb0f071543bd2725d858f5a0f5c20adbece20df4"
 
+"@ionic-native/file-transfer@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@ionic-native/file-transfer/-/file-transfer-4.5.3.tgz#0a455974dcb3bea8fa86ef6677bb0b4e5dbc5ed6"
+
+"@ionic-native/file@^4.5.3":
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/@ionic-native/file/-/file-4.5.3.tgz#a8af6b56a8ee4bcfdb241ff24b20a9eedb5230ef"
+
 "@ionic-native/splash-screen@4.4.0":
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@ionic-native/splash-screen/-/splash-screen-4.4.0.tgz#81ed723d7fd3f0d643072b5461fa0c32dcc330b1"
@@ -116,9 +124,9 @@
     superagent "^3.8.0"
     tslib "^1.8.0"
 
-"@ionic/cli-utils@1.19.0":
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/@ionic/cli-utils/-/cli-utils-1.19.0.tgz#80b1cfab7fee812d4415f518c12515dd4c1a7b80"
+"@ionic/cli-utils@1.19.1":
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/@ionic/cli-utils/-/cli-utils-1.19.1.tgz#c8322523a9bbd3dcebdc1f4818764f8453048642"
   dependencies:
     "@ionic/cli-framework" "0.1.2"
     "@ionic/discover" "0.4.0"
@@ -148,6 +156,7 @@
     tar "^4.0.2"
     tiny-lr "^1.0.5"
     tslib "^1.8.0"
+    untildify "^3.0.2"
     uuid "^3.0.1"
     wrap-ansi "^3.0.1"
     ws "^3.2.0"
@@ -243,6 +252,12 @@ align-text@^0.1.1, align-text@^0.1.3:
 amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
+
+android-versions@^1.2.1:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/android-versions/-/android-versions-1.3.0.tgz#ce6f3eae2e165ce4ed49b89beb68014741093044"
+  dependencies:
+    semver "^5.4.1"
 
 ansi-escapes@^1.1.0:
   version "1.4.0"
@@ -1062,6 +1077,18 @@ cookiejar@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/cookiejar/-/cookiejar-2.1.1.tgz#41ad57b1b555951ec171412a81942b1e8200d34a"
 
+cordova-android@~7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/cordova-android/-/cordova-android-7.0.0.tgz#c95bedfcfbc3863b180c4d29effec4f79361d19d"
+  dependencies:
+    android-versions "^1.2.1"
+    cordova-common "^2.2.0"
+    elementtree "0.1.6"
+    nopt "^3.0.1"
+    properties-parser "^0.2.3"
+    q "^1.4.1"
+    shelljs "^0.5.3"
+
 cordova-app-hello-world@^3.11.0:
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/cordova-app-hello-world/-/cordova-app-hello-world-3.12.0.tgz#270e06b67b2ae94bcfee6592ed39eb42303d186f"
@@ -1141,6 +1168,26 @@ cordova-lib@8.0.0:
     unorm "1.4.1"
     valid-identifier "0.0.1"
     xcode "^1.0.0"
+
+cordova-plugin-device@^1.1.4:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-device/-/cordova-plugin-device-1.1.7.tgz#fc94111be6932628c66868938ddf3dc82c9fbfe6"
+
+cordova-plugin-file-transfer@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-file-transfer/-/cordova-plugin-file-transfer-1.7.1.tgz#a75d8be2ebc3bb9b23c5b1bbd199214ec267586b"
+
+cordova-plugin-ionic-webview@^1.1.16:
+  version "1.1.16"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-ionic-webview/-/cordova-plugin-ionic-webview-1.1.16.tgz#92d5f2e4a5a829f91b487b1761848765a31c9f1e"
+
+cordova-plugin-splashscreen@^4.0.3:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-splashscreen/-/cordova-plugin-splashscreen-4.1.0.tgz#81028ab7643e615593d27f2ad02445611f1946b6"
+
+cordova-plugin-whitelist@^1.3.1:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-whitelist/-/cordova-plugin-whitelist-1.3.3.tgz#b5e85ecdbbfe5aeded40a1bf4ee2372e67d96fb4"
 
 cordova-registry-mapper@^1.1.8:
   version "1.1.15"
@@ -2347,12 +2394,16 @@ ionic-angular@3.9.2:
   version "3.9.2"
   resolved "https://registry.yarnpkg.com/ionic-angular/-/ionic-angular-3.9.2.tgz#75053e4a422aaae7d7cd668cc92cfd5cb29d38cc"
 
-ionic@^3.19.0:
-  version "3.19.0"
-  resolved "https://registry.yarnpkg.com/ionic/-/ionic-3.19.0.tgz#e16a3389737292d7f751c50903009863fe3d181a"
+ionic-plugin-keyboard@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/ionic-plugin-keyboard/-/ionic-plugin-keyboard-2.2.1.tgz#f2a9e169bbe9b5522400347c9fd6d3467ee3fa12"
+
+ionic@3.19.1:
+  version "3.19.1"
+  resolved "https://registry.yarnpkg.com/ionic/-/ionic-3.19.1.tgz#2b314aa5b6ee9f78dee3da51183e25d2de514d8c"
   dependencies:
     "@ionic/cli-framework" "0.1.2"
-    "@ionic/cli-utils" "1.19.0"
+    "@ionic/cli-utils" "1.19.1"
     chalk "^2.3.0"
     opn "^5.1.0"
     semver "^5.3.0"
@@ -3149,7 +3200,7 @@ node-sass@~4.5.3:
     sass-graph "^2.1.1"
     stdout-stream "^1.4.0"
 
-"nopt@2 || 3":
+"nopt@2 || 3", nopt@^3.0.1:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-3.0.6.tgz#c6465dbf08abcd4db359317f79ac68a646b28ff9"
   dependencies:
@@ -3559,6 +3610,10 @@ properties-parser@0.3.1:
   resolved "https://registry.yarnpkg.com/properties-parser/-/properties-parser-0.3.1.tgz#1316e9539ffbfd93845e369b211022abd478771a"
   dependencies:
     string.prototype.codepointat "^0.2.0"
+
+properties-parser@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/properties-parser/-/properties-parser-0.2.3.tgz#f7591255f707abbff227c7b56b637dbb0373a10f"
 
 proxy-addr@~2.0.2:
   version "2.0.2"
@@ -4751,6 +4806,10 @@ unreachable-branch-transform@^0.3.0:
     esmangle-evaluator "^1.0.0"
     recast "^0.10.1"
     through2 "^0.6.2"
+
+untildify@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/untildify/-/untildify-3.0.2.tgz#7f1f302055b3fea0f3e81dc78eb36766cb65e3f1"
 
 update-notifier@0.5.0:
   version "0.5.0"

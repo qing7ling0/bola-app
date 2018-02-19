@@ -4,11 +4,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CustomerData } from '../../../interface/customer-data'
 import { FormValidator } from '../../../utils/form-validator'
+import { CustomerProvider, CommonProvider } from '../../../providers'
 
 const FORM_OPTIONS = (data)=> [
   {key:'phone2', label:'手机号', defaultValue:data&&data.phone||'', validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/)}]},
   {key:'phone', label:'手机号', defaultValue:data&&data.phone||'', validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/)}]},
   {key:'name', label:'姓名', defaultValue:data&&data.name||'', validators:[{key:'required', validator:Validators.required}]},
+  {key:'sex', label:'性别', defaultValue:data&&data.sex||'', validators:[{key:'required', validator:Validators.required}]},
+  {key:'birthday', label:'生日', defaultValue:data&&data.birthday||'', validators:[{key:'required', validator:Validators.required}]},
   {key:'weixin', label:'微信号', defaultValue:data&&data.weixin||'', validators:[{key:'required', validator:Validators.required}]},
 
   {key:'country', label:'国家', defaultValue:data&&data.country||'', validators:[]},
@@ -22,25 +25,61 @@ const FORM_OPTIONS = (data)=> [
   templateUrl: 'customer-edit.html'
 })
 export class OrderCustomerEditComponent implements OnInit {
-  customerData: CustomerData;
+  customerProfile: CustomerData;
   @Input() onChange: Function;
-  customerGroup: FormGroup;
-  formOptions: Array<any>
+  formOptions: Array<any>;
+  sexDataList: Array<any>;
+  vipLevelList: Array<any>;
+
+  public customerGroup: FormGroup;
 
   constructor(
     public navCtrl: NavController,
     private formBuilder: FormBuilder,
-    private toastCtrl: ToastController
-  ) {}
+    private toastCtrl: ToastController,
+    private customerProvider: CustomerProvider,
+    private commonProvider: CommonProvider
+  ) {
+    this.customerProfile = null;
+    this.sexDataList = [{label:'男', value:'男'}, {label:'女', value:'女'}];
+    this.vipLevelList = [];
+  }
 
   ngOnInit(): void {
     this.formOptions = FORM_OPTIONS(null);
     this.customerGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
+
+    this.customerGroup.valueChanges.subscribe(data => {
+      this.onChange && this.onChange(data);
+    });
+  }
+
+  ionViewDidEnter(): void {
+    this.commonProvider.getVipLevelList().then((data:Array<any>) => {
+      if (data) {
+        this.vipLevelList = data;
+      }
+    })
   }
 
   onPhoneSureBtnClicked() {
-    if (this.onChange) {
-      this.onChange(this);
+    if (this.customerGroup.controls.phone2.valid) {
+      this.customerProvider.getCustomerProfile(this.customerGroup.value.phone2).then((data) => {
+        this.customerProfile = data;
+        if (this.customerProfile) {
+          // this.customerGroup.value = this.customerProfile;
+          // this.customerGroup.controls.name.setValue(this.customerProfile.name);
+          let value:any = {};
+          for(let key in this.customerGroup.value) {
+            value[key] = this.customerProfile[key];
+          }
+          value.phone2 = this.customerProfile.phone;
+          this.customerGroup.setValue(value);
+        }
+        if (this.onChange) {
+          this.onChange(this.customerProfile);
+        }
+      })
     }
   }
 
@@ -60,8 +99,19 @@ export class OrderCustomerEditComponent implements OnInit {
     return this.customerGroup.value;
   }
 
-  onNavClicked(nav: object) : void {
+  change() {
+    console.log("change");
+  }
 
+  getCurrentDiscount() {
+    if (this.customerProfile) {
+      for(let lv of this.vipLevelList) {
+        if (lv.level === this.customerProfile.vip_level) {
+          return lv.discount+'折';
+        }
+      }
+    }
+    return '无';
   }
 
 }
