@@ -4,7 +4,9 @@ import { FormBuilder, FormControl, FormGroup, Validators, NgForm } from '@angula
 
 import {HeaderData} from '../../interface/header-data';
 
-import * as constants from '../../constants/constants'
+import * as constants from '../../constants/constants';
+import { CartProvider } from '../../providers'
+import { CartListPage } from '../../pages/cart-list/cart-list';
 
 @Component({
   selector: 'header',
@@ -17,13 +19,22 @@ export class HeaderComponent {
   constructor(
     public events: Events,
     public navCtrl: NavController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private cartProvider: CartProvider
   ) {
     this.subscribeEvents();
   }
 
   back() : void {
     this.navCtrl.pop();
+  }
+
+  clearCartList = (): void => {
+    this.cartProvider.clear();
+  }
+
+  openCartListPage = (): void => {
+    this.navCtrl.push(CartListPage)
   }
 
   subscribeEvents() {

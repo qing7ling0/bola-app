@@ -9,7 +9,7 @@
     <div class="wrapper">
       <ul class="nav custom-nav">
         <li *ngFor="let nav of navs">
-          <a (click)="onNavClicked(nav)"><span>{{nav.label}}</span></a>
+          <a (click)="onNavClicked(nav)"><i class="{{nav.icon}}"></i><span>{{nav.label}}</span></a>
         </li>
       </ul>
     </div>

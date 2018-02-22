@@ -25,13 +25,11 @@
             </bola-select>
           </div>
         </div>
-      </div>
-      <div class="row">
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">生 &nbsp;日</label>
-            <ion-datetime displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text" placeholder="请选择日期"></ion-datetime>
+            <ion-datetime formControlName="birthday" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text" placeholder="请选择日期"></ion-datetime>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
@@ -63,6 +61,8 @@
             <input class="form-control" formControlName="city" placeholder="输入城市" type="text">
           </div>
         </div>
+      </div>
+      <div class="row">
         <div class="col-xs-12">
           <div class="form-group">
             <label class="control-label">地 &nbsp;址</label>

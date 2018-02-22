@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Events, ToastController } from 'ionic-angular';
+import { Events, ToastController, LoadingController } from 'ionic-angular';
 import { Headers, Http } from '@angular/http';
 
 import * as constants from '../constants/constants'
@@ -15,7 +15,8 @@ export class API {
   constructor(
     public events: Events,
     public toastCtrl: ToastController,
-    public http: Http
+    public http: Http,
+    public loadingCtrl: LoadingController
   ) {}
 
   object2String(object: any): string {
@@ -152,6 +153,15 @@ export class API {
 
   httpGraphqlJson(url: string, data: any) : Promise<any> {
     console.log('graphqlJson url' + url + '; data=' + data);
+
+    let loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      duration: 1000 * 60
+    });
+    loader.present();
+    let timer = setTimeout(() => {
+    }, 5000);
+
     let headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/graphql',
@@ -168,10 +178,14 @@ export class API {
         if (auth) {
           API.auth = auth;
         }
+        clearTimeout(timer);
+        loader.dismiss();
         return response.json();
       })
       .catch((error) => {
         console.log(error);
+        clearTimeout(timer);
+        loader.dismiss();
         return {code:-1, message:'网络连接失败', data:{}}
       });
   }

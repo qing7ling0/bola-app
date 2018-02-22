@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
+import { ImagePicker } from '@ionic-native/image-picker'
 
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -11,12 +12,14 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { API } from '../api/api';
-import { CustomerProvider, UserProvider, CommonProvider } from '../providers';
+import { CustomerProvider, UserProvider, CommonProvider, CartProvider } from '../providers';
 
 import { MyApp } from './app.component';
 import { ShopPageModule } from '../pages/shop/shop.module';
 import { HomePageModule } from '../pages/home/home.module';
 import { OrderCreateModule } from '../pages/order-create/order-create.module';
+import { CartPayModule } from '../pages/cart-pay/cart-pay.module';
+import { CartListModule } from '../pages/cart-list/cart-list.module';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,9 @@ import { OrderCreateModule } from '../pages/order-create/order-create.module';
     IonicStorageModule.forRoot(),
     HomePageModule,
     ShopPageModule,
-    OrderCreateModule
+    OrderCreateModule,
+    CartPayModule,
+    CartListModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -44,8 +49,10 @@ import { OrderCreateModule } from '../pages/order-create/order-create.module';
     UserProvider,
     CustomerProvider,
     CommonProvider,
+    CartProvider,
     File,
-    FileTransfer
+    FileTransfer,
+    ImagePicker
   ]
 })
 export class AppModule {}

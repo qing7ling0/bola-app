@@ -1,0 +1,37 @@
+<ion-content class="sticky-header">
+  <!-- main content start-->
+  <div class="main-content" >
+
+    <header [headerData]="headerData"></header>
+    <!-- header section end-->
+
+    <!--body wrapper start-->
+    <div class="wrapper">
+      <div *ngFor="let arr of cartList" class="panel panel-default panel-cart">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{arr.customer.name+arr.customer.phone}}</h3>
+        </div>
+        <div class="panel-body" style="background:initial">
+          <div *ngFor="let goods of arr.goods" class="item-list clearfix">
+            <div class="item-detail pull-right clearfix">
+              <div class="item-img pull-left">
+                <a href="#"><img src="{{FILE_URL+goods.icon}}" class="img-responsive"></a>
+              </div>
+              <div class="item-info pull-left">
+                <h3 class="title">货号：{{goods.NID}}</h3>
+                <div class="pay-price">金额：{{getGoodsPayPrice(goods)}} 元</div>
+                <div class="sku">
+                  <p>含定制费：{{getGoodsCustomPrice(goods)}}元</p>
+                  <p>含加急费：{{goods.urgent && goods.urgent.price || 0}}元</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--body wrapper end-->
+
+  </div>
+  <!-- main content end-->
+</ion-content>

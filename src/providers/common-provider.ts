@@ -54,9 +54,9 @@ export class CommonProvider {
   }
 
   getVipLevelList(): Promise<any> {
-    return this.api.getDefaultList('vipLevelList:commonList', graphqlTypes.customerType).then((result)=>{
+    return this.api.getDefaultList('vipLevelList:commonList', graphqlTypes.vipLevelType, {type:constants.E_COMMON_DATA_TYPES.VIP}).then((result)=>{
       if(result.code === 0) {
-        return result.data.vipLevelList;
+        return result.data.vipLevelList.list;
       }
       return null;
     });

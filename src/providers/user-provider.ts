@@ -20,8 +20,9 @@ export class UserProvider {
 
   login(account: string, password: string): void {
     this.setAccount(account, password);
-    this.api.reqLogin(account, password, false).then((data)=>{
-      if(data.code === 0) {
+    this.api.reqLogin(account, password, false).then((result)=>{
+      if(result.code === 0) {
+        this.storage.set('user', result.data.login);
         this.events.publish('user:login');
       }
     });

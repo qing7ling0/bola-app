@@ -28,4 +28,15 @@ export class CustomerProvider {
       return null;
     });
   };
+
+  getCustomerLastSubOrder(tag: string, type: string, id: string): Promise<any> {
+    let conditions = {type:type};
+    let options = {sort:{create_time:"desc"}}
+    let query = `
+      query Query {
+        ${tag}:customerOrderInfo(id:"${id}", conditions:"${encodeURIComponent(JSON.stringify(conditions))}", options:"${encodeURIComponent(JSON.stringify(options))}")${orderTypes.subOrderType}
+      }
+    `;
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query);
+  }
 }

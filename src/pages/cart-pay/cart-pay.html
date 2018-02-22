@@ -1,0 +1,103 @@
+<ion-content class="body-payment">
+  <!-- main content start-->
+  <div class="main-content" > 
+  
+    <!-- header section start-->
+    <header [headerData]="headerData"></header>
+    <!-- header section end--> 
+    
+    <!--body wrapper start-->
+
+    <div class="wrapper">
+      <div class="panel panel-default panel-cart">
+        <div class="panel-heading">
+          <h3 class="panel-title">购买产品</h3>
+        </div>
+        <div class="panel-body" style="background:initial">
+          <div *ngFor="let goods of goodsList" class="item-list clearfix">
+            <div class="item-detail pull-right clearfix">
+              <div class="item-img pull-left">
+                <a href="#"><img src="{{FILE_URL+goods.icon}}" class="img-responsive"></a>
+              </div>
+              <div class="item-info pull-left">
+                <h3 class="title">货号：{{goods.NID}}</h3>
+                <div class="pay-price">金额：{{getGoodsPayPrice(goods)}} 元</div>
+                <div class="sku">
+                  <p>含定制费：{{getGoodsCustomPrice(goods)}}元</p>
+                  <p>含加急费：{{goods.urgent && goods.urgent.price || 0}}元</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-heading">
+          <h3 class="panel-title">付款信息</h3>
+        </div>
+        <div class="panel-body">
+          <form #loginForm="ngForm">
+            <div class="voucher-list">
+              <dl>
+                <dt>
+                  <div class="stored-card clearfix bola-label bola-item-inner">
+                    <ion-item>
+                      <ion-label>内购单</ion-label>
+                      <ion-checkbox [(ngModel)]="isHasNeiGua" [ngModelOptions]="{standalone: true}" (ionChange)="onHasNeiGuaChange()"></ion-checkbox>
+                    </ion-item>
+                  </div>
+                </dt>
+                <dd *ngIf="isHasNeiGua">
+                  <div class="in-app clearfix">
+                    <div class="col-xs-12">
+                      <div class="form-group">
+                        <label class="control-label">内挂人员</label>
+                        <bola-select class="form-text" [(ngModel)]="neiguaId" [ngModelOptions]="{standalone: true}" placeholder="请选择内挂人员" [source]="neiGuaList||[]" [onChanged]="onNeiGuaChange"></bola-select>
+                      </div>
+                    </div>
+                  </div>
+                </dd>
+              </dl>
+              <dl>
+                <dt>
+                  <div class="stored-card clearfix bola-label bola-item-inner">
+                    <ion-item>
+                      <ion-label>使用储值卡</ion-label>
+                      <ion-checkbox [(ngModel)]="isUseStoreCard" [ngModelOptions]="{standalone: true}" (ionChange)="onUseStoreCardChange()"></ion-checkbox>
+                    </ion-item>
+                  </div>
+                </dt>
+              </dl>
+              <dl>
+                <dt>
+                  <div class="stored-card bola-label bola-item-inner clearfix">
+                    <ion-grid style="padding:0px 16px;">
+                      <ion-row>
+                        <ion-col col-6>
+                          <ion-label>支付方式</ion-label>
+                        </ion-col>
+                        <ion-col col-6>
+                          <bola-select class="form-text" [(ngModel)]="payType" [ngModelOptions]="{standalone: true}" placeholder="请选择支付方式" [source]="payTypeList||[]"></bola-select>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </div>
+                </dt>
+              </dl>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="f-fx">
+        <div class="footer clearfix">
+          <div class="btn pull-right"><a (click)="pay()">结算</a></div>
+          <div class="pay">
+            <p>合计：<span class="o-t-price">{{payInfo.payPriceLabel||0}}元</span></p>
+            <p>优惠：<span>{{payInfo.discountPriceLabel||0}}元</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--body wrapper end--> 
+    
+  </div>
+  <!-- main content end-->
+</ion-content>

@@ -167,7 +167,7 @@ export class Utils {
    * @returns
    * @memberof Utils
    */
-  static StringToInt(str: string, defaultValue: boolean) {
+  static stringToInt(str: string, defaultValue?: number): number {
     let v = parseInt(str);
     if (v) return v;
     else {

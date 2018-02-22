@@ -50,16 +50,25 @@ export class OrderCustomerEditComponent implements OnInit {
     this.customerGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
 
     this.customerGroup.valueChanges.subscribe(data => {
-      this.onChange && this.onChange(data);
+      this.onChange && this.onChange(this.filterCustomerProperty(Object.assign({}, this.customerProfile||{}, data, {})));
     });
   }
 
   ionViewDidEnter(): void {
-    this.commonProvider.getVipLevelList().then((data:Array<any>) => {
-      if (data) {
-        this.vipLevelList = data;
+  }
+
+  filterCustomerProperty(value) {
+    if (value) {
+      let ret = {};
+      for(let key in value) {
+        if (key.indexOf('editor_') === -1 && key !== 'label' && key !== 'value' && key !== 'phone2') {
+          ret[key] = value[key];
+        }
       }
-    })
+      return ret;
+    }
+
+    return null;
   }
 
   onPhoneSureBtnClicked() {
@@ -73,12 +82,20 @@ export class OrderCustomerEditComponent implements OnInit {
           for(let key in this.customerGroup.value) {
             value[key] = this.customerProfile[key];
           }
+          if (value.birthday) {
+            value.birthday = new Date(this.customerProfile.birthday).toISOString();
+          }
           value.phone2 = this.customerProfile.phone;
           this.customerGroup.setValue(value);
         }
         if (this.onChange) {
-          this.onChange(this.customerProfile);
+          this.onChange(this.filterCustomerProperty(this.customerProfile));
         }
+        this.commonProvider.getVipLevelList().then((data:Array<any>) => {
+          if (data) {
+            this.vipLevelList = data;
+          }
+        })
       })
     }
   }

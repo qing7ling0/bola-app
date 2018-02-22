@@ -29,7 +29,7 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">长 &nbsp;&nbsp; 度</label>
-                      <ion-input formControlName="s_left_length" class="form-text" placeholder="请输入左脚长度"></ion-input>
+                      <ion-input type="number" formControlName="s_left_length" class="form-text" placeholder="请输入左脚长度"></ion-input>
                     </div>
                   </div>
                 </div>
@@ -37,7 +37,7 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">趾 &nbsp;&nbsp; 围</label>
-                      <ion-input formControlName="s_left_zhiWei" class="form-text" placeholder="请输入左脚趾围" ></ion-input>
+                      <ion-input type="number" formControlName="s_left_zhiWei" class="form-text" placeholder="请输入左脚趾围" ></ion-input>
                     </div>
                   </div>
                 </div>
@@ -45,7 +45,7 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">附 &nbsp;&nbsp; 维</label>
-                      <ion-input formControlName="s_left_fuWei" class="form-text" placeholder="请输入左脚附维" ></ion-input>
+                      <ion-input type="number" formControlName="s_left_fuWei" class="form-text" placeholder="请输入左脚附维" ></ion-input>
                     </div>
                   </div>
                 </div>
@@ -56,7 +56,7 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">长 &nbsp;&nbsp; 度</label>
-                      <ion-input formControlName="s_right_length" class="form-text" placeholder="请输入右脚长度"></ion-input>
+                      <ion-input type="number" formControlName="s_right_length" class="form-text" placeholder="请输入右脚长度"></ion-input>
                     </div>
                   </div>
                 </div>
@@ -64,7 +64,7 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">趾 &nbsp;&nbsp; 围</label>
-                      <ion-input formControlName="s_right_zhiWei" class="form-text" placeholder="请输入右脚趾围"></ion-input>
+                      <ion-input type="number" formControlName="s_right_zhiWei" class="form-text" placeholder="请输入右脚趾围"></ion-input>
                     </div>
                   </div>
                 </div>
@@ -72,7 +72,7 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">附 &nbsp;&nbsp; 维</label>
-                      <ion-input formControlName="s_right_fuWei" class="form-text" placeholder="请输入右脚附维"></ion-input>
+                      <ion-input type="number" formControlName="s_right_fuWei" class="form-text" placeholder="请输入右脚附维"></ion-input>
                     </div>
                   </div>
                 </div>
@@ -153,11 +153,11 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">价 &nbsp;&nbsp; 格</label>
-                  <ion-input formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
+                  <ion-input type="number" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div *ngIf="isFemale()" class="row">
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">根 &nbsp;&nbsp; 高</label>
@@ -174,7 +174,7 @@
             </div>
             <div class="panel-body">
               <div *ngFor="let pic of pics;let i = index;" class="form-group">
-                <div *ngIf="pic.file" class="photo-current"><img src="{{UPLOAD_URL+pic.file}}}" class="img-responsive"></div>
+                <div *ngIf="pic.file" class="photo-current"><img src="{{FILE_URL+'/'+pic.file}}" class="img-responsive"></div>
                 <div *ngIf="pic.file===''" class="photo-default" (click)="onBtnPickerClicked(pic)"><span class="fa fa-camera"></span></div>
                 <textarea class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" >{{pic.desc}}</textarea>
               </div>
@@ -188,7 +188,7 @@
               <h3 class="panel-title">备注信息</h3>
             </div>
             <div class="panel-body">
-              <textarea class="form-control" placeholder="填写备注文字"></textarea>
+              <textarea class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></textarea>
             </div>
           </div>
           <div class="panel panel-info data-customized">
@@ -222,7 +222,7 @@
             </div>
           </div>
         </form>
-        <div class="order-action"> <a href="#" class="btn" (click)="createOrder()">立即创建</a> <a href="#" class="btn" (click)="addToCart()">加入购物车</a> </div>
+        <div class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
       </div>
     </div>
     <!--body wrapper end-->

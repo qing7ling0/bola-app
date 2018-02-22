@@ -8,6 +8,12 @@
       </ul>
     </div>
   </div>
+  <div *ngIf="headerData&&headerData.type==='cart-clear'">
+    <div class="menu-right" (click)="clearCartList()">清空购物车</div>
+  </div>
+  <div *ngIf="headerData&&headerData.type==='cart-list'">
+    <div class="menu-right" (click)="openCartList()">购物车</div>
+  </div>
   <div class="header-title">{{headerData.title}}</div>
 </div>
 <!-- header section end-->
