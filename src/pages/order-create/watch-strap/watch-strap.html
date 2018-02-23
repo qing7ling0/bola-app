@@ -1,0 +1,179 @@
+<ion-content class="sticky-header">
+  <!-- main content start-->
+  <div class="main-content" >
+
+    <!-- <header [headerData]="headerData"></header> -->
+    <header [headerData]="headerData"></header>
+
+    <!--body wrapper start-->
+    <div class="wrapper">
+      <order-customer-edit #customerControl [onChange]="onCustomerChange"></order-customer-edit>
+      <div class="panel panel-default">
+        <form [formGroup]="orderGroup">
+          <div class="panel-heading">
+            <h3 class="panel-title">订单数据</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">货 &nbsp;&nbsp; 号</label>
+                  <input class="form-control" formControlName="NID" placeholder="输入货号" type="text" >
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">材 &nbsp;&nbsp; 质</label>
+                  <bola-select formControlName="ws_material" class="form-text" placeholder="请选择材质" [source]="baseDatas.materialList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">款 &nbsp;&nbsp; 式</label>
+                  <bola-select formControlName="ws_style" class="form-text" placeholder="请选择款式" [source]="baseDatas.watchStrapStyleList||[]" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">价 &nbsp;&nbsp; 格</label>
+                  <ion-input type="number" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form [formGroup]="footerGroup">
+          <div class="panel-heading">
+            <h3 class="panel-title">测量数据</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">A</label>
+                  <ion-input type="number" formControlName="ws_A" class="form-text" placeholder="请输入A"></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">B</label>
+                  <ion-input type="number" formControlName="ws_B" class="form-text" placeholder="请输入B"></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">C</label>
+                  <ion-input type="number" formControlName="ws_C" class="form-text" placeholder="请输入C" ></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">D</label>
+                  <ion-input type="number" formControlName="ws_D" class="form-text" placeholder="请输入D" ></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">D</label>
+                  <ion-input type="number" formControlName="ws_E" class="form-text" placeholder="请输入E" ></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">D</label>
+                  <ion-input type="number" formControlName="ws_F" class="form-text" placeholder="请输入F" ></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">D</label>
+                  <ion-input type="number" formControlName="ws_G" class="form-text" placeholder="请输入G" ></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">品牌</label>
+                  <ion-input type="number" formControlName="ws_watch_brand" class="form-text" placeholder="请输入品牌" ></ion-input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form #loginForm="ngForm">
+          <div class="panel panel-info data-photo">
+            <div class="panel-heading"> <span class="info-square"></span>
+              <h3 class="panel-title">拍照信息</h3>
+            </div>
+            <div class="panel-body">
+              <div *ngFor="let pic of pics;let i = index;" class="form-group">
+                <div *ngIf="pic.file" class="photo-current"><img src="{{FILE_URL+'/'+pic.file}}" class="img-responsive"></div>
+                <div *ngIf="pic.file===''" class="photo-default" (click)="onBtnPickerClicked(pic)"><span class="fa fa-camera"></span></div>
+                <textarea class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" >{{pic.desc}}</textarea>
+              </div>
+              <div class="order-pic-btn-container">
+                <button ion-button color="dark" full class="order-pic-btn-add" (click)="btnPicAddClicked()">添加</button>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-info data-remarks">
+            <div class="panel-heading"> <span class="info-square"></span>
+              <h3 class="panel-title">备注信息</h3>
+            </div>
+            <div class="panel-body">
+              <textarea class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></textarea>
+            </div>
+          </div>
+          <div class="panel panel-info data-customized">
+            <div class="panel-heading"> <span class="info-square"></span>
+              <h3 class="panel-title">特殊定制</h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label class="control-label">收 费 内 容</label>
+                <div class="special-radio">
+                  <div *ngFor="let data of customs;let i = index;" class="radio-bala{{data.selected?' selected':''}}" (click)="onCustomClicked(data)">{{data.name}} <span class="check-circle"></span></div>
+                </div>
+              </div>
+              <div class="service-charges text-right">金 额：<span>{{customPrice}}元</span></div>
+            </div>
+          </div>
+          <div class="panel panel-info data-urgentu">
+            <div class="panel-heading"> <span class="info-square"></span>
+              <h3 class="panel-title">加急</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label class="control-label">加急天数</label>
+                    <bola-select class="form-text" [(ngModel)]="urgent" [ngModelOptions]="{standalone: true}" placeholder="请选择加急类型" [source]="baseDatas.urgentList||[]" [onChanged]="onUrgentChange"></bola-select>
+                  </div>
+                  <div class="service-charges text-right">金 额：<span>{{currentUrgentData&&currentUrgentData.price||0}}元</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
+      </div>
+    </div>
+    <!--body wrapper end-->
+
+  </div>
+</ion-content>

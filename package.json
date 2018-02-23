@@ -61,7 +61,8 @@
       "cordova-plugin-file-transfer": {},
       "com.synconset.imagepicker": {
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "使用相册"
-      }
+      },
+      "cordova-plugin-file": {}
     },
     "platforms": [
       "android",

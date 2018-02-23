@@ -16,7 +16,6 @@ import { orderType } from '../../../api/orderTypes';
 import * as constants from '../../../constants/constants'
 import { OrderCustomerEditComponent } from '../customer-edit/customer-edit.component';
 import { API_FILE_SERVER_ADDRESS, SEX_FEMALE } from '../../../constants/constants';
-import { shoesTieBianType } from '../../../api/graphqlTypes';
 
 const FEMALE_OPTIONS = [
   {key:'s_gen_gao', label:'跟高', validators:[{key:'required', validator:Validators.required}]}
@@ -25,45 +24,37 @@ const FEMALE_OPTIONS = [
 const FORM_OPTIONS = (data)=> {
   let ret = [
     {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
-    {key:'s_gui_ge', label:'规格', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_xuan_hao', label:'楦号', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_material', label:'材质', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_out_color', label:'颜色', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_in_color', label:'内里色', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_bottom_color', label:'底板色', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_bottom_side_color', label:'底侧色', validators:[{key:'required', validator:Validators.required}]},
-    {key:'s_tie_di', label:'贴底', validators:[{key:'required', validator:Validators.required}]},
+    {key:'ws_material', label:'材质', validators:[{key:'required', validator:Validators.required},]},
+    {key:'ws_style', label:'款式', validators:[{key:'required', validator:Validators.required},]},
     {key:'price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-    {key:'s_gen_gao', label:'跟高', defaultValue:'0', validators:[{key:'required', validator:Validators.required}]}
   ];
   return ret;
 }
-const FORM_FOOTER_OPTIONS = (data)=> [
-  {key:'s_foot_size', label:'跟高', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_length', label:'左脚长度', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_zhiWei', label:'左脚趾围', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_fuWei', label:'左脚附维', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_length', label:'右脚长度', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_zhiWei', label:'右脚趾围', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_fuWei', label:'右脚附维', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]}
+const FORM_SIZE_OPTIONS = (data)=> [
+  {key:'ws_A', label:'A', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'ws_B', label:'B', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'ws_C', label:'C', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'ws_D', label:'D', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'ws_E', label:'E', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'ws_F', label:'F', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'ws_G', label:'G', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'ws_watch_brand', label:'品牌', validators:[]},
 ]
 
 @Component({
-  selector: 'page-order-create-shoes',
-  templateUrl: 'shoes.html'
+  selector: 'page-order-create-watch-strap',
+  templateUrl: 'watch-strap.html'
 })
-export class OrderShoesPage implements OnInit {
+export class OrderWatchStrapPage implements OnInit {
   headerData: HeaderData = {title:'订单创建', menuEnable:false, type:'cart-list'};
   baseDatas: any = {};
   orderGroup: FormGroup;
-  footerGroup: FormGroup;
+  sizeGroup: FormGroup;
   formOptions: Array<any>;
-  formFooterOptions: Array<any>;
-  orderType: string = constants.E_ORDER_TYPE.SHOES;
+  formSizeOptions: Array<any>;
+  orderType: string = constants.E_ORDER_TYPE.WATCH_STRAP;
   customerData: any;
   pics: Array<any> = [];
-  customs: Array<any> = [];
-  customPrice: number = 0;
   urgentSource: Array<any> = [];
   urgent: string = '';
   currentUrgentData: any = null;
@@ -91,8 +82,8 @@ export class OrderShoesPage implements OnInit {
   ngOnInit(): void {
     this.formOptions = FORM_OPTIONS(this);
     this.orderGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
-    this.formFooterOptions = FORM_FOOTER_OPTIONS(this);
-    this.footerGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formFooterOptions));
+    this.formSizeOptions = FORM_SIZE_OPTIONS(this);
+    this.sizeGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formSizeOptions));
   }
 
   ionViewDidEnter(): void {
@@ -104,14 +95,6 @@ export class OrderShoesPage implements OnInit {
             return {value:item._id, label:item.name, ...item};
           });
         }
-
-        if (data.customList) {
-          this.customs = data.customList.list.map((item) => {
-            item.selected = false;
-            return item;
-          })
-        }
-
         if (data.urgentList) {
           this.urgentSource = data.urgentList.list;
           this.baseDatas.urgentList = data.urgentList.list.map((item)=>{
@@ -127,39 +110,23 @@ export class OrderShoesPage implements OnInit {
     let changed = data.phone !== (this.customerData&&this.customerData.phone||'');
     this.customerData = data;
     if (data._id && changed) {
-      this.customerProvider.getCustomerLastSubOrder('lastSubOrderInfo', constants.E_ORDER_TYPE.SHOES, data._id).then((result) => {
+      this.customerProvider.getCustomerLastSubOrder('lastSubOrderInfo', constants.E_ORDER_TYPE.WATCH_STRAP, data._id).then((result) => {
         if (result && result.code === 0) {
           let values: any = {};
           let info = result.data.lastSubOrderInfo;
 
-          let keys = ['s_foot_size', 's_left_length', 's_left_zhiWei', 's_left_fuWei', 's_right_length', 's_right_zhiWei', 's_right_fuWei'];
+          let keys = ['ws_A', 'ws_B', 'ws_C', 'ws_D', 'ws_E', 'ws_F', 'ws_G', 'ws_watch_brand'];
           if (info) {
             keys.forEach((key) => {
               if (info[key] !== null && info[key] !== undefined) {
                 values[key] = info[key];
               }
             })
-            this.footerGroup.setValue(values);
+            this.sizeGroup.setValue(values);
           }
         }
       })
     }
-  }
-
-  onCustomClicked(data: any): void {
-    data.selected = !data.selected;
-
-    this.customPrice = 0;
-    for(let cu of this.customs) {
-      if (cu.selected) {
-        this.customPrice += cu.price;
-      }
-    }
-  }
-
-  // 是否女性
-  isFemale = () => {
-    return this.customerData && this.customerData.sex === constants.SEX_FEMALE;
   }
 
   onUrgentChange = (): void => {
@@ -170,13 +137,13 @@ export class OrderShoesPage implements OnInit {
     let customer = this.customerControl.submit();
     if (!customer) return;
 
-    let shoesInfo = this.getShoesInfo();
+    let goodsInfo = this.getGoodsInfo();
 
-    let nid = commonUtils.createGoodsNID(this.orderType, shoesInfo, customer.sex);
+    let nid = commonUtils.createGoodsNID(this.orderType, goodsInfo, customer.sex);
     if (nid !== constants.NULL_NID) {
-      let shoes = this.getValueFromListById(this.baseDatas.goodsShoesList, '', (item)=>item.NID === nid);
-      if (shoes) {
-        this.orderGroup.controls.price.setValue(shoes.price);
+      let goods = this.getValueFromListById(this.baseDatas.goodsWatchStrapList, '', (item)=>item.NID === nid);
+      if (goods) {
+        this.orderGroup.controls.price.setValue(goods.price);
       } else {
         this.orderGroup.controls.price.setValue(null);
       }
@@ -195,7 +162,6 @@ export class OrderShoesPage implements OnInit {
   }
 
   onBtnPickerClicked(pic: any) {
-
     this.imagePicker.getPictures({}).then((results) => {
       for (var i = 0; i < results.length; i++) {
           console.log('Image URI: ' + results[i]);
@@ -219,17 +185,6 @@ export class OrderShoesPage implements OnInit {
           });
       }
     }, (err) => { });
-    // // console.log(pic);
-
-    // let filePath = '/Users/wanglingling/play.png';
-    // const fileTransfer: FileTransferObject = this.transfer.create();
-
-    // // Upload a file:
-    // fileTransfer.upload(filePath, encodeURI(this.UPLOAD_URL), {mimeType:'image/*'}).then((data)=>{
-    //   console.log(data);
-    // }).catch((error) => {
-    //   console.log(error);
-    // });
   }
 
   formatFormValue(values: any, options: Array<any>) {
@@ -241,57 +196,46 @@ export class OrderShoesPage implements OnInit {
     return values;
   }
 
-  getShoesInfo() {
-    let shoesInfo = {...this.orderGroup.value};
-    this.formatFormValue(shoesInfo, this.formOptions);
+  getGoodsInfo() {
+    let goodsInfo = {...this.orderGroup.value};
+    this.formatFormValue(goodsInfo, this.formOptions);
 
-    shoesInfo.s_material = this.getValueFromListById(this.baseDatas.materialList, shoesInfo.s_material);
-    shoesInfo.s_xuan_hao = this.getValueFromListById(this.baseDatas.xuanHaoList, shoesInfo.s_xuan_hao);
-    shoesInfo.s_gui_ge = this.getValueFromListById(this.baseDatas.guiGeList, shoesInfo.s_gui_ge);
-    shoesInfo.s_out_color = this.getValueFromListById(this.baseDatas.outColorList, shoesInfo.s_out_color);
-    shoesInfo.s_in_color = this.getValueFromListById(this.baseDatas.inColorList, shoesInfo.s_in_color);
-    shoesInfo.s_bottom_color = this.getValueFromListById(this.baseDatas.bottomColorList, shoesInfo.s_bottom_color);
-    shoesInfo.s_bottom_side_color = this.getValueFromListById(this.baseDatas.bottomSideColorList, shoesInfo.s_bottom_side_color);
-    shoesInfo.s_tie_di = this.getValueFromListById(this.baseDatas.shoesTieBianList, shoesInfo.s_tie_di);
-    shoesInfo.s_gen_gao = this.getValueFromListById(this.baseDatas.genGaoList, shoesInfo.s_gen_gao);
-    return shoesInfo;
+    goodsInfo.ws_material = this.getValueFromListById(this.baseDatas.materialList, goodsInfo.ws_material);
+    goodsInfo.ws_style = this.getValueFromListById(this.baseDatas.watchStrapStyleList, goodsInfo.ws_style);
+    return goodsInfo;
   }
 
   getSubOrderInfo = (): any => {
     if (!this.customerControl.customerGroup.valid) return null;
 
     let customer = this.customerData;
-    if (this.footerGroup.valid && this.orderGroup.valid) {
-      let shoesInfo = this.getShoesInfo();
-      shoesInfo = Object.assign(shoesInfo, this.footerGroup.value);
-      this.formatFormValue(shoesInfo, this.formFooterOptions);
+    if (this.sizeGroup.valid && this.orderGroup.valid) {
+      let goodsInfo = this.getGoodsInfo();
+      goodsInfo = Object.assign(goodsInfo, this.sizeGroup.value);
+      this.formatFormValue(goodsInfo, this.formSizeOptions);
 
-      if (shoesInfo.s_material) {
-        shoesInfo.s_material = {...shoesInfo.s_material};
-        shoesInfo.s_material.count = null;
-        if (shoesInfo.s_material.color) {
-          shoesInfo.s_material.color = shoesInfo.s_material.color.name;
+      if (goodsInfo.ws_material) {
+        goodsInfo.ws_material = {...goodsInfo.ws_material};
+        goodsInfo.ws_material.count = null;
+        if (goodsInfo.ws_material.color) {
+          goodsInfo.ws_material.color = goodsInfo.ws_material.color.name;
         }
       }
-      shoesInfo.s_customs = this.customs.filter(item=>item.selected).map((item)=>{
-        item.selected = null;
-        return this.filterEditorProperty(item);
-      });
       if (this.currentUrgentData) {
-        shoesInfo.urgent = this.getValueFromListById([this.currentUrgentData], this.currentUrgentData._id);
+        goodsInfo.urgent = this.getValueFromListById([this.currentUrgentData], this.currentUrgentData._id);
       }
       if (this.pics) {
         let pics = this.pics.filter((item)=>{
           return item.file;
         })
-        shoesInfo.pics = pics;
+        goodsInfo.pics = pics;
       }
 
-      shoesInfo.type = constants.E_ORDER_TYPE.SHOES;
+      goodsInfo.type = constants.E_ORDER_TYPE.WATCH_STRAP;
 
-      return { customer:customer, goods: shoesInfo };
+      return { customer:customer, goods: goodsInfo };
     } else {
-      let message = FormValidator.getValidError(this.footerGroup.controls, this.formFooterOptions);
+      let message = FormValidator.getValidError(this.sizeGroup.controls, this.formSizeOptions);
       if (!message) {
         message = FormValidator.getValidError(this.orderGroup.controls, this.formOptions);
       }

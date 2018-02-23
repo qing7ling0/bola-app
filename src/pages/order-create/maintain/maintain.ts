@@ -18,52 +18,30 @@ import { OrderCustomerEditComponent } from '../customer-edit/customer-edit.compo
 import { API_FILE_SERVER_ADDRESS, SEX_FEMALE } from '../../../constants/constants';
 import { shoesTieBianType } from '../../../api/graphqlTypes';
 
-const FEMALE_OPTIONS = [
-  {key:'s_gen_gao', label:'跟高', validators:[{key:'required', validator:Validators.required}]}
-]
-
 const FORM_OPTIONS = (data)=> {
   let ret = [
     {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
-    {key:'s_gui_ge', label:'规格', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_xuan_hao', label:'楦号', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_material', label:'材质', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_out_color', label:'颜色', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_in_color', label:'内里色', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_bottom_color', label:'底板色', validators:[{key:'required', validator:Validators.required},]},
-    {key:'s_bottom_side_color', label:'底侧色', validators:[{key:'required', validator:Validators.required}]},
-    {key:'s_tie_di', label:'贴底', validators:[{key:'required', validator:Validators.required}]},
-    {key:'price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-    {key:'s_gen_gao', label:'跟高', defaultValue:'0', validators:[{key:'required', validator:Validators.required}]}
-  ];
+    {key:'m_name', label:'护理项目', validators:[{key:'required', validator:Validators.required},]},
+    {key:'m_time', label:'时间', validators:[{key:'required', validator:Validators.required},]},
+    {key:'m_wash', label:'是否水洗', validators:[{key:'required', validator:Validators.required},]},
+    {key:'m_color', label:'颜色', validators:[{key:'required', validator:Validators.required},]},
+    {key:'m_demo', label:'色卡编号', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+    {key:'m_price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+];
   return ret;
 }
-const FORM_FOOTER_OPTIONS = (data)=> [
-  {key:'s_foot_size', label:'跟高', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_length', label:'左脚长度', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_zhiWei', label:'左脚趾围', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_fuWei', label:'左脚附维', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_length', label:'右脚长度', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_zhiWei', label:'右脚趾围', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_fuWei', label:'右脚附维', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]}
-]
-
 @Component({
-  selector: 'page-order-create-shoes',
-  templateUrl: 'shoes.html'
+  selector: 'page-order-create-maintain',
+  templateUrl: 'maintain.html'
 })
-export class OrderShoesPage implements OnInit {
+export class OrderMaintainPage implements OnInit {
   headerData: HeaderData = {title:'订单创建', menuEnable:false, type:'cart-list'};
   baseDatas: any = {};
   orderGroup: FormGroup;
-  footerGroup: FormGroup;
   formOptions: Array<any>;
-  formFooterOptions: Array<any>;
-  orderType: string = constants.E_ORDER_TYPE.SHOES;
+  orderType: string = constants.E_ORDER_TYPE.MAINTAIN;
   customerData: any;
   pics: Array<any> = [];
-  customs: Array<any> = [];
-  customPrice: number = 0;
   urgentSource: Array<any> = [];
   urgent: string = '';
   currentUrgentData: any = null;
@@ -91,8 +69,6 @@ export class OrderShoesPage implements OnInit {
   ngOnInit(): void {
     this.formOptions = FORM_OPTIONS(this);
     this.orderGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
-    this.formFooterOptions = FORM_FOOTER_OPTIONS(this);
-    this.footerGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formFooterOptions));
   }
 
   ionViewDidEnter(): void {
@@ -104,14 +80,6 @@ export class OrderShoesPage implements OnInit {
             return {value:item._id, label:item.name, ...item};
           });
         }
-
-        if (data.customList) {
-          this.customs = data.customList.list.map((item) => {
-            item.selected = false;
-            return item;
-          })
-        }
-
         if (data.urgentList) {
           this.urgentSource = data.urgentList.list;
           this.baseDatas.urgentList = data.urgentList.list.map((item)=>{
@@ -127,52 +95,46 @@ export class OrderShoesPage implements OnInit {
     let changed = data.phone !== (this.customerData&&this.customerData.phone||'');
     this.customerData = data;
     if (data._id && changed) {
-      this.customerProvider.getCustomerLastSubOrder('lastSubOrderInfo', constants.E_ORDER_TYPE.SHOES, data._id).then((result) => {
-        if (result && result.code === 0) {
-          let values: any = {};
-          let info = result.data.lastSubOrderInfo;
-
-          let keys = ['s_foot_size', 's_left_length', 's_left_zhiWei', 's_left_fuWei', 's_right_length', 's_right_zhiWei', 's_right_fuWei'];
-          if (info) {
-            keys.forEach((key) => {
-              if (info[key] !== null && info[key] !== undefined) {
-                values[key] = info[key];
-              }
-            })
-            this.footerGroup.setValue(values);
-          }
-        }
-      })
     }
-  }
-
-  onCustomClicked(data: any): void {
-    data.selected = !data.selected;
-
-    this.customPrice = 0;
-    for(let cu of this.customs) {
-      if (cu.selected) {
-        this.customPrice += cu.price;
-      }
-    }
-  }
-
-  // 是否女性
-  isFemale = () => {
-    return this.customerData && this.customerData.sex === constants.SEX_FEMALE;
   }
 
   onUrgentChange = (): void => {
     this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
   }
 
+  onNIDChange = (): void => {
+    let customer = this.customerControl.submit();
+    if (!customer) return;
+
+    let goodsInfo = this.getGoodsInfo();
+
+    let nid = goodsInfo;
+    if (nid !== constants.NULL_NID) {
+      let goods = this.getValueFromListById(this.baseDatas.maintainList, '', (item)=>item.NID === nid);
+      if (goods) {
+        this.orderGroup.controls.m_name.setValue(goods.m_name);
+        this.orderGroup.controls.m_time.setValue(goods.m_time);
+        this.orderGroup.controls.m_price.setValue(goods.m_price);
+      } else {
+        this.orderGroup.controls.m_name.setValue('');
+        this.orderGroup.controls.m_time.setValue('');
+        this.orderGroup.controls.m_price.setValue('');
+      }
+    } else {
+      this.orderGroup.controls.m_name.setValue('');
+      this.orderGroup.controls.m_time.setValue('');
+      this.orderGroup.controls.m_price.setValue('');
+    }
+    this.orderGroup.controls.NID.setValue(nid);
+  }
+
   onPropertyChange = (): void => {
     let customer = this.customerControl.submit();
     if (!customer) return;
 
-    let shoesInfo = this.getShoesInfo();
+    let goodsInfo = this.getGoodsInfo();
 
-    let nid = commonUtils.createGoodsNID(this.orderType, shoesInfo, customer.sex);
+    let nid = commonUtils.createGoodsNID(this.orderType, goodsInfo, customer.sex);
     if (nid !== constants.NULL_NID) {
       let shoes = this.getValueFromListById(this.baseDatas.goodsShoesList, '', (item)=>item.NID === nid);
       if (shoes) {
@@ -195,7 +157,6 @@ export class OrderShoesPage implements OnInit {
   }
 
   onBtnPickerClicked(pic: any) {
-
     this.imagePicker.getPictures({}).then((results) => {
       for (var i = 0; i < results.length; i++) {
           console.log('Image URI: ' + results[i]);
@@ -219,17 +180,6 @@ export class OrderShoesPage implements OnInit {
           });
       }
     }, (err) => { });
-    // // console.log(pic);
-
-    // let filePath = '/Users/wanglingling/play.png';
-    // const fileTransfer: FileTransferObject = this.transfer.create();
-
-    // // Upload a file:
-    // fileTransfer.upload(filePath, encodeURI(this.UPLOAD_URL), {mimeType:'image/*'}).then((data)=>{
-    //   console.log(data);
-    // }).catch((error) => {
-    //   console.log(error);
-    // });
   }
 
   formatFormValue(values: any, options: Array<any>) {
@@ -241,60 +191,35 @@ export class OrderShoesPage implements OnInit {
     return values;
   }
 
-  getShoesInfo() {
-    let shoesInfo = {...this.orderGroup.value};
-    this.formatFormValue(shoesInfo, this.formOptions);
+  getGoodsInfo() {
+    let goodsInfo = {...this.orderGroup.value};
+    this.formatFormValue(goodsInfo, this.formOptions);
 
-    shoesInfo.s_material = this.getValueFromListById(this.baseDatas.materialList, shoesInfo.s_material);
-    shoesInfo.s_xuan_hao = this.getValueFromListById(this.baseDatas.xuanHaoList, shoesInfo.s_xuan_hao);
-    shoesInfo.s_gui_ge = this.getValueFromListById(this.baseDatas.guiGeList, shoesInfo.s_gui_ge);
-    shoesInfo.s_out_color = this.getValueFromListById(this.baseDatas.outColorList, shoesInfo.s_out_color);
-    shoesInfo.s_in_color = this.getValueFromListById(this.baseDatas.inColorList, shoesInfo.s_in_color);
-    shoesInfo.s_bottom_color = this.getValueFromListById(this.baseDatas.bottomColorList, shoesInfo.s_bottom_color);
-    shoesInfo.s_bottom_side_color = this.getValueFromListById(this.baseDatas.bottomSideColorList, shoesInfo.s_bottom_side_color);
-    shoesInfo.s_tie_di = this.getValueFromListById(this.baseDatas.shoesTieBianList, shoesInfo.s_tie_di);
-    shoesInfo.s_gen_gao = this.getValueFromListById(this.baseDatas.genGaoList, shoesInfo.s_gen_gao);
-    return shoesInfo;
+    goodsInfo.price = goodsInfo.m_price;
+    return goodsInfo;
   }
 
   getSubOrderInfo = (): any => {
     if (!this.customerControl.customerGroup.valid) return null;
 
     let customer = this.customerData;
-    if (this.footerGroup.valid && this.orderGroup.valid) {
-      let shoesInfo = this.getShoesInfo();
-      shoesInfo = Object.assign(shoesInfo, this.footerGroup.value);
-      this.formatFormValue(shoesInfo, this.formFooterOptions);
-
-      if (shoesInfo.s_material) {
-        shoesInfo.s_material = {...shoesInfo.s_material};
-        shoesInfo.s_material.count = null;
-        if (shoesInfo.s_material.color) {
-          shoesInfo.s_material.color = shoesInfo.s_material.color.name;
-        }
-      }
-      shoesInfo.s_customs = this.customs.filter(item=>item.selected).map((item)=>{
-        item.selected = null;
-        return this.filterEditorProperty(item);
-      });
+    if (this.orderGroup.valid) {
+      let goodsInfo = this.getGoodsInfo();
       if (this.currentUrgentData) {
-        shoesInfo.urgent = this.getValueFromListById([this.currentUrgentData], this.currentUrgentData._id);
+        goodsInfo.urgent = this.getValueFromListById([this.currentUrgentData], this.currentUrgentData._id);
       }
       if (this.pics) {
         let pics = this.pics.filter((item)=>{
           return item.file;
         })
-        shoesInfo.pics = pics;
+        goodsInfo.pics = pics;
       }
 
-      shoesInfo.type = constants.E_ORDER_TYPE.SHOES;
+      goodsInfo.type = constants.E_ORDER_TYPE.MAINTAIN;
 
-      return { customer:customer, goods: shoesInfo };
+      return { customer:customer, goods: goodsInfo };
     } else {
-      let message = FormValidator.getValidError(this.footerGroup.controls, this.formFooterOptions);
-      if (!message) {
-        message = FormValidator.getValidError(this.orderGroup.controls, this.formOptions);
-      }
+      let message = FormValidator.getValidError(this.orderGroup.controls, this.formOptions);
       if (message) {
         this.toastCtrl.create({
           message:message,

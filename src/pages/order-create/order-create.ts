@@ -36,9 +36,9 @@ export class OrderCreatePage implements OnInit {
   ionViewDidEnter(): void {
     this.storage.get('user').then((data) => {
       this.loginUserInfo = data;
-      this.loginUserId = data.shop._id;
+      this.loginUserId = data._id;
       if (data.shop) {
-        this.loginUserShopId = data._id;
+        this.loginUserShopId = data.shop._id;
       }
     })
   }
@@ -48,7 +48,7 @@ export class OrderCreatePage implements OnInit {
     switch(nav.id) {
       case E_ORDER_TYPE.SHOES:
         this.navCtrl.push(OrderShoesPage);
-        // this.events.publish('order:pay', 
+        // this.events.publish('order:pay',
         //   {phone:13817280081, name:'无情', birthday:'2016-12-1', sex:'男'},
         //   [{
         //     NID:'test',
