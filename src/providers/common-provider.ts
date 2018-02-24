@@ -79,5 +79,30 @@ export class CommonProvider {
       return null;
     });
   }
-  
+
+  getSuborderList(conditions: any, page:number=0, pageSize:number=0, waitting:boolean=false) {
+    return this.api.getDefaultList('subOrderList', orderTypes.subOrderType, conditions, page, pageSize, waitting).then((result)=>{
+      if(result.code === 0) {
+        return result.data.subOrderList.list;
+      }
+      return null;
+    });
+  }
+
+  getTryFeedbackList(conditions: any, page:number=0, pageSize:number=0, waitting:boolean=false) {
+    return this.api.getDefaultList('tryFeedbackList', orderTypes.suborderTryFeedback, conditions, page, pageSize, waitting).then((result)=>{
+      if(result.code === 0) {
+        return result.data.tryFeedbackList.list;
+      }
+      return null;
+    });
+  }
+
+  updateSuborderTryFeedback(id:any, data: any) {
+    return this.api.updateDefault('tryFeedback', id, data, true);
+  }
+
+  changeSuborderState(id:any, data:any) {
+    return this.api.updateDefault('suborder', id, data, true);
+  }
 }

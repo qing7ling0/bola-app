@@ -1,75 +1,21 @@
-<ion-content>
+<div class="sticky-header">
+  <header [headerData]="headerData"></header>
   <!-- main content start-->
-  <div class="main-content" >
-
-    <header [headerData]="headerData"></header>
-    <!-- header section end-->
+  <ion-content class="main-content">
 
     <!--body wrapper start-->
     <div class="wrapper">
       <div class="search-mod">
         <label class="pull-left" for="mobileNumber">搜索栏</label>
-        <input type="text" class="form-control" id="mobileNumber" placeholder="输入订单号或会员号">
-        <a href="#" class="btn pull-right"><span class="fa fa-search"></span></a> </div>
+        <input type="text" class="form-control" id="mobileNumber" placeholder="输入订单号或会员号" [ngModelOptions]="{standalone: true}" [(ngModel)]="search_keyword">
+        <a href="#" class="btn pull-right" (click)="btnSearchClicked()"><span class="fa fa-search"></span></a> 
+      </div>
       <div class="myorder">
-
-        <div class="order-box">
-          <div class="order-box-hd">
-            <p><span class="order_box_hd_label">订单号</span>1234567890123</p>
-            <p><span class="order_box_hd_label">会员号</span>1234567890123</p>
-          </div>
-          <div class="order-box-bd">
-            <div class="order_info">
-              <p><span class="title">下单日期</span>2017年12月4日</p>
-              <p><span class="title">会员姓名</span>买买提.乌拉乌拉.阿凡提</p>
-              <p><span class="title">联系方式</span><em>86 13612341234</em></p>
-            </div>
-            <div class="order_progress">
-              <p class="name">当前状态</p>
-              <ul class="clearfix">
-                <li><i></i> <span class="title">审单</span> </li>
-                <li><i></i> <span class="title">试脚鞋投产</span> </li>
-                <li class="default"><i></i> <span class="title">试脚鞋制作寄出</span> </li>
-                <li class="default"> <i></i> <span class="title">试穿反馈审单</span> <span class="tips">请尽快获得顾客反馈</span> </li>
-              </ul>
-            </div>
-            <div class="mod_btns"> <a href="#" class="btn">修改试脚鞋</a> <a href="#" class="btn">正品投产</a>
-              <p class="more-order"><a href="#">查看订单</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="order-box">
-          <div class="order-box-hd">
-            <p><span class="order_box_hd_label">订单号</span>1234567890123</p>
-            <p><span class="order_box_hd_label">会员号</span>1234567890123</p>
-          </div>
-          <div class="order-box-bd">
-            <div class="order_info">
-              <p><span class="title">下单日期</span>2017年12月4日</p>
-              <p><span class="title">会员姓名</span>买买提.乌拉乌拉.阿凡提</p>
-              <p><span class="title">联系方式</span><em>86 13612341234</em></p>
-            </div>
-            <div class="order_progress">
-              <p class="name">当前状态</p>
-              <div>
-                <ul class="clearfix">
-                  <li style="width: 20%;"><i></i> <span class="title">正品鞋投产</span> </li>
-                  <li style="width: 20%;"> <i></i> <span class="title">帮面针车</span> </li>
-                  <li style="width: 20%;" class="default"><i></i> <span class="title">复底成型</span> </li>
-                  <li style="width: 20%;"> <i></i> <span class="title">染色水洗</span> </li>
-                  <li style="width: 20%;"> <i></i> <span class="title">品检出货</span> </li>
-                </ul>
-              </div>
-            </div>
-            <div class="mod_btns"> <a href="#" class="btn">成品入库</a>
-              <p class="more-order"><a href="#">查看订单</a></p>
-            </div>
-          </div>
-        </div>
+        <order-track *ngFor="let order of suborderList" [suborderInfo]="order"></order-track>
       </div>
     </div>
     <!--body wrapper end-->
 
-  </div>
+  </ion-content>
+</div>
   <!-- main content end-->
-</ion-content>

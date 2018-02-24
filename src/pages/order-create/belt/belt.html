@@ -1,9 +1,7 @@
-<ion-content class="sticky-header">
-  <!-- main content start-->
-  <div class="main-content" >
-
-    <!-- <header [headerData]="headerData"></header> -->
+<div class="sticky-header">
     <header [headerData]="headerData"></header>
+    <!-- main content start-->
+    <ion-content class="main-content">
 
     <!--body wrapper start-->
     <div class="wrapper">
@@ -18,13 +16,15 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">货 &nbsp;&nbsp; 号</label>
-                  <bola-input-select formControlName="NID" class="form-text" placeholder="输入货号" [source]="goodsList||[]" [onChanged]="onNIDChange"></bola-input-select>
+                  <bola-input-select *ngIf="isWaiting()" formControlName="NID" class="form-text" placeholder="输入货号" [source]="goodsList||[]" [onChanged]="onNIDChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isWaiting()" formControlName="NID" class="form-text" placeholder="输入货号" ></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">材 &nbsp;&nbsp; 质</label>
-                  <bola-select formControlName="b_material" class="form-text" placeholder="请选择材质" [source]="baseDatas.materialList||[]" [onChanged]="onPropertyChange"></bola-select>
+                  <bola-select *ngIf="isWaiting()" formControlName="b_material" class="form-text" placeholder="请选择材质" [source]="baseDatas.materialList||[]" [onChanged]="onPropertyChange"></bola-select>
+                  <bola-form-text *ngIf="!isWaiting()" formControlName="b_material" class="form-text" placeholder="请选择材质"></bola-form-text>
                 </div>
               </div>
             </div>
@@ -32,13 +32,15 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">颜 &nbsp;&nbsp; 色</label>
-                  <bola-select formControlName="b_color" class="form-text" placeholder="请选择颜色" [source]="baseDatas.materialColorList||[]" [onChanged]="onPropertyChange"></bola-select>
+                  <bola-select *ngIf="isWaiting()" formControlName="b_color" class="form-text" placeholder="请选择颜色" [source]="baseDatas.materialColorList||[]" [onChanged]="onPropertyChange"></bola-select>
+                  <bola-form-text *ngIf="!isWaiting()" formControlName="b_color" class="form-text" placeholder="请选择颜色" ></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">价 &nbsp;&nbsp; 格</label>
-                  <ion-input type="number" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
+                  <ion-input *ngIf="isWaiting()" type="number" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
+                  <bola-form-text *ngIf="!isWaiting()" type="number" formControlName="price" class="form-text" placeholder="请输入价格"></bola-form-text>
                 </div>
               </div>
             </div>
@@ -53,25 +55,29 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">A</label>
-                  <ion-input type="number" formControlName="b_A" class="form-text" placeholder="请输入A"></ion-input>
+                  <ion-input *ngIf="isWaiting()" type="number" formControlName="b_A" class="form-text" placeholder="请输入A"></ion-input>
+                  <bola-form-text *ngIf="!isWaiting()" type="number" formControlName="b_A" class="form-text" placeholder="请输入A"></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">B</label>
-                  <ion-input type="number" formControlName="b_B" class="form-text" placeholder="请输入B"></ion-input>
+                  <ion-input *ngIf="isWaiting()" type="number" formControlName="b_B" class="form-text" placeholder="请输入B"></ion-input>
+                  <bola-form-text *ngIf="!isWaiting()" type="number" formControlName="b_B" class="form-text" placeholder="请输入B"></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">C</label>
-                  <ion-input type="number" formControlName="b_C" class="form-text" placeholder="请输入C" ></ion-input>
+                  <ion-input *ngIf="isWaiting()" type="number" formControlName="b_C" class="form-text" placeholder="请输入C" ></ion-input>
+                  <bola-form-text *ngIf="!isWaiting()" type="number" formControlName="b_C" class="form-text" placeholder="请输入C" ></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">D</label>
-                  <ion-input type="number" formControlName="b_D" class="form-text" placeholder="请输入D" ></ion-input>
+                  <ion-input *ngIf="isWaiting()" type="number" formControlName="b_D" class="form-text" placeholder="请输入D" ></ion-input>
+                  <bola-form-text *ngIf="!isWaiting()" type="number" formControlName="b_D" class="form-text" placeholder="请输入D" ></bola-form-text>
                 </div>
               </div>
             </div>
@@ -86,9 +92,10 @@
               <div *ngFor="let pic of pics;let i = index;" class="form-group">
                 <div *ngIf="pic.file" class="photo-current"><img src="{{FILE_URL+'/'+pic.file}}" class="img-responsive"></div>
                 <div *ngIf="pic.file===''" class="photo-default" (click)="onBtnPickerClicked(pic)"><span class="fa fa-camera"></span></div>
-                <textarea class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" >{{pic.desc}}</textarea>
+                <textarea *ngIf="isWaiting()" class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" >{{pic.desc}}</textarea>
+                <bola-form-text *ngIf="!isWaiting()" class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" ></bola-form-text>
               </div>
-              <div class="order-pic-btn-container">
+              <div *ngIf="isWaiting()" class="order-pic-btn-container">
                 <button ion-button color="dark" full class="order-pic-btn-add" (click)="btnPicAddClicked()">添加</button>
               </div>
             </div>
@@ -98,7 +105,8 @@
               <h3 class="panel-title">备注信息</h3>
             </div>
             <div class="panel-body">
-              <textarea class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></textarea>
+              <textarea *ngIf="isWaiting()" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></textarea>
+              <bola-form-text *ngIf="!isWaiting()" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></bola-form-text>
             </div>
           </div>
           <div class="panel panel-info data-urgentu">
@@ -110,7 +118,8 @@
                 <div class="col-xs-12">
                   <div class="form-group">
                     <label class="control-label">加急天数</label>
-                    <bola-select class="form-text" [(ngModel)]="urgent" [ngModelOptions]="{standalone: true}" placeholder="请选择加急类型" [source]="baseDatas.urgentList||[]" [onChanged]="onUrgentChange"></bola-select>
+                    <bola-select *ngIf="isWaiting()" class="form-text" [(ngModel)]="urgent" [ngModelOptions]="{standalone: true}" placeholder="请选择加急类型" [source]="baseDatas.urgentList||[]" [onChanged]="onUrgentChange"></bola-select>
+                    <bola-form-text *ngIf="!isWaiting()" class="form-text" [(ngModel)]="urgent" [ngModelOptions]="{standalone: true}" placeholder="请选择加急类型"></bola-form-text>
                   </div>
                   <div class="service-charges text-right">金 额：<span>{{currentUrgentData&&currentUrgentData.price||0}}元</span></div>
                 </div>
@@ -118,11 +127,11 @@
             </div>
           </div>
         </form>
-        <div *ngIf="!cartInfo.cart" class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
-        <div *ngIf="cartInfo.cart" class="order-action"> <a href="#" class="btn" (click)="btnSureClicked()">确定</a></div>
+        <div *ngIf="!cartInfo.cart&&isWaiting()" class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
+        <div *ngIf="cartInfo.cart&&isWaiting()" class="order-action"> <a href="#" class="btn" (click)="btnSureClicked()">确定</a></div>
       </div>
     </div>
     <!--body wrapper end-->
 
+  </ion-content>
   </div>
-</ion-content>

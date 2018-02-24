@@ -210,8 +210,6 @@ export class CartListPage {
     }
     if (customer && goodsList.length > 0 && this.loginUserShopId) {
       this.navCtrl.push(CartPayPage, {guide:{guideId:this.loginUserId, shopId:this.loginUserShopId}, customer:customer, goodsList:goodsList});
-
-      this.events.publish('order:pay', this.cartList, goodsList);
     }
   }
 

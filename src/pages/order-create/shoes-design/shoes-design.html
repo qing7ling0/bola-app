@@ -1,9 +1,7 @@
-<ion-content class="sticky-header">
-  <!-- main content start-->
-  <div class="main-content" >
-
-    <!-- <header [headerData]="headerData"></header> -->
+<div class="sticky-header">
     <header [headerData]="headerData"></header>
+    <!-- main content start-->
+    <ion-content class="main-content">
 
     <!--body wrapper start-->
     <div class="wrapper">
@@ -18,7 +16,8 @@
                 <div class="col-xs-12">
                   <div class="form-group">
                     <label class="control-label">尺 &nbsp;&nbsp; 码</label>
-                    <ion-input type="number" formControlName="s_foot_size" class="form-text" placeholder="请输入尺码"></ion-input>
+                    <ion-input *ngIf="isEditing()" type="number" formControlName="s_foot_size" class="form-text" placeholder="请输入尺码"></ion-input>
+                    <bola-form-text *ngIf="!isEditing()" type="number" formControlName="s_foot_size" class="form-text" placeholder="请输入尺码"></bola-form-text>
                   </div>
                 </div>
             </div>
@@ -29,7 +28,8 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">长 &nbsp;&nbsp; 度</label>
-                      <ion-input type="number" formControlName="s_left_length" class="form-text" placeholder="请输入左脚长度"></ion-input>
+                      <ion-input *ngIf="isEditing()" type="number" formControlName="s_left_length" class="form-text" placeholder="请输入左脚长度"></ion-input>
+                      <bola-form-text *ngIf="!isEditing()" type="number" formControlName="s_left_length" class="form-text" placeholder="请输入左脚长度"></bola-form-text>
                     </div>
                   </div>
                 </div>
@@ -37,7 +37,8 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">趾 &nbsp;&nbsp; 围</label>
-                      <ion-input type="number" formControlName="s_left_zhiWei" class="form-text" placeholder="请输入左脚趾围" ></ion-input>
+                      <ion-input *ngIf="isEditing()" type="number" formControlName="s_left_zhiWei" class="form-text" placeholder="请输入左脚趾围" ></ion-input>
+                      <bola-form-text *ngIf="!isEditing()" type="number" formControlName="s_left_zhiWei" class="form-text" placeholder="请输入左脚趾围" ></bola-form-text>
                     </div>
                   </div>
                 </div>
@@ -45,7 +46,8 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">附 &nbsp;&nbsp; 维</label>
-                      <ion-input type="number" formControlName="s_left_fuWei" class="form-text" placeholder="请输入左脚附维" ></ion-input>
+                      <ion-input *ngIf="isEditing()" type="number" formControlName="s_left_fuWei" class="form-text" placeholder="请输入左脚附维" ></ion-input>
+                      <bola-form-text *ngIf="!isEditing()" type="number" formControlName="s_left_fuWei" class="form-text" placeholder="请输入左脚附维" ></bola-form-text>
                     </div>
                   </div>
                 </div>
@@ -56,7 +58,8 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">长 &nbsp;&nbsp; 度</label>
-                      <ion-input type="number" formControlName="s_right_length" class="form-text" placeholder="请输入右脚长度"></ion-input>
+                      <ion-input *ngIf="isEditing()" type="number" formControlName="s_right_length" class="form-text" placeholder="请输入右脚长度"></ion-input>
+                      <bola-form-text *ngIf="!isEditing()" type="number" formControlName="s_right_length" class="form-text" placeholder="请输入右脚长度"></bola-form-text>
                     </div>
                   </div>
                 </div>
@@ -64,7 +67,8 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">趾 &nbsp;&nbsp; 围</label>
-                      <ion-input type="number" formControlName="s_right_zhiWei" class="form-text" placeholder="请输入右脚趾围"></ion-input>
+                      <ion-input *ngIf="isEditing()" type="number" formControlName="s_right_zhiWei" class="form-text" placeholder="请输入右脚趾围"></ion-input>
+                      <bola-form-text *ngIf="!isEditing()" type="number" formControlName="s_right_zhiWei" class="form-text" placeholder="请输入右脚趾围"></bola-form-text>
                     </div>
                   </div>
                 </div>
@@ -72,7 +76,8 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label class="control-label">附 &nbsp;&nbsp; 维</label>
-                      <ion-input type="number" formControlName="s_right_fuWei" class="form-text" placeholder="请输入右脚附维"></ion-input>
+                      <ion-input *ngIf="isEditing()" type="number" formControlName="s_right_fuWei" class="form-text" placeholder="请输入右脚附维"></ion-input>
+                      <bola-form-text *ngIf="!isEditing()" type="number" formControlName="s_right_fuWei" class="form-text" placeholder="请输入右脚附维"></bola-form-text>
                     </div>
                   </div>
                 </div>
@@ -91,13 +96,15 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">货 &nbsp;&nbsp; 号</label>
-                  <bola-input-select formControlName="NID" class="form-text" placeholder="输入货号" [source]="goodsList||[]" [onChanged]="onNIDChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="NID" class="form-text" placeholder="输入货号" [source]="goodsList||[]" [onChanged]="onNIDChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="NID" class="form-text" placeholder="输入货号"></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">规 &nbsp;&nbsp; 格</label>
-                  <bola-input-select formControlName="s_gui_ge" class="form-text" placeholder="请选择规格" [source]="baseDatas.guiGeList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_gui_ge" class="form-text" placeholder="请选择规格" [source]="baseDatas.guiGeList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_gui_ge" class="form-text" placeholder="请选择规格" ></bola-form-text>
                 </div>
               </div>
             </div>
@@ -105,13 +112,15 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">楦 &nbsp;&nbsp; 号</label>
-                  <bola-input-select formControlName="s_xuan_hao" class="form-text" placeholder="请选择楦号" [source]="baseDatas.xuanHaoList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_xuan_hao" class="form-text" placeholder="请选择楦号" [source]="baseDatas.xuanHaoList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_xuan_hao" class="form-text" placeholder="请选择楦号" ></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">材 &nbsp;&nbsp; 质</label>
-                  <bola-input-select formControlName="s_material" class="form-text" placeholder="请选择材质" [source]="baseDatas.materialList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_material" class="form-text" placeholder="请选择材质" [source]="baseDatas.materialList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_material" class="form-text" placeholder="请选择材质"></bola-form-text>
                 </div>
               </div>
             </div>
@@ -119,13 +128,15 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">颜 &nbsp;&nbsp; 色</label>
-                  <bola-input-select formControlName="s_out_color" class="form-text" placeholder="请选择颜色" [source]="baseDatas.outColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_out_color" class="form-text" placeholder="请选择颜色" [source]="baseDatas.outColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_out_color" class="form-text" placeholder="请选择颜色"></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">内里色</label>
-                  <bola-input-select formControlName="s_in_color" class="form-text" placeholder="请选择内里色" [source]="baseDatas.inColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_in_color" class="form-text" placeholder="请选择内里色" [source]="baseDatas.inColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_in_color" class="form-text" placeholder="请选择内里色"></bola-form-text>
                 </div>
               </div>
             </div>
@@ -133,13 +144,15 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">底侧色</label>
-                  <bola-input-select formControlName="s_bottom_side_color" class="form-text" placeholder="请选择底侧色" [source]="baseDatas.bottomSideColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_bottom_side_color" class="form-text" placeholder="请选择底侧色" [source]="baseDatas.bottomSideColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_bottom_side_color" class="form-text" placeholder="请选择底侧色"></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">底板色</label>
-                  <bola-input-select formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" [source]="baseDatas.bottomColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" [source]="baseDatas.bottomColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" ></bola-form-text>
                 </div>
               </div>
             </div>
@@ -147,13 +160,15 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">贴 &nbsp;&nbsp; 底</label>
-                  <bola-input-select formControlName="s_tie_di" class="form-text" placeholder="请选择贴底" [source]="baseDatas.shoesTieBianList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_tie_di" class="form-text" placeholder="请选择贴底" [source]="baseDatas.shoesTieBianList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_tie_di" class="form-text" placeholder="请选择贴底"></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">价 &nbsp;&nbsp; 格</label>
-                  <ion-input type="number" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
+                  <ion-input type="number" *ngIf="isEditing()" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
+                  <bola-form-text type="number" *ngIf="!isEditing()" formControlName="price" class="form-text" placeholder="请输入价格"></bola-form-text>
                 </div>
               </div>
             </div>
@@ -161,7 +176,8 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">根 &nbsp;&nbsp; 高</label>
-                  <bola-input-select formControlName="s_gen_gao" class="form-text" placeholder="请选择跟高" [source]="baseDatas.genGaoList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_gen_gao" class="form-text" placeholder="请选择跟高" [source]="baseDatas.genGaoList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_gen_gao" class="form-text" placeholder="请选择跟高"></bola-form-text>
                 </div>
               </div>
             </div>
@@ -176,9 +192,10 @@
               <div *ngFor="let pic of pics;let i = index;" class="form-group">
                 <div *ngIf="pic.file" class="photo-current"><img src="{{FILE_URL+'/'+pic.file}}" class="img-responsive"></div>
                 <div *ngIf="pic.file===''" class="photo-default" (click)="onBtnPickerClicked(pic)"><span class="fa fa-camera"></span></div>
-                <textarea class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" >{{pic.desc}}</textarea>
+                <textarea *ngIf="isEditing()" class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" >{{pic.desc}}</textarea>
+                <bola-form-text *ngIf="!isEditing()" class="form-control" placeholder="填写说明文字" [ngModelOptions]="{standalone: true}" [(ngModel)]="pics[i].desc" ></bola-form-text>
               </div>
-              <div class="order-pic-btn-container">
+              <div *ngIf="isEditing()" class="order-pic-btn-container">
                 <button ion-button color="dark" full class="order-pic-btn-add" (click)="btnPicAddClicked()">添加</button>
               </div>
             </div>
@@ -188,7 +205,8 @@
               <h3 class="panel-title">备注信息</h3>
             </div>
             <div class="panel-body">
-              <textarea class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></textarea>
+              <textarea *ngIf="isEditing()" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></textarea>
+              <bola-form-text *ngIf="!isEditing()" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></bola-form-text>
             </div>
           </div>
           <div class="panel panel-info data-customized">
@@ -214,7 +232,8 @@
                 <div class="col-xs-12">
                   <div class="form-group">
                     <label class="control-label">加急天数</label>
-                    <bola-select class="form-text" [(ngModel)]="urgent" [ngModelOptions]="{standalone: true}" placeholder="请选择加急类型" [source]="baseDatas.urgentList||[]" [onChanged]="onUrgentChange"></bola-select>
+                    <bola-select *ngIf="isEditing()" class="form-text" [(ngModel)]="urgent" [ngModelOptions]="{standalone: true}" placeholder="请选择加急类型" [source]="baseDatas.urgentList||[]" [onChanged]="onUrgentChange"></bola-select>
+                    <bola-form-text *ngIf="!isEditing()" class="form-text" [(ngModel)]="urgent" [ngModelOptions]="{standalone: true}" placeholder="请选择加急类型"></bola-form-text>
                   </div>
                   <div class="service-charges text-right">金 额：<span>{{currentUrgentData&&currentUrgentData.price||0}}元</span></div>
                 </div>
@@ -222,11 +241,11 @@
             </div>
           </div>
         </form>
-        <div *ngIf="!cartInfo.cart" class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
-        <div *ngIf="cartInfo.cart" class="order-action"> <a href="#" class="btn" (click)="btnSureClicked()">确定</a></div>
+        <div *ngIf="!cartInfo.cart &&isEditing()" class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
+        <div *ngIf="cartInfo.cart&&isEditing()" class="order-action"> <a href="#" class="btn" (click)="btnSureClicked()">确定</a></div>
       </div>
     </div>
     <!--body wrapper end-->
 
+  </ion-content>
   </div>
-</ion-content>

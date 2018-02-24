@@ -81,6 +81,7 @@ export class OrderShoesDesignPage implements OnInit {
   goodsList: Array<any> = [];
   goods:any = null;
   cartInfo:any = {cart:false}
+  viewProfile: boolean = false;
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -103,6 +104,7 @@ export class OrderShoesDesignPage implements OnInit {
     this.goods = navParams.get('goods');
     this.customerData = navParams.get('customer');
     this.cartInfo = navParams.get('cartInfo')||{cart:false};
+    this.viewProfile = navParams.get('viewProfile');
   }
 
   ngOnInit(): void {
@@ -171,8 +173,16 @@ export class OrderShoesDesignPage implements OnInit {
         }
         return item;
       });
-      this.urgent = this.goods.urgent && this.goods.urgent._id || '';
-      this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+      if (this.isEditing()) {
+        this.urgent = this.goods.urgent && this.goods.urgent._id || '';
+        this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+      } else {
+        this.urgent = this.goods.urgent && this.goods.urgent.day || '';
+        this.currentUrgentData = this.urgentSource.find(item=>item.day === this.urgent);
+        if (this.urgent) {
+          this.urgent = this.urgent + '天';
+        }
+      }
       this.order_remark = this.goods.remark;
 
       let values = this.orderGroup.value;
@@ -183,7 +193,7 @@ export class OrderShoesDesignPage implements OnInit {
           if (shoes) {
             values[key] = v.name;
           } else if (v._id !== undefined) {
-            values[key] = v._id;
+            values[key] = this.isEditing() ? v._id : v.name;
           } else {
             values[key] = v;
           }
@@ -230,6 +240,7 @@ export class OrderShoesDesignPage implements OnInit {
   }
 
   onCustomClicked(data: any): void {
+    if (!this.isEditing()) return;
     data.selected = !data.selected;
 
     this.customPrice = 0;
@@ -297,7 +308,12 @@ export class OrderShoesDesignPage implements OnInit {
     this.orderGroup.controls.NID.setValue(nid);
   }
 
+  isEditing = () => {
+    return !this.viewProfile;
+  }
+  
   btnPicAddClicked(): void {
+    if (!this.isEditing()) return;
     this.pics.push({file:'', desc:''});
   }
 
@@ -306,6 +322,7 @@ export class OrderShoesDesignPage implements OnInit {
   }
 
   onBtnPickerClicked(pic: any) {
+    if (!this.isEditing()) return;
 
     this.imagePicker.getPictures({}).then((results) => {
       for (var i = 0; i < results.length; i++) {

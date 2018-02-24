@@ -1,40 +1,42 @@
 <div class="order-box">
   <div class="order-box-hd">
-    <p><span class="order_box_hd_label">订单号</span>{{suborderProfile&&suborderProfile.suborder_id||''}}</p>
-    <p><span class="order_box_hd_label">会员号</span>{{suborderProfile&&suborderProfile.customer.phone||''}}</p>
+    <p><span class="order_box_hd_label">订单号</span>{{suborderInfo&&suborderInfo.sub_order_id||''}}</p>
+    <p><span class="order_box_hd_label">会员号</span>{{suborderInfo&&suborderInfo.customer.phone||''}}</p>
   </div>
   <div class="order-box-bd">
     <div class="order_info">
       <p><span class="title">下单日期</span>{{getDate()}}</p>
-      <p><span class="title">会员姓名</span>{{suborderProfile&&suborderProfile.customer.name||''}}</p>
-      <p><span class="title">联系方式</span><em>{{suborderProfile&&suborderProfile.customer.phone||''}}</em></p>
+      <p><span class="title">会员姓名</span>{{suborderInfo&&suborderInfo.customer.name||''}}</p>
+      <p><span class="title">联系方式</span><em>{{suborderInfo&&suborderInfo.customer.phone||''}}</em></p>
     </div>
     <div *ngIf="isInTryStep()" class="order_progress">
       <p class="name">当前状态</p>
       <ul class="clearfix">
-        <li class="default"><i></i> <span class="title">审单</span> </li>
-        <li class="{{getTryStep()>0?'default':''}}"><i></i> <span class="title">试脚鞋投产</span> </li>
-        <li class="{{getTryStep()>1?'default':''}}"><i></i> <span class="title">试脚鞋制作寄出</span> </li>
-        <li class="{{getTryStep()>2?'default':''}}"> <i></i> <span class="title">试穿反馈审单</span> <span class="tips">请尽快获得顾客反馈</span> </li>
+        <li><i></i> <span class="title">审单</span> </li>
+        <li class="{{getTryStep()>0?'':'default'}}"><i></i> <span class="title">试脚鞋投产</span> </li>
+        <li class="{{getTryStep()>1?'':'default'}}"><i></i> <span class="title">试脚鞋制作寄出</span> </li>
+        <li class="{{getTryStep()>2?'':'default'}}"> <i></i> <span class="title">试穿反馈审单</span> <span class="tips">请尽快获得顾客反馈</span> </li>
       </ul>
     </div>
     <div *ngIf="!isInTryStep()" class="order_progress">
       <p class="name">当前状态</p>
       <div>
         <ul class="clearfix">
-          <li style="width: 20%;" class="default"><i></i> <span class="title">正品鞋投产</span> </li>
-          <li style="width: 20%;" class="{{getProductionStep()>0?'default':''}}"> <i></i> <span class="title">帮面针车</span> </li>
-          <li style="width: 20%;" class="{{getProductionStep()>1?'default':''}}"><i></i> <span class="title">复底成型</span> </li>
-          <li style="width: 20%;" class="{{getProductionStep()>2?'default':''}}"> <i></i> <span class="title">染色水洗</span> </li>
-          <li style="width: 20%;" class="{{getProductionStep()>3?'default':''}}"> <i></i> <span class="title">品检出货</span> </li>
+          <li style="width: 20%;"><i></i> <span class="title">正品鞋投产</span> </li>
+          <li style="width: 20%;" class="{{getProductionStep()>0?'':'default'}}"> <i></i> <span class="title">帮面针车</span> </li>
+          <li style="width: 20%;" class="{{getProductionStep()>1?'':'default'}}"><i></i> <span class="title">复底成型</span> </li>
+          <li style="width: 20%;" class="{{getProductionStep()>2?'':'default'}}"> <i></i> <span class="title">染色水洗</span> </li>
+          <li style="width: 20%;" class="{{getProductionStep()>3?'':'default'}}"> <i></i> <span class="title">品检出货</span> </li>
         </ul>
       </div>
     </div>
-      <div *ngIf="isCanModify()" class="mod_btns"> <a href="#" class="btn" (click)="btnModifyTryClicked()">修改试脚鞋</a> <a href="#" class="btn" (click)="btnProductionClicked()">正品投产</a>
-      <div *ngIf="isWaitInbound()" class="mod_btns" (click)="btnInboundClicked()"> <a href="#" class="btn">成品入库</a>
-      <div *ngIf="isInbound()" class="mod_btns" (click)="btnOutboundClicked()"> <a href="#" class="btn">成品出库</a>
-      <div *ngIf="isOutbound()" class="mod_btns" (click)="btnFinishClicked()"> <a href="#" class="btn">完成订单</a>
-      <p class="more-order" (click)="btnViewOrderClicked()"><a href="#">查看订单</a></p>
+    <div class="mod_btns"> 
+      <a *ngIf="isCanModify()" href="#" class="btn" (click)="btnModifyTryClicked()">修改试脚鞋</a> 
+      <a *ngIf="isCanModify()" href="#" class="btn" (click)="btnProductionClicked()">正品投产</a>
+      <a *ngIf="isWaitInbound()" href="#" class="btn" (click)="btnInboundClicked()">成品入库</a>
+      <a *ngIf="isInbound()" href="#" class="btn" (click)="btnOutboundClicked()">成品出库</a>
+      <a *ngIf="isOutbound()" href="#" class="btn" (click)="btnFinishClicked()">完成订单</a>
+      <p class="more-order"><a href="#" (click)="btnViewOrderClicked()">查看订单</a></p>
     </div>
   </div>
 </div>

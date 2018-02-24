@@ -1,0 +1,14 @@
+<div class="sticky-header">
+  <header [headerData]="headerData"></header>
+  <!-- main content start-->
+  <ion-content class="main-content">
+    <ion-card style="margin:20px 10px">
+      <ion-card-content>
+        <ion-textarea placeholder="输入反馈信息" [ngModelOptions]="{standalone: true}" rows="5" [(ngModel)]="message"></ion-textarea>
+      </ion-card-content>
+    </ion-card>
+    <ion-footer style="text-align:center; margin-bottom:20px;">
+      <button ion-button color="dark" (click)="btnSureClicked()" style="margin:0 auto;">确定</button>
+    </ion-footer>
+  </ion-content>
+</div>

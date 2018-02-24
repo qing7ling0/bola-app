@@ -58,6 +58,7 @@ export class OrderBeltPage implements OnInit {
   goodsList: Array<any> = [];
   cartInfo:any = {cart:false};
   goods:any = null;
+  viewProfile: boolean = false;
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -80,6 +81,7 @@ export class OrderBeltPage implements OnInit {
     this.goods = navParams.get('goods');
     this.customerData = navParams.get('customer');
     this.cartInfo = navParams.get('cartInfo')||{cart:false};
+    this.viewProfile = navParams.get('viewProfile');
   }
 
   ngOnInit(): void {
@@ -117,13 +119,27 @@ export class OrderBeltPage implements OnInit {
       }
     })
   }
+  
+  isEditing = () => {
+    return !this.viewProfile;
+  }
 
   initWithParams = () => {
     if (this.goods && this.customerData) {
       this.customerControl.setCustomer(this.customerData);
+      this.customerControl.setViewProfile(this.viewProfile);
       this.pics = this.goods.pics;
-      this.urgent = this.goods.urgent && this.goods.urgent._id || '';
-      this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+      
+      if (this.isEditing()) {
+        this.urgent = this.goods.urgent && this.goods.urgent._id || '';
+        this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+      } else {
+        this.urgent = this.goods.urgent && this.goods.urgent.day || '';
+        this.currentUrgentData = this.urgentSource.find(item=>item.day === this.urgent);
+        if (this.urgent) {
+          this.urgent = this.urgent + '天';
+        }
+      }
       this.order_remark = this.goods.remark;
 
       let values = this.orderGroup.value;
@@ -131,7 +147,7 @@ export class OrderBeltPage implements OnInit {
         if (this.goods[key] !== undefined) {
           let v = this.goods[key];
           if (v._id !== undefined) {
-            values[key] = v._id;
+            values[key] = this.isEditing() ? v._id : v.name;
           } else {
             values[key] = v;
           }
@@ -218,6 +234,7 @@ export class OrderBeltPage implements OnInit {
   }
 
   btnPicAddClicked(): void {
+    if (!this.isEditing()) return;
     this.pics.push({file:'', desc:''});
   }
 
@@ -226,6 +243,7 @@ export class OrderBeltPage implements OnInit {
   }
 
   onBtnPickerClicked(pic: any) {
+    if (!this.isEditing()) return;
     this.imagePicker.getPictures({}).then((results) => {
       for (var i = 0; i < results.length; i++) {
           console.log('Image URI: ' + results[i]);
@@ -317,6 +335,7 @@ export class OrderBeltPage implements OnInit {
   }
 
   createOrderClicked = ():void => {
+    if (!this.isEditing()) return;
     let result = this.getSubOrderInfo();
     if (result) {
       this.events.publish('order:pay', result.customer, [result.goods]);
@@ -325,6 +344,7 @@ export class OrderBeltPage implements OnInit {
   }
 
   btnSureClicked = (): void => {
+    if (!this.isEditing()) return;
     if (this.cartInfo.cart) {
       let result = this.getSubOrderInfo();
       if (result) {
@@ -335,6 +355,7 @@ export class OrderBeltPage implements OnInit {
   }
 
   addToCartClicked = ():void => {
+    if (!this.isEditing()) return;
     let result = this.getSubOrderInfo();
     if (result) {
       this.cartProvider.addGoods(result.customer, result.goods);

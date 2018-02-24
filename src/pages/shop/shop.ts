@@ -9,9 +9,9 @@ const NAVS = [
   { id:'create', icon:'icon-order', label:'创建订单', url:'/create' },
   { id:'cart', icon:'icon-cart', label:'购物车', url:'/cart' },
   { id:'track', icon:'icon-track', label:'订单追踪', url:'/track' },
-  { id:'personal', icon:'icon-personal', label:'个人管理', url:'/personal' },
-  { id:'vip', icon:'icon-user', label:'会员管理', url:'/vip' },
-  { id:'allot', icon:'icon-allot', label:'样品调拨', url:'/allot' }
+  // { id:'personal', icon:'icon-personal', label:'个人管理', url:'/personal' },
+  // { id:'vip', icon:'icon-user', label:'会员管理', url:'/vip' },
+  // { id:'allot', icon:'icon-allot', label:'样品调拨', url:'/allot' }
 ]
 @Component({
   selector: 'page-shop',

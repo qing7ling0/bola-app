@@ -71,6 +71,7 @@ export class OrderShoesPage implements OnInit {
   goodsList: Array<any> = [];
   goods:any = null;
   cartInfo:any = {cart:false}
+  viewProfile: boolean = false;
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -93,6 +94,7 @@ export class OrderShoesPage implements OnInit {
     this.goods = navParams.get('goods');
     this.customerData = navParams.get('customer');
     this.cartInfo = navParams.get('cartInfo')||{cart:false};
+    this.viewProfile = navParams.get('viewProfile');
   }
 
   ngOnInit(): void {
@@ -143,6 +145,7 @@ export class OrderShoesPage implements OnInit {
   initWithParams = () => {
     if (this.goods && this.customerData) {
       this.customerControl.setCustomer(this.customerData);
+      this.customerControl.setViewProfile(this.viewProfile);
       this.pics = this.goods.pics;
       this.customPrice = 0;
       this.customs = this.customs.map((item)=>{
@@ -158,16 +161,24 @@ export class OrderShoesPage implements OnInit {
         }
         return item;
       });
-      this.urgent = this.goods.urgent && this.goods.urgent._id || '';
-      this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+      if (this.isEditing()) {
+        this.urgent = this.goods.urgent && this.goods.urgent._id || '';
+        this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+      } else {
+        this.urgent = this.goods.urgent && this.goods.urgent.day || '';
+        this.currentUrgentData = this.urgentSource.find(item=>item.day === this.urgent);
+        if (this.urgent) {
+          this.urgent = this.urgent + '天';
+        }
+      }
       this.order_remark = this.goods.remark;
 
       let values = this.orderGroup.value;
       for(let key in values) {
-        if (this.goods[key] !== undefined) {
+        if (this.goods[key] !== undefined && this.goods[key] !== null) {
           let v = this.goods[key];
           if (v._id !== undefined) {
-            values[key] = v._id;
+            values[key] = this.isEditing() ? v._id : v.name;
           } else {
             values[key] = v;
           }
@@ -191,6 +202,7 @@ export class OrderShoesPage implements OnInit {
   }
 
   onCustomerChange = (data: any): void => {
+    if (!this.isEditing()) return;
     let changed = data && data.phone !== (this.customerData&&this.customerData.phone||'');
     this.customerData = data;
     if (data && data._id && changed) {
@@ -214,6 +226,7 @@ export class OrderShoesPage implements OnInit {
   }
 
   onCustomClicked(data: any): void {
+    if (!this.isEditing()) return;
     data.selected = !data.selected;
 
     this.customPrice = 0;
@@ -283,7 +296,9 @@ export class OrderShoesPage implements OnInit {
   }
 
   btnPicAddClicked(): void {
-    this.pics.push({file:'', desc:''});
+    if (this.isEditing()) {
+      this.pics.push({file:'', desc:''});
+    }
   }
 
   onPicDescChange(pic:any, desc: string): void {
@@ -291,6 +306,7 @@ export class OrderShoesPage implements OnInit {
   }
 
   onBtnPickerClicked(pic: any) {
+    if (!this.isEditing()) return;
 
     this.imagePicker.getPictures({}).then((results) => {
       for (var i = 0; i < results.length; i++) {
@@ -405,6 +421,7 @@ export class OrderShoesPage implements OnInit {
   }
 
   createOrderClicked = ():void => {
+    if (!this.isEditing()) return;
     let result = this.getSubOrderInfo();
     if (result) {
       this.events.publish('order:pay', result.customer, [result.goods]);
@@ -413,6 +430,7 @@ export class OrderShoesPage implements OnInit {
   }
 
   btnSureClicked = (): void => {
+    if (!this.isEditing()) return;
     if (this.cartInfo.cart) {
       let result = this.getSubOrderInfo();
       if (result) {
@@ -422,7 +440,12 @@ export class OrderShoesPage implements OnInit {
     }
   }
 
+  isEditing = () => {
+    return !this.viewProfile;
+  }
+
   addToCartClicked = ():void => {
+    if (!this.isEditing()) return;
     let result = this.getSubOrderInfo();
     if (result) {
       this.cartProvider.addGoods(result.customer, result.goods);

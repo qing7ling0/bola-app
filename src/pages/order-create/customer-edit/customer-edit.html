@@ -1,5 +1,5 @@
 <form [formGroup]="customerGroup">
-  <div class="mobileNumber-confirm">
+  <div *ngIf="isEditing()" class="mobileNumber-confirm">
     <label class="pull-left" for="mobileNumber">手机号</label>
     <input type="text" class="form-text" id="mobileNumber" formControlName="phone2" placeholder="输入手机号码">
     <button type="submit" class="btn pull-right" (click)="onPhoneSureBtnClicked()">确认</button>
@@ -14,36 +14,40 @@
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">姓 &nbsp;名</label>
-            <ion-input class="form-text" formControlName="name" placeholder="输入姓名" type="text"></ion-input>
+            <ion-input *ngIf="isEditing()" class="form-text" formControlName="name" placeholder="输入姓名" type="text"></ion-input>
+            <bola-form-text *ngIf="!isEditing()"  class="form-text" formControlName="name" placeholder="输入姓名" type="text"></bola-form-text>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">性 &nbsp;别</label>
-            <bola-select formControlName="sex" class="form-text" className="test" placeholder="请选择性别" [source]="sexDataList">
-            </bola-select>
+            <bola-select *ngIf="isEditing()" formControlName="sex" class="form-text" className="test" placeholder="请选择性别" [source]="sexDataList"></bola-select>
+            <bola-form-text *ngIf="!isEditing()" formControlName="sex" class="form-text" className="test" placeholder="请选择性别"></bola-form-text>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">生 &nbsp;日</label>
-            <ion-datetime formControlName="birthday" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="请选择日期"></ion-datetime>
+            <ion-datetime *ngIf="isEditing()" formControlName="birthday" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="请选择日期"></ion-datetime>
+            <bola-form-text *ngIf="!isEditing()" formControlName="birthday" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="请选择日期"></bola-form-text>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">手 &nbsp;机</label>
-            <ion-input class="form-text" formControlName="phone" placeholder="输入手机" type="text"></ion-input>
+            <ion-input *ngIf="isEditing()" class="form-text" formControlName="phone" placeholder="输入手机" type="text"></ion-input>
+            <bola-form-text *ngIf="!isEditing()" class="form-text" formControlName="phone" placeholder="输入手机" type="text"></bola-form-text>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">微 &nbsp;信</label>
-            <ion-input class="form-text" formControlName="weixin" placeholder="输入微信" type="text"></ion-input>
+            <ion-input *ngIf="isEditing()" class="form-text" formControlName="weixin" placeholder="输入微信" type="text"></ion-input>
+            <bola-form-text *ngIf="!isEditing()" class="form-text" formControlName="weixin" placeholder="输入微信" type="text"></bola-form-text>
           </div>
         </div>
       </div>
@@ -52,13 +56,15 @@
         <div class="col-xs-6">
           <div class="form-group">
             <label class="control-label">国 &nbsp;家</label>
-            <ion-input class="form-text" formControlName="country" placeholder="输入国家" type="text"></ion-input>
+            <ion-input *ngIf="isEditing()" class="form-text" formControlName="country" placeholder="输入国家" type="text"></ion-input>
+            <bola-form-text *ngIf="!isEditing()" class="form-text" formControlName="country" placeholder="输入国家" type="text"></bola-form-text>
           </div>
         </div>
         <div class="col-xs-6">
           <div class="form-group">
             <label class="control-label">城 &nbsp;市</label>
-            <ion-input class="form-text" formControlName="city" placeholder="输入城市" type="text"></ion-input>
+            <ion-input *ngIf="isEditing()" class="form-text" formControlName="city" placeholder="输入城市" type="text"></ion-input>
+            <bola-form-text *ngIf="!isEditing()" class="form-text" formControlName="city" placeholder="输入城市" type="text"></bola-form-text>
           </div>
         </div>
       </div>
@@ -66,13 +72,15 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label class="control-label">地 &nbsp;址</label>
-            <ion-input class="form-text" formControlName="address" placeholder="输入地址" type="text"></ion-input>
+            <ion-input *ngIf="isEditing()" class="form-text" formControlName="address" placeholder="输入地址" type="text"></ion-input>
+            <bola-form-text *ngIf="!isEditing()" class="form-text" formControlName="address" placeholder="输入地址" type="text"></bola-form-text>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <label class="control-label">邮 &nbsp;编</label>
-            <ion-input class="form-text" formControlName="zipcode" placeholder="输入邮编" type="text"></ion-input>
+            <ion-input *ngIf="isEditing()" class="form-text" formControlName="zipcode" placeholder="输入邮编" type="text"></ion-input>
+            <bola-form-text *ngIf="!isEditing()" class="form-text" formControlName="zipcode" placeholder="输入邮编" type="text"></bola-form-text>
           </div>
         </div>
       </div>

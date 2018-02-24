@@ -1,7 +1,7 @@
-export const DEBUG = true;
+export const DEBUG = false;
 
-export const DEV_SERVER = 'http://127.0.0.1:3001';
-export const PROD_SERVER = 'http://127.0.0.1:3001';
+export const DEV_SERVER = 'http://192.168.0.105:3001';
+export const PROD_SERVER = 'http://106.14.138.141:3001';
 
 export const API_SERVER_ADDRESS = (DEBUG ? DEV_SERVER : PROD_SERVER) + '/api';
 export const API_LOGIN_SERVER_ADDRESS = (DEBUG ? DEV_SERVER : PROD_SERVER) + '/login';

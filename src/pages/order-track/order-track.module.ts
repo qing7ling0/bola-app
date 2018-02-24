@@ -3,11 +3,13 @@ import { IonicPageModule } from 'ionic-angular';
 import { OrderTrackPage } from './order-track';
 import { BoalCommonModule } from '../../common/common.module'
 import { OrderTrackComponent } from './track.component/track.component'
+import { OrderFeedbackComponent } from './feedback.component/feedback.component'
 
 @NgModule({
   declarations: [
     OrderTrackPage,
-    OrderTrackComponent
+    OrderTrackComponent,
+    OrderFeedbackComponent
   ],
   imports: [
     IonicPageModule, BoalCommonModule
@@ -15,6 +17,6 @@ import { OrderTrackComponent } from './track.component/track.component'
   exports: [
     IonicPageModule, BoalCommonModule
   ],
-  entryComponents:[OrderTrackPage]
+  entryComponents:[OrderTrackPage, OrderFeedbackComponent]
 })
 export class OrderTrackModule {}

@@ -30,6 +30,7 @@ export class OrderCustomerEditComponent implements OnInit {
   formOptions: Array<any>;
   sexDataList: Array<any>;
   vipLevelList: Array<any>;
+  viewProfile:boolean = false; // 查看状态
 
   public customerGroup: FormGroup;
 
@@ -102,6 +103,10 @@ export class OrderCustomerEditComponent implements OnInit {
     }
   }
 
+  setViewProfile(viewProfile:boolean): void {
+    this.viewProfile = viewProfile;
+  }
+
   submit() {
     if (!this.customerGroup.valid) {
       let message = FormValidator.getValidError(this.customerGroup.controls, this.formOptions);
@@ -120,6 +125,10 @@ export class OrderCustomerEditComponent implements OnInit {
 
   change() {
     console.log("change");
+  }
+
+  isEditing = () => {
+    return !this.viewProfile;
   }
 
   getCurrentDiscount() {
