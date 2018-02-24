@@ -7,6 +7,7 @@ import {HeaderData} from '../../interface/header-data';
 import * as constants from '../../constants/constants';
 import { CartProvider } from '../../providers'
 import { CartListPage } from '../../pages/cart-list/cart-list';
+import { HomePage } from '../../pages/home/home';
 
 @Component({
   selector: 'header',
@@ -26,7 +27,11 @@ export class HeaderComponent {
   }
 
   back() : void {
-    this.navCtrl.pop();
+    if (this.headerData.type === 'shop') {
+      this.navCtrl.setRoot(HomePage);
+    } else {
+      this.navCtrl.pop();
+    }
   }
 
   clearCartList = (): void => {

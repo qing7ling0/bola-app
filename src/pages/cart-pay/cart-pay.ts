@@ -39,8 +39,8 @@ export class CartPayPage {
     this.customer = navParams.get('customer');
     let guide = navParams.get('guide');
     if (guide) {
-      this.shopId = guide.guideId;
-      this.guideId = guide.shopId;
+      this.shopId = guide.shopId;
+      this.guideId = guide.guideId;
     }
   }
 
@@ -117,7 +117,7 @@ export class CartPayPage {
       }
     }
     payInfo.discount = discount;
-    payInfo.realPrice = (payInfo.price * discount);
+    payInfo.realPrice = Math.round(payInfo.price * discount*10)/10;
     payInfo.discountPrice = (payInfo.price - payInfo.realPrice);
     payInfo.payPrice = payInfo.realPrice + payInfo.customPrice + payInfo.urgentPrice;
     payInfo.payPriceLabel = new Number(payInfo.payPrice).toFixed(2);
@@ -153,8 +153,23 @@ export class CartPayPage {
     }
     order.sub_orders = subOrders;
 
-    this.cartProvider.addOrder(order).then((item)=> {
+    if (this.isUseStoreCard) {
+      let canUseBalance = this.customer&&this.customer.balance || 0;
+      if (order.pay > canUseBalance) {
+        this.toastCtrl.create({
+          message:'存储卡余额不足',
+          duration:1500,
+          position:'middle'
+        }).present();
 
+        return;
+      }
+    }
+
+    this.cartProvider.addOrder(order).then((item)=> {
+      if (item.code === 0) {
+        this.navCtrl.popToRoot();
+      }
     });
   }
 

@@ -1,0 +1,45 @@
+<ion-content class="sticky-header">
+  <!-- main content start-->
+  <div class="main-content" >
+
+    <!-- <header [headerData]="headerData"></header> -->
+    <header [headerData]="headerData"></header>
+
+    <!--body wrapper start-->
+    <div class="wrapper">
+      <order-customer-edit #customerControl [onChange]="onCustomerChange"></order-customer-edit>
+      <div class="panel panel-default">
+        <form [formGroup]="orderGroup">
+          <div class="panel-heading">
+            <h3 class="panel-title">订单数据</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">支付方式</label>
+                  <bola-select formControlName="pay_type" class="form-text" placeholder="请选择支付方式" [source]="payTypeList||[]"></bola-select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">充值金额</label>
+                  <ion-input class="form-text" formControlName="r_amount" placeholder="输入充值金额" type="number"></ion-input>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">赠送</label>
+                  <bola-form-text class="form-text" formControlName="reward"></bola-form-text>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">下单</a></div>
+      </div>
+    </div>
+    <!--body wrapper end-->
+
+  </div>
+</ion-content>

@@ -17,9 +17,9 @@ import * as constants from '../../../constants/constants'
 import { OrderCustomerEditComponent } from '../customer-edit/customer-edit.component';
 import { API_FILE_SERVER_ADDRESS, SEX_FEMALE } from '../../../constants/constants';
 
-const FEMALE_OPTIONS = [
-  {key:'s_gen_gao', label:'跟高', validators:[{key:'required', validator:Validators.required}]}
-]
+
+import { ShopPage } from '../../shop/shop'
+import { HomePage } from '../../home/home'
 
 const FORM_OPTIONS = (data)=> {
   let ret = [
@@ -30,6 +30,7 @@ const FORM_OPTIONS = (data)=> {
   ];
   return ret;
 }
+
 const FORM_SIZE_OPTIONS = (data)=> [
   {key:'b_A', label:'A', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
   {key:'b_B', label:'B', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
@@ -42,7 +43,7 @@ const FORM_SIZE_OPTIONS = (data)=> [
   templateUrl: 'belt.html'
 })
 export class OrderBeltPage implements OnInit {
-  headerData: HeaderData = {title:'订单创建', menuEnable:false, type:'cart-list'};
+  headerData: HeaderData = {title:'皮带订单', menuEnable:false, type:'cart-list'};
   baseDatas: any = {};
   orderGroup: FormGroup;
   sizeGroup: FormGroup;
@@ -228,6 +229,7 @@ export class OrderBeltPage implements OnInit {
       }
 
       goodsInfo.type = constants.E_ORDER_TYPE.BELT;
+      goodsInfo.remark = this.order_remark;
 
       return { customer:customer, goods: goodsInfo };
     } else {

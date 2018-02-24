@@ -18,60 +18,19 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">货 &nbsp;&nbsp; 号</label>
-                  <ion-input class="form-text" formControlName="NID" placeholder="输入货号" type="text" ></ion-input>
+                  <bola-select formControlName="NID" class="form-text" placeholder="请选择款式" [source]="goodsOrnamentList||[]" [onChanged]="onNIDChange"></bola-select>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
-                  <label class="control-label">材 &nbsp;&nbsp; 质</label>
-                  <bola-select formControlName="b_material" class="form-text" placeholder="请选择材质" [source]="baseDatas.materialList||[]" [onChanged]="onPropertyChange"></bola-select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">颜 &nbsp;&nbsp; 色</label>
-                  <bola-select formControlName="b_color" class="form-text" placeholder="请选择颜色" [source]="baseDatas.materialColorList||[]" [onChanged]="onPropertyChange"></bola-select>
+                  <label class="control-label">名 &nbsp;&nbsp; 称</label>
+                  <bola-form-text class="form-text" formControlName="o_name"></bola-form-text>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
-                  <label class="control-label">价 &nbsp;&nbsp; 格</label>
-                  <ion-input type="number" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-        <form [formGroup]="sizeGroup">
-          <div class="panel-heading">
-            <h3 class="panel-title">测量数据</h3>
-          </div>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">A</label>
-                  <ion-input type="number" formControlName="b_A" class="form-text" placeholder="请输入A"></ion-input>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">B</label>
-                  <ion-input type="number" formControlName="b_B" class="form-text" placeholder="请输入B"></ion-input>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">C</label>
-                  <ion-input type="number" formControlName="b_C" class="form-text" placeholder="请输入C" ></ion-input>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">D</label>
-                  <ion-input type="number" formControlName="b_D" class="form-text" placeholder="请输入D" ></ion-input>
+                  <label class="control-label">价格</label>
+                  <bola-form-text class="form-text" formControlName="price"></bola-form-text>
                 </div>
               </div>
             </div>

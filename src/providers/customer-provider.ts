@@ -21,7 +21,7 @@ export class CustomerProvider {
   ) {}
 
   getCustomerProfile(phone: string, tag?: string): Promise<any> {
-    return this.api.getDefaultProfile({phone:phone}, tag||'customerProfile', graphqlTypes.customerType).then((result)=>{
+    return this.api.getDefaultProfile({phone:phone}, tag||'customerProfile', graphqlTypes.customerType, true).then((result)=>{
       if(result.code === 0) {
         return result.data.customerProfile;
       }
@@ -37,6 +37,6 @@ export class CustomerProvider {
         ${tag}:customerOrderInfo(id:"${id}", conditions:"${encodeURIComponent(JSON.stringify(conditions))}", options:"${encodeURIComponent(JSON.stringify(options))}")${orderTypes.subOrderType}
       }
     `;
-    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query);
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, false);
   }
 }

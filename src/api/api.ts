@@ -53,7 +53,7 @@ export class API {
         login(account:"${account}",password:"${password}",check:${check?true:false})${graphqlTypes.userType}
       }
     `;
-    return this.graphqlJson(constants.API_LOGIN_SERVER_ADDRESS, graphqlValue);
+    return this.graphqlJson(constants.API_LOGIN_SERVER_ADDRESS, graphqlValue, true);
   }
 
   reqLogout(): Promise<any> {
@@ -65,11 +65,11 @@ export class API {
         }
       }
     `;
-    return this.graphqlJson(constants.API_SERVER_ADDRESS, graphqlValue)
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, graphqlValue, true)
   }
 
 
-  getDefaultList(tag:string, type: any, conditions: any=null, pageIndex:number=-1, pageSize:number=constants.DEFAULT_PAGE_SIZE) {
+  getDefaultList(tag:string, type: any, conditions: any=null, pageIndex:number=-1, pageSize:number=constants.DEFAULT_PAGE_SIZE, waitting:boolean=false) {
     
     let _conditions = '';
     if (!Utils.ObjectIsEmpty(conditions)) {
@@ -86,28 +86,28 @@ export class API {
         ${tag}(page:${pageIndex}, pageSize:${pageSize} ${_conditions})${graphqlTypes.pageListType(type)}
       }
     `;
-    return this.graphqlJson(constants.API_SERVER_ADDRESS, query);
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, query, waitting);
   }
   
-  getDefaultProfileById(id, tag, type) {
+  getDefaultProfileById(id, tag, type, waitting?:boolean) {
     let query = `
       query Query {
         ${tag}(id:"${id}")${type}
       }
     `;
-    return this.graphqlJson(constants.API_SERVER_ADDRESS, query);
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, query, waitting);
   }
 
-  getDefaultProfile(conditions, tag, type) {
+  getDefaultProfile(conditions, tag, type, waitting?:boolean) {
     let query = `
       query Query {
         ${tag}(conditions:"${encodeURIComponent(JSON.stringify(conditions))}")${type}
       }
     `;
-    return this.graphqlJson(constants.API_SERVER_ADDRESS, query);
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, query, waitting);
   }
   
-  addDefault(tag, type, data) {
+  addDefault(tag, type, data, waitting?:boolean) {
     let name = tag;
     let index = tag.lastIndexOf('List');
     if (index !== -1) {
@@ -119,10 +119,10 @@ export class API {
         ${name}Add(doc:${this.object2String(data)})${type}
       }
     `
-    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut);
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut, waitting);
   }
 
-  deleteDefault(tag, ids) {
+  deleteDefault(tag, ids, waitting?:boolean) {
     let name = tag;
     let index = tag.lastIndexOf('List');
     if (index !== -1) {
@@ -133,10 +133,10 @@ export class API {
         ${name}Remove(ids:${this.object2String(ids)})
       }
     `    
-    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut);
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut, waitting);
   }
 
-  updateDefault(tag, id, data) {
+  updateDefault(tag, id, data, waitting?:boolean) {
     let name = tag;
     let index = tag.lastIndexOf('List');
     if (index !== -1) {
@@ -148,19 +148,19 @@ export class API {
         ${name}Update(doc:${this.object2String(data)}, id:"${id}") ${graphqlTypes.resultType}
       }
     `    
-    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut);
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut, waitting);
   }
 
-  httpGraphqlJson(url: string, data: any) : Promise<any> {
+  httpGraphqlJson(url: string, data: any, waitting?:boolean) : Promise<any> {
     console.log('graphqlJson url' + url + '; data=' + data);
-
-    let loader = this.loadingCtrl.create({
-      content: "Please wait...",
-      duration: 1000 * 60
-    });
-    loader.present();
-    let timer = setTimeout(() => {
-    }, 5000);
+    let loader = null;
+    if (waitting) {
+      loader = this.loadingCtrl.create({
+        content: "Please wait...",
+        duration: 1000 * 60
+      });
+      loader.present();
+    }
 
     let headers = new Headers({
       'Accept': 'application/json',
@@ -178,20 +178,18 @@ export class API {
         if (auth) {
           API.auth = auth;
         }
-        clearTimeout(timer);
-        loader.dismiss();
+        loader && loader.dismiss();
         return response.json();
       })
       .catch((error) => {
         console.log(error);
-        clearTimeout(timer);
-        loader.dismiss();
+        loader && loader.dismiss();
         return {code:-1, message:'网络连接失败', data:{}}
       });
   }
 
-  graphqlJson(url: string, value: any) : Promise<any> {
-    return this.httpGraphqlJson(url, value).then((data)=>{
+  graphqlJson(url: string, value: any, waitting:boolean=true) : Promise<any> {
+    return this.httpGraphqlJson(url, value, waitting).then((data)=>{
       if(data.code > 0 && data.message) {
         this.toastCtrl.create({
           message:data.message,

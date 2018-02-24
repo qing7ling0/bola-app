@@ -16,7 +16,7 @@ const NAVS = [
   templateUrl: 'shop.html'
 })
 export class ShopPage {
-  headerData: HeaderData = {title:'店铺管理', menuEnable:true}
+  headerData: HeaderData = {title:'店铺管理', menuEnable:false, type:'shop'}
   navs = NAVS;
 
   constructor(public navCtrl: NavController) {

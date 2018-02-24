@@ -16,49 +16,33 @@ import { orderType } from '../../../api/orderTypes';
 import * as constants from '../../../constants/constants'
 import { OrderCustomerEditComponent } from '../customer-edit/customer-edit.component';
 import { API_FILE_SERVER_ADDRESS, SEX_FEMALE } from '../../../constants/constants';
-
-const FEMALE_OPTIONS = [
-  {key:'s_gen_gao', label:'跟高', validators:[{key:'required', validator:Validators.required}]}
-]
+import { shoesTieBianType } from '../../../api/graphqlTypes';
 
 const FORM_OPTIONS = (data)=> {
   let ret = [
     {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
-    {key:'ws_material', label:'材质', validators:[{key:'required', validator:Validators.required},]},
-    {key:'ws_style', label:'款式', validators:[{key:'required', validator:Validators.required},]},
+    {key:'o_name', label:'护理项目', validators:[{key:'required', validator:Validators.required},]},
     {key:'price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  ];
+];
   return ret;
 }
-const FORM_SIZE_OPTIONS = (data)=> [
-  {key:'ws_A', label:'A', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'ws_B', label:'B', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'ws_C', label:'C', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'ws_D', label:'D', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'ws_E', label:'E', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'ws_F', label:'F', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'ws_G', label:'G', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'ws_watch_brand', label:'品牌', validators:[]},
-]
-
 @Component({
-  selector: 'page-order-create-watch-strap',
-  templateUrl: 'watch-strap.html'
+  selector: 'page-order-create-ornament',
+  templateUrl: 'ornament.html'
 })
-export class OrderWatchStrapPage implements OnInit {
-  headerData: HeaderData = {title:'表带订单', menuEnable:false, type:'cart-list'};
+export class OrderOrnamentPage implements OnInit {
+  headerData: HeaderData = {title:'护理订单', menuEnable:false, type:'cart-list'};
   baseDatas: any = {};
   orderGroup: FormGroup;
-  sizeGroup: FormGroup;
   formOptions: Array<any>;
-  formSizeOptions: Array<any>;
-  orderType: string = constants.E_ORDER_TYPE.WATCH_STRAP;
+  orderType: string = constants.E_ORDER_TYPE.ORNAMENT;
   customerData: any;
   pics: Array<any> = [];
   urgentSource: Array<any> = [];
   urgent: string = '';
   currentUrgentData: any = null;
   order_remark: string = '';
+  goodsOrnamentList:Array<any>=[]
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -82,8 +66,6 @@ export class OrderWatchStrapPage implements OnInit {
   ngOnInit(): void {
     this.formOptions = FORM_OPTIONS(this);
     this.orderGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
-    this.formSizeOptions = FORM_SIZE_OPTIONS(this);
-    this.sizeGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formSizeOptions));
   }
 
   ionViewDidEnter(): void {
@@ -104,28 +86,19 @@ export class OrderWatchStrapPage implements OnInit {
         }
       }
     })
+    this.commonProvider.getGoodsList('goodsOrnamentList:goodsList', constants.E_ORDER_TYPE.ORNAMENT).then((data:any) => {
+      if (data && data.goodsOrnamentList) {
+        this.goodsOrnamentList = data.goodsOrnamentList.list.map((item)=>{
+          return {value:item._id, label:item.name, ...item};
+        });;
+      }
+    })
   }
 
   onCustomerChange = (data: any): void => {
     let changed = data.phone !== (this.customerData&&this.customerData.phone||'');
     this.customerData = data;
     if (data._id && changed) {
-      this.customerProvider.getCustomerLastSubOrder('lastSubOrderInfo', constants.E_ORDER_TYPE.WATCH_STRAP, data._id).then((result) => {
-        if (result && result.code === 0) {
-          let values: any = {};
-          let info = result.data.lastSubOrderInfo;
-
-          let keys = ['ws_A', 'ws_B', 'ws_C', 'ws_D', 'ws_E', 'ws_F', 'ws_G', 'ws_watch_brand'];
-          if (info) {
-            keys.forEach((key) => {
-              if (info[key] !== null && info[key] !== undefined) {
-                values[key] = info[key];
-              }
-            })
-            this.sizeGroup.setValue(values);
-          }
-        }
-      })
     }
   }
 
@@ -133,24 +106,24 @@ export class OrderWatchStrapPage implements OnInit {
     this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
   }
 
-  onPropertyChange = (): void => {
+  onNIDChange = (): void => {
     let customer = this.customerControl.submit();
     if (!customer) return;
 
     let goodsInfo = this.getGoodsInfo();
 
-    let nid = commonUtils.createGoodsNID(this.orderType, goodsInfo, customer.sex);
-    if (nid !== constants.NULL_NID) {
-      let goods = this.getValueFromListById(this.baseDatas.goodsWatchStrapList, '', (item)=>item.NID === nid);
-      if (goods) {
-        this.orderGroup.controls.price.setValue(goods.price);
-      } else {
-        this.orderGroup.controls.price.setValue(null);
-      }
+    let nid = goodsInfo.NID;
+    let goods = this.getValueFromListById(this.goodsOrnamentList, '', (item)=>item.NID === nid);
+    if (goods) {
+      this.orderGroup.controls.o_name.setValue(goods.name);
+      this.orderGroup.controls.price.setValue(goods.price);
     } else {
-      this.orderGroup.controls.price.setValue(null);
+      this.orderGroup.controls.o_name.setValue('');
+      this.orderGroup.controls.price.setValue('');
     }
-    this.orderGroup.controls.NID.setValue(nid);
+  }
+
+  onPropertyChange = (): void => {
   }
 
   btnPicAddClicked(): void {
@@ -199,9 +172,8 @@ export class OrderWatchStrapPage implements OnInit {
   getGoodsInfo() {
     let goodsInfo = {...this.orderGroup.value};
     this.formatFormValue(goodsInfo, this.formOptions);
-
-    goodsInfo.ws_material = this.getValueFromListById(this.baseDatas.materialList, goodsInfo.ws_material);
-    goodsInfo.ws_style = this.getValueFromListById(this.baseDatas.watchStrapStyleList, goodsInfo.ws_style);
+    let mt = this.getValueFromListById(this.goodsOrnamentList, goodsInfo.NID);
+    goodsInfo.NID = mt && mt.NID || '';
     return goodsInfo;
   }
 
@@ -209,18 +181,8 @@ export class OrderWatchStrapPage implements OnInit {
     if (!this.customerControl.customerGroup.valid) return null;
 
     let customer = this.customerData;
-    if (this.sizeGroup.valid && this.orderGroup.valid) {
+    if (this.orderGroup.valid) {
       let goodsInfo = this.getGoodsInfo();
-      goodsInfo = Object.assign(goodsInfo, this.sizeGroup.value);
-      this.formatFormValue(goodsInfo, this.formSizeOptions);
-
-      if (goodsInfo.ws_material) {
-        goodsInfo.ws_material = {...goodsInfo.ws_material};
-        goodsInfo.ws_material.count = null;
-        if (goodsInfo.ws_material.color) {
-          goodsInfo.ws_material.color = goodsInfo.ws_material.color.name;
-        }
-      }
       if (this.currentUrgentData) {
         goodsInfo.urgent = this.getValueFromListById([this.currentUrgentData], this.currentUrgentData._id);
       }
@@ -231,15 +193,12 @@ export class OrderWatchStrapPage implements OnInit {
         goodsInfo.pics = pics;
       }
 
-      goodsInfo.type = constants.E_ORDER_TYPE.WATCH_STRAP;
+      goodsInfo.type = constants.E_ORDER_TYPE.ORNAMENT;
       goodsInfo.remark = this.order_remark;
 
       return { customer:customer, goods: goodsInfo };
     } else {
-      let message = FormValidator.getValidError(this.sizeGroup.controls, this.formSizeOptions);
-      if (!message) {
-        message = FormValidator.getValidError(this.orderGroup.controls, this.formOptions);
-      }
+      let message = FormValidator.getValidError(this.orderGroup.controls, this.formOptions);
       if (message) {
         this.toastCtrl.create({
           message:message,

@@ -20,33 +20,31 @@ import { shoesTieBianType } from '../../../api/graphqlTypes';
 
 const FORM_OPTIONS = (data)=> {
   let ret = [
-    {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
-    {key:'m_name', label:'护理项目', validators:[{key:'required', validator:Validators.required},]},
-    {key:'m_time', label:'时间', validators:[{key:'required', validator:Validators.required},]},
-    {key:'m_wash', label:'是否水洗', validators:[{key:'required', validator:Validators.required},]},
-    {key:'m_color', label:'颜色', validators:[{key:'required', validator:Validators.required},]},
-    {key:'m_demo', label:'色卡编号', validators:[{key:'required', validator:Validators.required}]},
-    {key:'m_price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+    {key:'pay_type', label:'支付方式', validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+    {key:'r_amount', label:'充值金额', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+    {key:'reward', label:'赠送', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
 ];
   return ret;
 }
 @Component({
-  selector: 'page-order-create-maintain',
-  templateUrl: 'maintain.html'
+  selector: 'page-order-create-recharge',
+  templateUrl: 'recharge.html'
 })
-export class OrderMaintainPage implements OnInit {
-  headerData: HeaderData = {title:'护理订单', menuEnable:false, type:'cart-list'};
+export class OrderRechargePage implements OnInit {
+  headerData: HeaderData = {title:'充值订单', menuEnable:false, type:'cart-list'};
   baseDatas: any = {};
   orderGroup: FormGroup;
   formOptions: Array<any>;
-  orderType: string = constants.E_ORDER_TYPE.MAINTAIN;
+  orderType: string = constants.E_ORDER_TYPE.RECHARGE;
   customerData: any;
   pics: Array<any> = [];
   urgentSource: Array<any> = [];
   urgent: string = '';
   currentUrgentData: any = null;
   order_remark: string = '';
-  washList:Array<any>=[{value:false, label:'否'}, {value:true, label:'是'}]
+  payTypeList: Array<any> = constants.PAY_TYPE;
+  rechargeList: Array<any> = [];
+
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -70,23 +68,23 @@ export class OrderMaintainPage implements OnInit {
   ngOnInit(): void {
     this.formOptions = FORM_OPTIONS(this);
     this.orderGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
+    this.orderGroup.controls.r_amount.valueChanges.subscribe(data => {
+      for(let re of this.rechargeList) {
+        if (data >= re.mount) {
+          this.orderGroup.controls.reward.setValue(re.reward);
+          return;
+        }
+      }
+      this.orderGroup.controls.reward.setValue(0);
+    });
   }
 
   ionViewDidEnter(): void {
-    this.commonProvider.getGoodsBaseDatas().then((data:any) => {
+    this.commonProvider.getRechargeList().then((data:any) => {
       if (data) {
-        this.baseDatas = {};
-        for(let key in data) {
-          this.baseDatas[key] = data[key].list&&data[key].list.map((item)=>{
-            return {value:item._id, label:item.name, ...item};
-          });
-        }
-        if (data.urgentList) {
-          this.urgentSource = data.urgentList.list;
-          this.baseDatas.urgentList = data.urgentList.list.map((item)=>{
-            return {value:item._id, label:item.day+'天', ...item};
-          });
-          this.baseDatas.urgentList.unshift({value:'0', label:'无', name:'', _id:''});
+        this.rechargeList = data;
+        if (this.rechargeList) {
+          this.rechargeList = this.rechargeList.sort((a,b)=>a.mount>b.mount?-1:1);
         }
       }
     })
@@ -103,62 +101,6 @@ export class OrderMaintainPage implements OnInit {
     this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
   }
 
-  onNIDChange = (): void => {
-    let customer = this.customerControl.submit();
-    if (!customer) return;
-
-    let goodsInfo = this.getGoodsInfo();
-
-    let nid = goodsInfo.NID;
-    let goods = this.getValueFromListById(this.baseDatas.maintainList, '', (item)=>item.NID === nid);
-    if (goods) {
-      this.orderGroup.controls.m_name.setValue(goods.name);
-      this.orderGroup.controls.m_time.setValue(goods.time);
-      this.orderGroup.controls.m_price.setValue(goods.price);
-    } else {
-      this.orderGroup.controls.m_name.setValue('');
-      this.orderGroup.controls.m_time.setValue('');
-      this.orderGroup.controls.m_price.setValue('');
-    }
-  }
-
-  onPropertyChange = (): void => {
-  }
-
-  btnPicAddClicked(): void {
-    this.pics.push({file:'', desc:''});
-  }
-
-  onPicDescChange(pic:any, desc: string): void {
-    pic.desc = desc;
-  }
-
-  onBtnPickerClicked(pic: any) {
-    this.imagePicker.getPictures({}).then((results) => {
-      for (var i = 0; i < results.length; i++) {
-          console.log('Image URI: ' + results[i]);
-          // let filePath = '/Users/wanglingling/play.png';
-          let filePath = results[i];
-          const fileTransfer: FileTransferObject = this.transfer.create();
-          let header = {
-            'auth':API.auth
-          }
-          // Upload a file:
-          fileTransfer.upload(filePath, this.UPLOAD_URL, {mimeType:'image/*', fileKey:'order', headers:header}).then((result: any)=>{
-            console.log(result);
-            if (pic && result.response) {
-              let data = JSON.parse(result.response);
-              if (data.data.files && data.data.files.length > 0) {
-                pic.file = data.data.files[0];
-              }
-            }
-          }).catch((error) => {
-            console.log(error);
-          });
-      }
-    }, (err) => { });
-  }
-
   formatFormValue(values: any, options: Array<any>) {
     for(let op of options) {
       if (op.formatValue && values[op.key] !== undefined) {
@@ -171,10 +113,6 @@ export class OrderMaintainPage implements OnInit {
   getGoodsInfo() {
     let goodsInfo = {...this.orderGroup.value};
     this.formatFormValue(goodsInfo, this.formOptions);
-    let mt = this.getValueFromListById(this.baseDatas.maintainList, goodsInfo.NID);
-    goodsInfo.NID = mt && mt.NID || '';
-    goodsInfo.price = goodsInfo.m_price;
-    goodsInfo.m_wash = goodsInfo.m_wash === 'true';
     return goodsInfo;
   }
 
@@ -184,17 +122,8 @@ export class OrderMaintainPage implements OnInit {
     let customer = this.customerData;
     if (this.orderGroup.valid) {
       let goodsInfo = this.getGoodsInfo();
-      if (this.currentUrgentData) {
-        goodsInfo.urgent = this.getValueFromListById([this.currentUrgentData], this.currentUrgentData._id);
-      }
-      if (this.pics) {
-        let pics = this.pics.filter((item)=>{
-          return item.file;
-        })
-        goodsInfo.pics = pics;
-      }
 
-      goodsInfo.type = constants.E_ORDER_TYPE.MAINTAIN;
+      goodsInfo.type = this.orderType;
       goodsInfo.remark = this.order_remark;
 
       return { customer:customer, goods: goodsInfo };
@@ -215,15 +144,8 @@ export class OrderMaintainPage implements OnInit {
   createOrderClicked = ():void => {
     let result = this.getSubOrderInfo();
     if (result) {
-      this.events.publish('order:pay', result.customer, [result.goods]);
+      this.events.publish('order:recharge', result.customer, [result.goods]);
       // this.cartProvider.addGoods(result.customer, result.goods);
-    }
-  }
-
-  addToCartClicked = ():void => {
-    let result = this.getSubOrderInfo();
-    if (result) {
-      this.cartProvider.addGoods(result.customer, result.goods);
     }
   }
 

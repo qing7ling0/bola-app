@@ -1,7 +1,7 @@
 <form [formGroup]="customerGroup">
   <div class="mobileNumber-confirm">
     <label class="pull-left" for="mobileNumber">手机号</label>
-    <input type="text" class="form-control" id="mobileNumber" formControlName="phone2" placeholder="输入手机号码">
+    <input type="text" class="form-text" id="mobileNumber" formControlName="phone2" placeholder="输入手机号码">
     <button type="submit" class="btn pull-right" (click)="onPhoneSureBtnClicked()">确认</button>
   </div>
   <div class="panel panel-special">
@@ -14,7 +14,7 @@
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">姓 &nbsp;名</label>
-            <ion-input class="form-control" formControlName="name" placeholder="输入姓名" type="text"></ion-input>
+            <ion-input class="form-text" formControlName="name" placeholder="输入姓名" type="text"></ion-input>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
@@ -29,21 +29,21 @@
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">生 &nbsp;日</label>
-            <ion-datetime formControlName="birthday" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text" placeholder="请选择日期"></ion-datetime>
+            <ion-datetime formControlName="birthday" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="请选择日期"></ion-datetime>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">手 &nbsp;机</label>
-            <input class="form-control" formControlName="phone" placeholder="输入手机" type="text">
+            <ion-input class="form-text" formControlName="phone" placeholder="输入手机" type="text"></ion-input>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <span class="required">*</span>
             <label class="control-label">微 &nbsp;信</label>
-            <input class="form-control" formControlName="weixin" placeholder="输入微信" type="text">
+            <ion-input class="form-text" formControlName="weixin" placeholder="输入微信" type="text"></ion-input>
           </div>
         </div>
       </div>
@@ -52,13 +52,13 @@
         <div class="col-xs-6">
           <div class="form-group">
             <label class="control-label">国 &nbsp;家</label>
-            <input class="form-control" formControlName="country" placeholder="输入国家" type="text">
+            <ion-input class="form-text" formControlName="country" placeholder="输入国家" type="text"></ion-input>
           </div>
         </div>
         <div class="col-xs-6">
           <div class="form-group">
             <label class="control-label">城 &nbsp;市</label>
-            <input class="form-control" formControlName="city" placeholder="输入城市" type="text">
+            <ion-input class="form-text" formControlName="city" placeholder="输入城市" type="text"></ion-input>
           </div>
         </div>
       </div>
@@ -66,13 +66,13 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label class="control-label">地 &nbsp;址</label>
-            <input class="form-control" formControlName="address" placeholder="输入地址" type="text">
+            <ion-input class="form-text" formControlName="address" placeholder="输入地址" type="text"></ion-input>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <label class="control-label">邮 &nbsp;编</label>
-            <input class="form-control" formControlName="zipcode" placeholder="输入邮编" type="text">
+            <ion-input class="form-text" formControlName="zipcode" placeholder="输入邮编" type="text"></ion-input>
           </div>
         </div>
       </div>

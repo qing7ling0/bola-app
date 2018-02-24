@@ -46,19 +46,19 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">水 &nbsp;&nbsp; 洗</label>
-                  <bola-select formControlName="m_wash" class="form-text" placeholder="请选择水洗" [source]="baseDatas.washList||[]" [onChanged]="onPropertyChange"></bola-select>
+                  <bola-select formControlName="m_wash" class="form-text" placeholder="请选择水洗" [source]="washList||[]" [onChanged]="onPropertyChange"></bola-select>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">颜 &nbsp;&nbsp; 色</label>
-                  <input class="form-control" formControlName="m_color" placeholder="输入颜色" type="text" >
+                  <ion-input class="form-text" formControlName="m_color" placeholder="输入颜色" type="text" ></ion-input>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">色卡编号</label>
-                  <input class="form-control" formControlName="m_demo" placeholder="输入色卡编号" type="text" >
+                  <ion-input class="form-text" formControlName="m_demo" placeholder="输入色卡编号" type="text" ></ion-input>
                 </div>
               </div>
             </div>
@@ -86,20 +86,6 @@
             </div>
             <div class="panel-body">
               <textarea class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="order_remark" placeholder="填写备注文字"></textarea>
-            </div>
-          </div>
-          <div class="panel panel-info data-customized">
-            <div class="panel-heading"> <span class="info-square"></span>
-              <h3 class="panel-title">特殊定制</h3>
-            </div>
-            <div class="panel-body">
-              <div class="form-group">
-                <label class="control-label">收 费 内 容</label>
-                <div class="special-radio">
-                  <div *ngFor="let data of customs;let i = index;" class="radio-bala{{data.selected?' selected':''}}" (click)="onCustomClicked(data)">{{data.name}} <span class="check-circle"></span></div>
-                </div>
-              </div>
-              <div class="service-charges text-right">金 额：<span>{{customPrice}}元</span></div>
             </div>
           </div>
           <div class="panel panel-info data-urgentu">

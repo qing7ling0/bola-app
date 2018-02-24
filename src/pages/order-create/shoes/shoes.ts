@@ -53,7 +53,7 @@ const FORM_FOOTER_OPTIONS = (data)=> [
   templateUrl: 'shoes.html'
 })
 export class OrderShoesPage implements OnInit {
-  headerData: HeaderData = {title:'订单创建', menuEnable:false, type:'cart-list'};
+  headerData: HeaderData = {title:'鞋订单', menuEnable:false, type:'cart-list'};
   baseDatas: any = {};
   orderGroup: FormGroup;
   footerGroup: FormGroup;
@@ -68,6 +68,7 @@ export class OrderShoesPage implements OnInit {
   urgent: string = '';
   currentUrgentData: any = null;
   order_remark: string = '';
+  goodsList: Array<any> = [];
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -121,6 +122,13 @@ export class OrderShoesPage implements OnInit {
         }
       }
     })
+    this.commonProvider.getGoodsList('goodsList', constants.E_ORDER_TYPE.SHOES).then((data:any) => {
+      if (data && data.goodsList) {
+        this.goodsList = data.goodsList.list.map((item)=>{
+          return {value:item.NID, label:item.name, ...item};
+        });;
+      }
+    })
   }
 
   onCustomerChange = (data: any): void => {
@@ -164,6 +172,25 @@ export class OrderShoesPage implements OnInit {
 
   onUrgentChange = (): void => {
     this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+  }
+
+  onNIDChange = (): void => {
+    let NID = this.orderGroup.controls.NID.value;
+    for(let goods of this.goodsList) {
+      if (goods.NID === NID) {
+        let values: any = {...this.orderGroup.value};
+        values.s_material = goods.s_material._id;
+        values.s_xuan_hao = goods.s_xuan_hao._id;
+        values.s_gui_ge = goods.s_gui_ge._id;
+        values.s_out_color = goods.s_out_color._id;
+        values.s_in_color = goods.s_in_color._id;
+        values.s_bottom_color = goods.s_bottom_color._id;
+        values.s_bottom_side_color = goods.s_bottom_side_color._id;
+        values.s_gen_gao = goods.s_gen_gao && goods.s_gen_gao._id || '0';
+        values.price = goods.price;
+        this.orderGroup.setValue(values);
+      }
+    }
   }
 
   onPropertyChange = (): void => {
@@ -288,6 +315,7 @@ export class OrderShoesPage implements OnInit {
       }
 
       shoesInfo.type = constants.E_ORDER_TYPE.SHOES;
+      shoesInfo.remark = this.order_remark;
 
       return { customer:customer, goods: shoesInfo };
     } else {

@@ -45,7 +45,7 @@ export class CommonProvider {
         rechargeList:commonList(page:${pageIndex}, pageSize:${pageSize}, conditions: "${encodeURIComponent(JSON.stringify({type:constants.E_COMMON_DATA_TYPES.RECHARGE_REWARD}))}")${graphqlTypes.pageListType(graphqlTypes.rechargeType)}
         vipLevelList:commonList(page:${pageIndex}, pageSize:${pageSize}, conditions: "${encodeURIComponent(JSON.stringify({type:constants.E_COMMON_DATA_TYPES.VIP}))}")${graphqlTypes.pageListType(graphqlTypes.vipLevelType)}
       }
-  `).then((result)=>{
+  `, false).then((result)=>{
     if(result.code === 0) {
       return result.data;
     }
@@ -61,4 +61,23 @@ export class CommonProvider {
       return null;
     });
   };
+
+  getRechargeList(): Promise<any> {
+    return this.api.getDefaultList('rechargeList:commonList', graphqlTypes.rechargeType, {type:constants.E_COMMON_DATA_TYPES.RECHARGE_REWARD}).then((result)=>{
+      if(result.code === 0) {
+        return result.data.rechargeList.list;
+      }
+      return null;
+    });
+  };
+
+  getGoodsList(tag: string, type: string, page:number=0, pageSize:number=0, waitting:boolean=false): Promise<any> {
+    return this.api.getDefaultList(tag, graphqlTypes.goodsType, {goods:type}, page, pageSize, waitting).then((result)=>{
+      if(result.code === 0) {
+        return result.data;
+      }
+      return null;
+    });
+  }
+  
 }

@@ -69,7 +69,7 @@ export class HomePage implements OnInit {
 
   subscribeEvents() {
     this.events.subscribe('user:login', () => {
-      this.navCtrl.push(ShopPage);
+      this.navCtrl.setRoot(ShopPage);
     });
 
     this.events.subscribe('user:logout', () => {
