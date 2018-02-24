@@ -436,8 +436,8 @@ hr {
 .page-heading .breadcrumb li.active {
 	color: #65CEA7;
 }
-.wrapper {          
-	padding-left: env(safe-area-inset-left);            
+.wrapper {
+	padding-left: env(safe-area-inset-left);
 	padding-right: env(safe-area-inset-right);
 }
 .wrapper::after {
@@ -4315,6 +4315,12 @@ ol.comment-list {
 	width: 200%;
 	left: -50%;
 	z-index: 10;
+}
+.order_progress li:first-child.default::after {
+	width: 50%;
+}
+.order_progress li:last-child.default::after {
+	width: 100%;
 }
 .order_progress li.default i {
 	border: 2px solid #c1c3ce;

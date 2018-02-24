@@ -54,7 +54,12 @@ export class OrderCustomerEditComponent implements OnInit {
     });
   }
 
-  ionViewDidEnter(): void {
+  ionViewDidLoad(): void {
+    this.commonProvider.getVipLevelList().then((data:Array<any>) => {
+      if (data) {
+        this.vipLevelList = data;
+      }
+    })
   }
 
   filterCustomerProperty(value) {
@@ -74,29 +79,26 @@ export class OrderCustomerEditComponent implements OnInit {
   onPhoneSureBtnClicked() {
     if (this.customerGroup.controls.phone2.valid) {
       this.customerProvider.getCustomerProfile(this.customerGroup.value.phone2).then((data) => {
-        this.customerProfile = data;
-        if (this.customerProfile) {
-          // this.customerGroup.value = this.customerProfile;
-          // this.customerGroup.controls.name.setValue(this.customerProfile.name);
-          let value:any = {};
-          for(let key in this.customerGroup.value) {
-            value[key] = this.customerProfile[key];
-          }
-          if (value.birthday) {
-            value.birthday = new Date(this.customerProfile.birthday).toISOString();
-          }
-          value.phone2 = this.customerProfile.phone;
-          this.customerGroup.setValue(value);
-        }
-        if (this.onChange) {
-          this.onChange(this.filterCustomerProperty(this.customerProfile));
-        }
-        this.commonProvider.getVipLevelList().then((data:Array<any>) => {
-          if (data) {
-            this.vipLevelList = data;
-          }
-        })
+        this.setCustomer(data);
       })
+    }
+  }
+
+  setCustomer = (customer: any): void => {
+    this.customerProfile = customer;
+    if (this.customerProfile) {
+      let value:any = {};
+      for(let key in this.customerGroup.value) {
+        value[key] = this.customerProfile[key];
+      }
+      if (value.birthday) {
+        value.birthday = new Date(this.customerProfile.birthday).toISOString();
+      }
+      value.phone2 = this.customerProfile.phone;
+      this.customerGroup.setValue(value);
+    }
+    if (this.onChange) {
+      this.onChange(this.filterCustomerProperty(this.customerProfile||{}));
     }
   }
 

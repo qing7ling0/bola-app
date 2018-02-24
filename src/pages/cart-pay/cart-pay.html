@@ -1,11 +1,11 @@
 <ion-content class="body-payment">
   <!-- main content start-->
-  <div class="main-content" > 
-  
+  <div class="main-content" >
+
     <!-- header section start-->
     <header [headerData]="headerData"></header>
-    <!-- header section end--> 
-    
+    <!-- header section end-->
+
     <!--body wrapper start-->
 
     <div class="wrapper">
@@ -16,11 +16,14 @@
         <div class="panel-body" style="background:initial">
           <div *ngFor="let goods of goodsList" class="item-list clearfix">
             <div class="item-detail pull-right clearfix">
-              <div class="item-img pull-left">
-                <a href="#"><img src="{{FILE_URL+goods.icon}}" class="img-responsive"></a>
+              <div class="item-info"><h3 class="title">货号：{{goods.NID}}</h3></div>
+              <div *ngIf="!!goods.icon" class="item-img pull-left">
+                <img src="{{FILE_URL+goods.icon}}" class="img-responsive">
+              </div>
+              <div *ngIf="!goods.icon" class="item-img pull-left ">
+                <div class="blank">暂无图片</div>
               </div>
               <div class="item-info pull-left">
-                <h3 class="title">货号：{{goods.NID}}</h3>
                 <div class="pay-price">金额：{{getGoodsPayPrice(goods)}} 元</div>
                 <div class="sku">
                   <p>含定制费：{{getGoodsCustomPrice(goods)}}元</p>
@@ -96,8 +99,8 @@
         </div>
       </div>
     </div>
-    <!--body wrapper end--> 
-    
+    <!--body wrapper end-->
+
   </div>
   <!-- main content end-->
 </ion-content>

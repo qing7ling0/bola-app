@@ -105,7 +105,8 @@
             </div>
           </div>
         </form>
-        <div class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
+        <div *ngIf="!cartInfo.cart" class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
+        <div *ngIf="cartInfo.cart" class="order-action"> <a href="#" class="btn" (click)="btnSureClicked()">确定</a></div>
       </div>
     </div>
     <!--body wrapper end-->

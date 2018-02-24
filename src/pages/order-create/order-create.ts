@@ -7,6 +7,7 @@ import * as constants from '../../constants/constants'
 import {HeaderData} from '../../interface/header-data';
 import {E_ORDER_TYPE, ORDER_TYPES} from '../../constants/constants'
 import { OrderShoesPage } from './shoes/shoes'
+import { OrderShoesDesignPage } from './shoes-design/shoes-design'
 import { OrderBeltPage } from './belt/belt'
 import { OrderWatchStrapPage } from './watch-strap/watch-strap'
 import { OrderMaintainPage } from './maintain/maintain'
@@ -81,6 +82,7 @@ export class OrderCreatePage implements OnInit {
       this.navCtrl.push(OrderRechargePage);
       break;
       case E_ORDER_TYPE.DESIGN:
+      this.navCtrl.push(OrderShoesDesignPage);
       break;
     }
   }
@@ -117,7 +119,7 @@ export class OrderCreatePage implements OnInit {
         }
       });
     });
-    
+
 
     this.events.subscribe('user:logout', () => {
     });

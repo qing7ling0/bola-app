@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController} from 'ionic-angular';
+import { NavController, NavParams, ToastController, AlertController, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { OrderCreatePage } from '../order-create/order-create'
@@ -33,7 +33,9 @@ export class CartPayPage {
     public navParams: NavParams,
     private cartProvider: CartProvider,
     private commonProvider: CommonProvider,
-    private storage: Storage
+    private storage: Storage,
+    private alertCtrl: AlertController,
+    private events: Events
   ) {
     this.goodsList = navParams.get('goodsList');
     this.customer = navParams.get('customer');
@@ -124,7 +126,28 @@ export class CartPayPage {
     payInfo.discountPriceLabel = new Number(payInfo.discountPrice).toFixed(2);
   }
 
-  pay() {
+  pay = () => {
+    let alert = this.alertCtrl.create({
+      title: '提示',
+      subTitle: '请确认订单信息是否正确？',
+      buttons: [
+        {
+          text: '取消',
+          handler: data => {
+          }
+        },
+        {
+          text: '确定',
+          handler: data => {
+            this.onPay();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  onPay() {
     if (!this.shopId) return;
     if (!this.payType) {
       this.toastCtrl.create({
@@ -168,6 +191,12 @@ export class CartPayPage {
 
     this.cartProvider.addOrder(order).then((item)=> {
       if (item.code === 0) {
+        this.toastCtrl.create({
+          message:'下单成功!',
+          duration:1500,
+          position:'middle'
+        }).present();
+        this.events.publish('order:success');
         this.navCtrl.popToRoot();
       }
     });

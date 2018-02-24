@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { NavController, ToastController, Events } from 'ionic-angular';
+import { NavController, ToastController, Events, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
@@ -59,6 +59,9 @@ export class OrderWatchStrapPage implements OnInit {
   urgent: string = '';
   currentUrgentData: any = null;
   order_remark: string = '';
+  goodsList: Array<any> = [];
+  goods:any = null;
+  cartInfo:any = {cart:false}
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -75,8 +78,12 @@ export class OrderWatchStrapPage implements OnInit {
     private transfer: FileTransfer,
     private file: File,
     private imagePicker: ImagePicker,
-    private cartProvider: CartProvider
+    private cartProvider: CartProvider,
+    public navParams: NavParams,
   ) {
+    this.goods = navParams.get('goods');
+    this.customerData = navParams.get('customer');
+    this.cartInfo = navParams.get('cartInfo')||{cart:false};
   }
 
   ngOnInit(): void {
@@ -86,7 +93,7 @@ export class OrderWatchStrapPage implements OnInit {
     this.sizeGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formSizeOptions));
   }
 
-  ionViewDidEnter(): void {
+  ionViewDidLoad(): void {
     this.commonProvider.getGoodsBaseDatas().then((data:any) => {
       if (data) {
         this.baseDatas = {};
@@ -102,15 +109,59 @@ export class OrderWatchStrapPage implements OnInit {
           });
           this.baseDatas.urgentList.unshift({value:'0', label:'无', name:'', _id:''});
         }
+        this.initWithParams();
       }
     })
+    this.commonProvider.getGoodsList('goodsList', this.orderType).then((data:any) => {
+      if (data && data.goodsList) {
+        this.goodsList = data.goodsList.list.map((item)=>{
+          return {value:item.NID, label:item.name, ...item};
+        });;
+      }
+    })
+  }
+
+  initWithParams = () => {
+    if (this.goods && this.customerData) {
+      this.customerControl.setCustomer(this.customerData);
+      this.pics = this.goods.pics;
+      this.urgent = this.goods.urgent && this.goods.urgent._id || '';
+      this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+      this.order_remark = this.goods.remark;
+
+      let values = this.orderGroup.value;
+      for(let key in values) {
+        if (this.goods[key] !== undefined) {
+          let v = this.goods[key];
+          if (v._id !== undefined) {
+            values[key] = v._id;
+          } else {
+            values[key] = v;
+          }
+        }
+      }
+      this.orderGroup.setValue(values);
+
+      values = this.sizeGroup.value;
+      for(let key in values) {
+        if (this.goods[key] !== undefined) {
+          let v = this.goods[key];
+          if (v._id !== undefined) {
+            values[key] = v._id;
+          } else {
+            values[key] = v;
+          }
+        }
+      }
+      this.sizeGroup.setValue(values);
+    }
   }
 
   onCustomerChange = (data: any): void => {
     let changed = data.phone !== (this.customerData&&this.customerData.phone||'');
     this.customerData = data;
     if (data._id && changed) {
-      this.customerProvider.getCustomerLastSubOrder('lastSubOrderInfo', constants.E_ORDER_TYPE.WATCH_STRAP, data._id).then((result) => {
+      this.customerProvider.getCustomerLastSubOrder('lastSubOrderInfo', this.orderType, data._id).then((result) => {
         if (result && result.code === 0) {
           let values: any = {};
           let info = result.data.lastSubOrderInfo;
@@ -131,6 +182,23 @@ export class OrderWatchStrapPage implements OnInit {
 
   onUrgentChange = (): void => {
     this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+  }
+
+  onNIDChange = (): void => {
+    let values: any = {...this.orderGroup.value};
+    values.ws_material = '';
+    values.ws_style = '';
+
+    let NID = this.orderGroup.controls.NID.value;
+    for(let goods of this.goodsList) {
+      if (goods.NID === NID) {
+        values.ws_material = goods.ws_material._id;
+        values.ws_style = goods.ws_style._id;
+        values.price = goods.price;
+        break;
+      }
+    }
+    this.orderGroup.setValue(values);
   }
 
   onPropertyChange = (): void => {
@@ -231,7 +299,7 @@ export class OrderWatchStrapPage implements OnInit {
         goodsInfo.pics = pics;
       }
 
-      goodsInfo.type = constants.E_ORDER_TYPE.WATCH_STRAP;
+      goodsInfo.type = this.orderType;
       goodsInfo.remark = this.order_remark;
 
       return { customer:customer, goods: goodsInfo };
@@ -259,11 +327,21 @@ export class OrderWatchStrapPage implements OnInit {
       // this.cartProvider.addGoods(result.customer, result.goods);
     }
   }
+  btnSureClicked = (): void => {
+    if (this.cartInfo.cart) {
+      let result = this.getSubOrderInfo();
+      if (result) {
+        this.events.publish('cart:update-goods', this.cartInfo.customerIndex, result.customer, this.cartInfo.goodsIndex, result.goods);
+        this.navCtrl.pop();
+      }
+    }
+  }
 
   addToCartClicked = ():void => {
     let result = this.getSubOrderInfo();
     if (result) {
       this.cartProvider.addGoods(result.customer, result.goods);
+      this.navCtrl.pop();
     }
   }
 

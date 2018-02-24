@@ -20,14 +20,17 @@ export class CartProvider {
     public api: API
   ) {}
 
-  addGoods(customer: any, goods: any, tip?: boolean) {
-    this.getCartList().then((result)=> {
+  addGoods(customer: any, goods: any, tip?: boolean): Promise<any> {
+    return this.getCartList().then((result)=> {
+      result = result || {};
       if (result[customer.phone]) {
-        result[customer.phone].push({customer,goods});
+        result[customer.phone].list = result[customer.phone].list || [];
+        result[customer.phone].list.push(goods);
+        result[customer.phone].customer = customer;
       } else {
-        let list = [];
-        list.push({customer,goods});
-        result.set(customer.phone, list);
+        let list:any = [];
+        list.push(goods);
+        result[customer.phone] = {customer, list};
       }
       this.save(result);
       this.toastCtrl.create({
@@ -38,12 +41,28 @@ export class CartProvider {
       return result;
     })
   }
+  updateGoods(customerPhone: any, customer:any, goodsIndex: number, goods: any, tip?: boolean): Promise<any> {
+    return this.getCartList().then((result)=> {
+      result = result || {};
+      if (result[customerPhone]) {
+        if (customerPhone !== customer.phone) {
+          result[customer.phone] = result[customerPhone];
+          delete result[customerPhone];
+        }
+        let v = result[customer.phone];
+        v.customer = customer;
+        v.list[goodsIndex] = goods;
+      }
+      this.save(result);
+      return result;
+    })
+  }
 
-  removeGoods(key:string, index:number, tip?: boolean) {
-    this.getCartList().then((result)=> {
-      if (result[key]) {
+  removeGoods(key:string, index:number, tip?: boolean): Promise<any> {
+    return this.getCartList().then((result)=> {
+      if (result[key] && result[key].list) {
         let list = [];
-        result[key].splice(index, 1);
+        result[key].list.splice(index, 1);
         this.save(result);
         if (tip) {
           this.toastCtrl.create({
@@ -58,7 +77,7 @@ export class CartProvider {
   }
 
   getGoods(key, index) {
-    this.getCartList().then((result)=> {
+    return this.getCartList().then((result)=> {
       if (result[key]) {
         if (index > -1 && index < result[key].length) {
           return result[key][index];

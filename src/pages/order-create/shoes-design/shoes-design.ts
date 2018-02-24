@@ -48,19 +48,29 @@ const FORM_FOOTER_OPTIONS = (data)=> [
   {key:'s_right_fuWei', label:'右脚附维', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]}
 ]
 
+const SHOES_PROPERTY_KEYS = [
+  's_gui_ge', 's_xuan_hao', 's_material', 's_out_color',
+  's_in_color', 's_bottom_color', 's_bottom_side_color', 's_tie_di',
+  's_gen_gao']
+
+const SHOES_PROPERTY_LIST_KEYS = [
+  'outColorList', 'inColorList', 'bottomColorList', 'bottomSideColorList',
+  'materialColorList', 'xuanHaoList', 'guiGeList', 'genGaoList',
+  'shoesTieBianList', 'materialList']
+
 @Component({
-  selector: 'page-order-create-shoes',
-  templateUrl: 'shoes.html'
+  selector: 'page-order-create-shoes-design',
+  templateUrl: 'shoes-design.html'
 })
-export class OrderShoesPage implements OnInit {
-  headerData: HeaderData = {title:'鞋订单', menuEnable:false, type:'cart-list'};
+export class OrderShoesDesignPage implements OnInit {
+  headerData: HeaderData = {title:'来样订单', menuEnable:false, type:'cart-list'};
   baseDatas: any = {};
   orderGroup: FormGroup;
   footerGroup: FormGroup;
   formOptions: Array<any>;
   formFooterOptions: Array<any>;
-  orderType: string = constants.E_ORDER_TYPE.SHOES;
-  customerData: any = null;
+  orderType: string = constants.E_ORDER_TYPE.DESIGN;
+  customerData: any;
   pics: Array<any> = [];
   customs: Array<any> = [];
   customPrice: number = 0;
@@ -106,8 +116,13 @@ export class OrderShoesPage implements OnInit {
     this.commonProvider.getGoodsBaseDatas().then((data:any) => {
       if (data) {
         this.baseDatas = {};
+
         for(let key in data) {
+          let shoes = SHOES_PROPERTY_LIST_KEYS.findIndex(value=>value===key) !== -1;
           this.baseDatas[key] = data[key].list&&data[key].list.map((item)=>{
+            if (shoes) {
+              return {value:item.name, label:item.name, ...item};
+            }
             return {value:item._id, label:item.name, ...item};
           });
         }
@@ -126,7 +141,6 @@ export class OrderShoesPage implements OnInit {
           });
           this.baseDatas.urgentList.unshift({value:'0', label:'无', name:'', _id:''});
         }
-
         this.initWithParams();
       }
     })
@@ -137,7 +151,6 @@ export class OrderShoesPage implements OnInit {
         });;
       }
     })
-
   }
 
   initWithParams = () => {
@@ -166,7 +179,10 @@ export class OrderShoesPage implements OnInit {
       for(let key in values) {
         if (this.goods[key] !== undefined) {
           let v = this.goods[key];
-          if (v._id !== undefined) {
+          let shoes = SHOES_PROPERTY_KEYS.findIndex(value=>value===key) !== -1;
+          if (shoes) {
+            values[key] = v.name;
+          } else if (v._id !== undefined) {
             values[key] = v._id;
           } else {
             values[key] = v;
@@ -247,19 +263,18 @@ export class OrderShoesPage implements OnInit {
 
     for(let goods of this.goodsList) {
       if (goods.NID === NID) {
-        values.s_material = goods.s_material._id;
-        values.s_xuan_hao = goods.s_xuan_hao._id;
-        values.s_gui_ge = goods.s_gui_ge._id;
-        values.s_out_color = goods.s_out_color._id;
-        values.s_in_color = goods.s_in_color._id;
-        values.s_bottom_color = goods.s_bottom_color._id;
-        values.s_bottom_side_color = goods.s_bottom_side_color._id;
-        values.s_gen_gao = goods.s_gen_gao && goods.s_gen_gao._id || '0';
+        values.s_material = goods.s_material.name;
+        values.s_xuan_hao = goods.s_xuan_hao.name;
+        values.s_gui_ge = goods.s_gui_ge.name;
+        values.s_out_color = goods.s_out_color.name;
+        values.s_in_color = goods.s_in_color.name;
+        values.s_bottom_color = goods.s_bottom_color.name;
+        values.s_bottom_side_color = goods.s_bottom_side_color.name;
+        values.s_gen_gao = goods.s_gen_gao && goods.s_gen_gao.name || '0';
         values.price = goods.price;
         break;;
       }
     }
-    this.orderGroup.setValue(values);
   }
 
   onPropertyChange = (): void => {
@@ -268,7 +283,7 @@ export class OrderShoesPage implements OnInit {
 
     let shoesInfo = this.getShoesInfo();
 
-    let nid = commonUtils.createGoodsNID(this.orderType, shoesInfo, customer.sex);
+    let nid = commonUtils.createGoodsNID(constants.GOODS_SHOES, shoesInfo, customer.sex);
     if (nid !== constants.NULL_NID) {
       let shoes = this.getValueFromListById(this.goodsList, '', (item)=>item.NID === nid);
       if (shoes) {
@@ -341,15 +356,15 @@ export class OrderShoesPage implements OnInit {
     let shoesInfo = {...this.orderGroup.value};
     this.formatFormValue(shoesInfo, this.formOptions);
 
-    shoesInfo.s_material = this.getValueFromListById(this.baseDatas.materialList, shoesInfo.s_material);
-    shoesInfo.s_xuan_hao = this.getValueFromListById(this.baseDatas.xuanHaoList, shoesInfo.s_xuan_hao);
-    shoesInfo.s_gui_ge = this.getValueFromListById(this.baseDatas.guiGeList, shoesInfo.s_gui_ge);
-    shoesInfo.s_out_color = this.getValueFromListById(this.baseDatas.outColorList, shoesInfo.s_out_color);
-    shoesInfo.s_in_color = this.getValueFromListById(this.baseDatas.inColorList, shoesInfo.s_in_color);
-    shoesInfo.s_bottom_color = this.getValueFromListById(this.baseDatas.bottomColorList, shoesInfo.s_bottom_color);
-    shoesInfo.s_bottom_side_color = this.getValueFromListById(this.baseDatas.bottomSideColorList, shoesInfo.s_bottom_side_color);
-    shoesInfo.s_tie_di = this.getValueFromListById(this.baseDatas.shoesTieBianList, shoesInfo.s_tie_di);
-    shoesInfo.s_gen_gao = this.getValueFromListById(this.baseDatas.genGaoList, shoesInfo.s_gen_gao);
+    shoesInfo.s_material = this.getValueFromListByName(this.baseDatas.materialList, shoesInfo.s_material);
+    shoesInfo.s_xuan_hao = this.getValueFromListByName(this.baseDatas.xuanHaoList, shoesInfo.s_xuan_hao);
+    shoesInfo.s_gui_ge = this.getValueFromListByName(this.baseDatas.guiGeList, shoesInfo.s_gui_ge);
+    shoesInfo.s_out_color = this.getValueFromListByName(this.baseDatas.outColorList, shoesInfo.s_out_color);
+    shoesInfo.s_in_color = this.getValueFromListByName(this.baseDatas.inColorList, shoesInfo.s_in_color);
+    shoesInfo.s_bottom_color = this.getValueFromListByName(this.baseDatas.bottomColorList, shoesInfo.s_bottom_color);
+    shoesInfo.s_bottom_side_color = this.getValueFromListByName(this.baseDatas.bottomSideColorList, shoesInfo.s_bottom_side_color);
+    shoesInfo.s_tie_di = this.getValueFromListByName(this.baseDatas.shoesTieBianList, shoesInfo.s_tie_di);
+    shoesInfo.s_gen_gao = this.getValueFromListByName(this.baseDatas.genGaoList, shoesInfo.s_gen_gao);
     return shoesInfo;
   }
 
@@ -383,7 +398,7 @@ export class OrderShoesPage implements OnInit {
         shoesInfo.pics = pics;
       }
 
-      shoesInfo.type = constants.E_ORDER_TYPE.SHOES;
+      shoesInfo.type = this.orderType;
       shoesInfo.remark = this.order_remark;
 
       return { customer:customer, goods: shoesInfo };

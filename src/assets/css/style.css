@@ -436,8 +436,8 @@ hr {
 .page-heading .breadcrumb li.active {
 	color: #65CEA7;
 }
-.wrapper {          
-	padding-left: env(safe-area-inset-left);            
+.wrapper {
+	padding-left: env(safe-area-inset-left);
 	padding-right: env(safe-area-inset-right);
 }
 .wrapper::after {
@@ -544,7 +544,7 @@ hr {
 }
 .row .form-group label {
 	position: absolute;
-	top: 5px;
+	top: 8px;
 	font-weight: normal;
 	margin: 0;
 }
@@ -3934,7 +3934,8 @@ ol.comment-list {
 .item-list .item-cb {
 	width: 11.73334%;
 	height: 74px;
-	text-align: center;
+  text-align: center;
+	position: relative;
 }
 .item-list .item-detail {
 	width: 88.26666%;
@@ -3947,11 +3948,29 @@ ol.comment-list {
 	border-radius: 12px;
 	border: 2px solid #c1c3ce;
 }
+.item-list .item-cb .checkbox {
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+}
 .item-list .item-img {
-	width: 106px;
+  width: 80px;
+  padding-top:7px;
+  text-align: center;
+}
+.item-list .item-img .blank {
+  line-height: 60px;
+  height: 60px;
+  width: 80px;
+  text-align: center;
+  vertical-align:middle;
+  display:table-cell;
+	border: 1px solid #aaaaaa;
 }
 .item-list .item-info {
-	padding: 0 12px;
+	padding: 0 0 0 10px;
 	overflow: hidden;
 }
 .item-list .item-info .title {
@@ -3996,7 +4015,8 @@ ol.comment-list {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	z-index: 2;
+  z-index: 2;
+  background-color: #FFFFFF;
 }
 .f-fx .footer {
 	border-top: 1px solid #cecece;
@@ -4024,6 +4044,11 @@ ol.comment-list {
 	height: 48px;
 	line-height: 48px;
 	padding: 0;
+	margin-left: 22px;
+	margin-right: 12px;
+}
+.f-fx .footer .btn-del {
+	padding: 5px 6px;
 	margin-left: 22px;
 	margin-right: 12px;
 }
@@ -4305,7 +4330,7 @@ ol.comment-list {
 }
 .order_progress li span {
 	display: block;
-	line-height: 14px;
+	line-height: 16px;
 }
 .order_progress li .title {
 	padding: 0 6px;
@@ -4319,6 +4344,12 @@ ol.comment-list {
 	width: 200%;
 	left: -50%;
 	z-index: 10;
+}
+.order_progress li:first-child.default::after {
+	width: 50%;
+}
+.order_progress li:last-child.default::after {
+	width: 100%;
 }
 .order_progress li.default i {
 	border: 2px solid #c1c3ce;

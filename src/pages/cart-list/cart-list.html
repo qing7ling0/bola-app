@@ -1,24 +1,30 @@
 <ion-content class="sticky-header">
   <!-- main content start-->
-  <div class="main-content" >
+  <div class="main-content" style="padding-bottom:88px" >
 
     <header [headerData]="headerData"></header>
     <!-- header section end-->
 
     <!--body wrapper start-->
     <div class="wrapper">
-      <div *ngFor="let arr of cartList" class="panel panel-default panel-cart">
+      <div *ngFor="let arr of cartList; let customerIndex = index" class="panel panel-default panel-cart">
         <div class="panel-heading">
-          <h3 class="panel-title">{{arr.customer.name+arr.customer.phone}}</h3>
+          <h3 class="panel-title">{{(arr.customer&&arr.customer.name||'')+'-'+(arr.customer&&arr.customer.phone||'')}}</h3>
         </div>
         <div class="panel-body" style="background:initial">
-          <div *ngFor="let goods of arr.goods" class="item-list clearfix">
-            <div class="item-detail pull-right clearfix">
-              <div class="item-img pull-left">
-                <a href="#"><img src="{{FILE_URL+goods.icon}}" class="img-responsive"></a>
+          <div *ngFor="let goods of arr.goods;  let goodsIndex = index" class="item-list clearfix">
+            <div class="item-info"><h3 class="title">货号：{{goods.NID}}</h3></div>
+            <div class="item-cb pull-left">
+              <ion-checkbox [(ngModel)]="goods.cart_select" [ngModelOptions]="{standalone: true}" (ionChange)="onGoodsSelect(customerIndex, goods)"></ion-checkbox>
+            </div>
+            <div class="item-detail pull-right clearfix" (click)="btnItemClick(customerIndex, goodsIndex)">
+              <div *ngIf="!!goods.icon" class="item-img pull-left">
+                <img src="{{FILE_URL+goods.icon}}" class="img-responsive">
+              </div>
+              <div *ngIf="!goods.icon" class="item-img pull-left ">
+                <div class="blank">暂无图片</div>
               </div>
               <div class="item-info pull-left">
-                <h3 class="title">货号：{{goods.NID}}</h3>
                 <div class="pay-price">金额：{{getGoodsPayPrice(goods)}} 元</div>
                 <div class="sku">
                   <p>含定制费：{{getGoodsCustomPrice(goods)}}元</p>
@@ -26,6 +32,15 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="f-fx">
+        <div class="footer clearfix">
+          <button class="btn-del pull-left" (click)="btnDelClick()">删除</button>
+          <div class="btn pull-right" (click)="btnPayClick()">结算</div>
+          <div class="pay">
+            <p>合计：<span class="o-t-price">{{getPayPrice()}}元</span></p>
           </div>
         </div>
       </div>

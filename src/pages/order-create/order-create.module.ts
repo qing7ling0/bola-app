@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { OrderCreatePage } from './order-create';
 import { BoalCommonModule } from '../../common/common.module'
 import { OrderShoesPage } from './shoes/shoes'
+import { OrderShoesDesignPage } from './shoes-design/shoes-design'
 import { OrderBeltPage } from './belt/belt'
 import { OrderWatchStrapPage } from './watch-strap/watch-strap'
 import { OrderMaintainPage } from './maintain/maintain'
@@ -14,6 +15,7 @@ import { OrderCustomerEditComponent } from './customer-edit/customer-edit.compon
   declarations: [
     OrderCreatePage,
     OrderShoesPage,
+    OrderShoesDesignPage,
     OrderBeltPage,
     OrderWatchStrapPage,
     OrderMaintainPage,
@@ -28,8 +30,9 @@ import { OrderCustomerEditComponent } from './customer-edit/customer-edit.compon
     IonicPageModule, BoalCommonModule
   ],
   entryComponents:[
-    OrderCreatePage, 
+    OrderCreatePage,
     OrderShoesPage,
+    OrderShoesDesignPage,
     OrderBeltPage,
     OrderWatchStrapPage,
     OrderMaintainPage,

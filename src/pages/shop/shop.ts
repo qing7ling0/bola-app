@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { CartListPage } from '../cart-list/cart-list'
 import { OrderCreatePage } from '../order-create/order-create'
+import { OrderTrackPage } from '../order-track/order-track'
 import {HeaderData} from '../../interface/header-data';
 
 const NAVS = [
@@ -27,6 +29,12 @@ export class ShopPage {
     switch(nav.id) {
       case 'create':
       this.navCtrl.push(OrderCreatePage);
+      break;
+      case 'cart':
+      this.navCtrl.push(CartListPage);
+      break;
+      case 'track':
+      this.navCtrl.push(OrderTrackPage);
       break;
     }
   }

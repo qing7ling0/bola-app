@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { NavController, ToastController, Events } from 'ionic-angular';
+import { NavController, ToastController, Events, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
@@ -16,7 +16,6 @@ import { orderType } from '../../../api/orderTypes';
 import * as constants from '../../../constants/constants'
 import { OrderCustomerEditComponent } from '../customer-edit/customer-edit.component';
 import { API_FILE_SERVER_ADDRESS, SEX_FEMALE } from '../../../constants/constants';
-import { shoesTieBianType } from '../../../api/graphqlTypes';
 
 const FORM_OPTIONS = (data)=> {
   let ret = [
@@ -42,7 +41,9 @@ export class OrderOrnamentPage implements OnInit {
   urgent: string = '';
   currentUrgentData: any = null;
   order_remark: string = '';
-  goodsOrnamentList:Array<any>=[]
+  goodsOrnamentList:Array<any>=[];
+  cartInfo:any = {cart:false};
+  goods:any = null;
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -59,8 +60,12 @@ export class OrderOrnamentPage implements OnInit {
     private transfer: FileTransfer,
     private file: File,
     private imagePicker: ImagePicker,
-    private cartProvider: CartProvider
+    private cartProvider: CartProvider,
+    public navParams: NavParams,
   ) {
+    this.goods = navParams.get('goods');
+    this.customerData = navParams.get('customer');
+    this.cartInfo = navParams.get('cartInfo')||{cart:false};
   }
 
   ngOnInit(): void {
@@ -68,7 +73,7 @@ export class OrderOrnamentPage implements OnInit {
     this.orderGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
   }
 
-  ionViewDidEnter(): void {
+  ionViewDidLoad(): void {
     this.commonProvider.getGoodsBaseDatas().then((data:any) => {
       if (data) {
         this.baseDatas = {};
@@ -84,15 +89,42 @@ export class OrderOrnamentPage implements OnInit {
           });
           this.baseDatas.urgentList.unshift({value:'0', label:'无', name:'', _id:''});
         }
+        this.commonProvider.getGoodsList('goodsOrnamentList:goodsList', this.orderType).then((data:any) => {
+          if (data && data.goodsOrnamentList) {
+            this.goodsOrnamentList = data.goodsOrnamentList.list.map((item)=>{
+              return {value:item._id, label:item.name, ...item};
+            });
+            this.initWithParams();
+          }
+        })
       }
     })
-    this.commonProvider.getGoodsList('goodsOrnamentList:goodsList', constants.E_ORDER_TYPE.ORNAMENT).then((data:any) => {
-      if (data && data.goodsOrnamentList) {
-        this.goodsOrnamentList = data.goodsOrnamentList.list.map((item)=>{
-          return {value:item._id, label:item.name, ...item};
-        });;
+  }
+
+  initWithParams = () => {
+    if (this.goods && this.customerData) {
+      this.customerControl.setCustomer(this.customerData);
+      this.pics = this.goods.pics;
+      this.urgent = this.goods.urgent && this.goods.urgent._id || '';
+      this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);
+      this.order_remark = this.goods.remark;
+
+      let values = this.orderGroup.value;
+      for(let key in values) {
+        if (this.goods[key] !== undefined) {
+          let v = this.goods[key];
+          if (key === 'NID') {
+            let goo = this.getValueFromListById(this.goodsOrnamentList, "", item => item.NID === v);
+            values[key] = goo&&goo._id || '';
+          } else if (v._id !== undefined) {
+            values[key] = v._id;
+          } else {
+            values[key] = v;
+          }
+        }
       }
-    })
+      this.orderGroup.setValue(values);
+    }
   }
 
   onCustomerChange = (data: any): void => {
@@ -193,7 +225,7 @@ export class OrderOrnamentPage implements OnInit {
         goodsInfo.pics = pics;
       }
 
-      goodsInfo.type = constants.E_ORDER_TYPE.ORNAMENT;
+      goodsInfo.type = this.orderType;
       goodsInfo.remark = this.order_remark;
 
       return { customer:customer, goods: goodsInfo };
@@ -219,10 +251,21 @@ export class OrderOrnamentPage implements OnInit {
     }
   }
 
+  btnSureClicked = (): void => {
+    if (this.cartInfo.cart) {
+      let result = this.getSubOrderInfo();
+      if (result) {
+        this.events.publish('cart:update-goods', this.cartInfo.customerIndex, result.customer, this.cartInfo.goodsIndex, result.goods);
+        this.navCtrl.pop();
+      }
+    }
+  }
+
   addToCartClicked = ():void => {
     let result = this.getSubOrderInfo();
     if (result) {
       this.cartProvider.addGoods(result.customer, result.goods);
+      this.navCtrl.pop();
     }
   }
 

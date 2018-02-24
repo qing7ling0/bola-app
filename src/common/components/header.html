@@ -9,10 +9,10 @@
     </div>
   </div>
   <div *ngIf="headerData&&headerData.type==='cart-clear'">
-    <div class="menu-right" (click)="clearCartList()">清空购物车</div>
+    <div class="header-icon-back menu-right"><a (click)="clearCartList()">清空购物车</a> </div>
   </div>
   <div *ngIf="headerData&&headerData.type==='cart-list'">
-    <div class="menu-right" (click)="openCartList()">购物车</div>
+    <div class="header-icon-back menu-right"><a (click)="openCartList()">购物车</a></div>
   </div>
   <div class="header-title">{{headerData.title}}</div>
 </div>

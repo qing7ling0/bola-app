@@ -16,7 +16,6 @@ import { orderType } from '../../../api/orderTypes';
 import * as constants from '../../../constants/constants'
 import { OrderCustomerEditComponent } from '../customer-edit/customer-edit.component';
 import { API_FILE_SERVER_ADDRESS, SEX_FEMALE } from '../../../constants/constants';
-import { shoesTieBianType } from '../../../api/graphqlTypes';
 
 const FORM_OPTIONS = (data)=> {
   let ret = [
@@ -79,7 +78,7 @@ export class OrderRechargePage implements OnInit {
     });
   }
 
-  ionViewDidEnter(): void {
+  ionViewDidLoad(): void {
     this.commonProvider.getRechargeList().then((data:any) => {
       if (data) {
         this.rechargeList = data;

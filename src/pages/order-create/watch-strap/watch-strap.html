@@ -18,7 +18,7 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">货 &nbsp;&nbsp; 号</label>
-                  <ion-input class="form-text" formControlName="NID" placeholder="输入货号" type="text" ></ion-input>
+                  <bola-input-select formControlName="NID" class="form-text" placeholder="输入货号" [source]="goodsList||[]" [onChanged]="onNIDChange"></bola-input-select>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6">
@@ -156,7 +156,8 @@
             </div>
           </div>
         </form>
-        <div class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
+        <div *ngIf="!cartInfo.cart" class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">立即创建</a> <a href="#" class="btn" (click)="addToCartClicked()">加入购物车</a> </div>
+        <div *ngIf="cartInfo.cart" class="order-action"> <a href="#" class="btn" (click)="btnSureClicked()">确定</a></div>
       </div>
     </div>
     <!--body wrapper end-->

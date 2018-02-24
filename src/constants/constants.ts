@@ -74,7 +74,7 @@ export const MENU_IDS = {
 
   report:               5,
   reportTable:          501, // 销售报表
-  
+
   system:               9, // 系统管理
   systemSetting:        901, // 系统设置
   systemAdmin:          902, // 管理员账号管理
@@ -196,8 +196,8 @@ export const GOODS_WATCH_STRAP = E_ORDER_TYPE.WATCH_STRAP; // 表带
 export const GOODS_ORNAMENT = E_ORDER_TYPE.ORNAMENT; // 配饰
 export const MAINTAIN = E_ORDER_TYPE.MAINTAIN; // 护理
 export const GOODS_SHOES_NID_FIELDS = [
-  's_xuan_hao', 's_material', 's_gui_ge', 
-  's_out_color', 's_in_color', 's_bottom_color', 
+  's_xuan_hao', 's_material', 's_gui_ge',
+  's_out_color', 's_in_color', 's_bottom_color',
   's_bottom_side_color', 's_gen_gao'
 ]; // 鞋子和编号关联字段
 export const GOODS_BLET_NID_FIELDS = ['b_material', 'b_color']; // 皮带和编号关联字段
@@ -258,6 +258,8 @@ export const E_ORDER_STATUS = {
   MAKING_4: 304, // 品检出货
   DELIVERY:400, // 发货中
   TRANSPORT: 500, // 已发货，邮寄中
+  INBOUND: 510, // 已入库
+  OUTBOUND: 520, // 已出库
   SURE: 600, // 客户确认
   COMPLETED: 700, // 已完成
   REJECTED: 1000, // 退货,
@@ -290,8 +292,8 @@ export const E_REPORT_TYPES = {
 }
 
 export const Powers = [
-  { 
-    id:MENU_IDS.reportTable, 
+  {
+    id:MENU_IDS.reportTable,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true} },
@@ -301,8 +303,8 @@ export const Powers = [
       { id:POWER_TYPES.FACTORY_PRODUCTION, power:{view:false} },
     ]
   },
-  { 
-    id:MENU_IDS.salesItems, 
+  {
+    id:MENU_IDS.salesItems,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true} },
@@ -312,8 +314,8 @@ export const Powers = [
       { id:POWER_TYPES.FACTORY_PRODUCTION, power:{view:true} },
     ]
   },
-  { 
-    id:MENU_IDS.salesOrder, 
+  {
+    id:MENU_IDS.salesOrder,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true, add:true} },
@@ -323,8 +325,8 @@ export const Powers = [
       { id:POWER_TYPES.FACTORY_PRODUCTION, power:{view:true} },
     ]
   },
-  { 
-    id:MENU_IDS.salesMaterial, 
+  {
+    id:MENU_IDS.salesMaterial,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true} },
@@ -334,8 +336,8 @@ export const Powers = [
       { id:POWER_TYPES.FACTORY_PRODUCTION, power:{view:true, add:true, edit:true} },
     ]
   },
-  { 
-    id:MENU_IDS.salesSampleGoods, 
+  {
+    id:MENU_IDS.salesSampleGoods,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true} },
@@ -345,8 +347,8 @@ export const Powers = [
       { id:POWER_TYPES.FACTORY_PRODUCTION, power:{view:true} },
     ]
   },
-  { 
-    id:MENU_IDS.salesItemsBase, 
+  {
+    id:MENU_IDS.salesItemsBase,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true, add:true, edit:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true, add:true, edit:true} },
@@ -356,9 +358,9 @@ export const Powers = [
       { id:POWER_TYPES.FACTORY_PRODUCTION, power:{view:true} },
     ]
   },
-  
-  { 
-    id:MENU_IDS.customerInfo, 
+
+  {
+    id:MENU_IDS.customerInfo,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true} },
@@ -368,8 +370,8 @@ export const Powers = [
       { id:POWER_TYPES.FACTORY_PRODUCTION, power:{view:false} },
     ]
   },
-  { 
-    id:MENU_IDS.customerBuy, 
+  {
+    id:MENU_IDS.customerBuy,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true} },
@@ -380,8 +382,8 @@ export const Powers = [
     ]
   },
 
-  { 
-    id:MENU_IDS.shopInfo, 
+  {
+    id:MENU_IDS.shopInfo,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true, add:true, edit:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true, add:true, edit:true} },
@@ -391,8 +393,8 @@ export const Powers = [
       { id:POWER_TYPES.FACTORY_PRODUCTION, power:{view:false} },
     ]
   },
-  { 
-    id:MENU_IDS.shopGuide, 
+  {
+    id:MENU_IDS.shopGuide,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true, add:true, edit:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true, add:true, edit:true} },
@@ -403,8 +405,8 @@ export const Powers = [
     ]
   },
 
-  { 
-    id:MENU_IDS.activityRecharge, 
+  {
+    id:MENU_IDS.activityRecharge,
     powers:[
       { id:POWER_TYPES.SALE_MANAGER, power:{view:true} },
       { id:POWER_TYPES.SHOP_MANAGER, power:{view:true} },
@@ -413,22 +415,22 @@ export const Powers = [
       { id:POWER_TYPES.MANAGER_SENIOR, power:{view:true, add:true, edit:true} },
     ]
   },
-  { 
-    id:MENU_IDS.activityVIP, 
+  {
+    id:MENU_IDS.activityVIP,
     powers:[
       { id:POWER_TYPES.MANAGER_NORMAL, power:{view:true} },
       { id:POWER_TYPES.MANAGER_SENIOR, power:{view:true, add:true, edit:true} },
     ]
   },
 
-  { 
-    id:MENU_IDS.systemSetting, 
+  {
+    id:MENU_IDS.systemSetting,
     powers:[
       { id:POWER_TYPES.MANAGER_SENIOR, power:{view:true, add:true, edit:true} },
     ]
   },
-  { 
-    id:MENU_IDS.systemAdmin, 
+  {
+    id:MENU_IDS.systemAdmin,
     powers:[]
   }
 ]
