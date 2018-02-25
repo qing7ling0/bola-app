@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, Events } from 'ionic-angular';
+import { NavController, Events, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 
@@ -33,7 +33,8 @@ export class OrderCreatePage implements OnInit {
     public navCtrl: NavController,
     private formBuilder: FormBuilder,
     private storage: Storage,
-    private cartProvider: CartProvider
+    private cartProvider: CartProvider,
+    private toastCtrl: ToastController
   ) {
     this.subscribeEvents();
   }
@@ -52,7 +53,14 @@ export class OrderCreatePage implements OnInit {
   }
 
   onNavClicked(nav: any) : void {
-    if (!this.loginUserShopId) return;
+    if (!this.loginUserShopId){
+      this.toastCtrl.create({
+        message:'只有导购账号可以创建订单！',
+        duration:1500,
+        position:'middle'
+      }).present();
+      return;
+    }
     switch(nav.id) {
       case E_ORDER_TYPE.SHOES:
         this.navCtrl.push(OrderShoesPage);
