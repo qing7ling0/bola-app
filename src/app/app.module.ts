@@ -21,6 +21,7 @@ import { OrderCreateModule } from '../pages/order-create/order-create.module';
 import { CartPayModule } from '../pages/cart-pay/cart-pay.module';
 import { CartListModule } from '../pages/cart-list/cart-list.module';
 import { OrderTrackModule } from '../pages/order-track/order-track.module';
+import { CustomerReportModule } from '../pages/customer-report/customer-report.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { OrderTrackModule } from '../pages/order-track/order-track.module';
     OrderCreateModule,
     CartPayModule,
     CartListModule,
-    OrderTrackModule
+    OrderTrackModule,
+    CustomerReportModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

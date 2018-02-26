@@ -534,11 +534,12 @@ hr {
 .panel-info > .panel-heading .info-square {
 	position: absolute;
 	left: 0;
-	top: 16px;
+	top: 50%;
 	display: block;
 	width: 8px;
 	height: 8px;
-	background: #2980d9;
+  background: #2980d9;
+  transform: translateY(-50%)
 }
 .panel-info > .panel-body {
 	margin: 0 3px;

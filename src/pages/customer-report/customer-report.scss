@@ -1,0 +1,118 @@
+.customer-row {
+  padding:8px;
+  border-bottom: 4px solid #dddee3;
+}
+
+.customer-header {
+  border-bottom: 4px solid #dddee3;
+}
+.customer-header .customer-header-box {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #dddee3;
+}
+.customer-header-box .item {
+  text-align: center;
+}
+.customer-header-box .item-title {
+  font-size: 14px;
+  color: #84878c;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.customer-header-box .item-content {
+  float: left;
+  width:50%;
+  font-size: 18px;
+  height: 22px;
+  line-height: 22px;
+}
+.customer-header-box .item-content-left {
+  text-align: right;
+  color: #dc5569;
+  padding-right: 5px;
+  border-right: 1px solid #dddee3;
+}
+.customer-header-box .item-content-right {
+  text-align: left;
+  color: #323232;
+  padding-left: 5px;
+}
+
+.customer-panel {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.customer-search {
+  position: relative;
+  padding:0px 8px;
+}
+.customer-search .search-phone {
+  // position: absolute;
+  // right: 0;
+  // top: 50%;
+  // transform: translateY(-50%);
+  display: flex;
+  align-items: flex-end;
+}
+.customer-search .panel-heading {
+  display: flex;
+  align-items: center;
+}
+.customer-search .panel-heading .panel-title {
+  min-width: 50px;
+}
+.search-phone .input {
+  flex: 1;
+}
+.search-phone .btn {
+  margin-left: 16px;
+  line-height: 16px;
+}
+
+.search-input {
+  display: flex;
+}
+.search-input span {
+  display: inline-block;
+  font-weight: normal;
+  font-size: 12px;
+  padding:0px 4px;
+  line-height: 26px;
+  height:20px;
+}
+.search-input input, .search-input .datetime-text, .search-input .select-text {
+  text-align: center;
+}
+.search-input .form-text {
+  padding: 0px;
+  margin: 0px;
+  font-size: 12px;
+  border-bottom: 1px dashed #8e8e8e;
+  flex:1;
+}
+.search-input .vip-tag {
+  max-width: 40%;
+}
+.search-input .union-btn {
+  margin: 0 auto;
+}
+
+.search-result {
+  height: 500px;
+}
+.search-result-list {
+}
+.search-result-list .item {
+  display: flex;
+  width:auto;
+  min-width: 1000px;
+}
+.search-result-list .item .th {
+  min-width:120px;
+  text-align: center;
+}
+.search-result-list .item .td {
+  min-width:120px;
+  text-align: center;
+}

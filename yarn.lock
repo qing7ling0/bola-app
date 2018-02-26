@@ -1228,6 +1228,10 @@ cordova-plugin-splashscreen@^4.0.3:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/cordova-plugin-splashscreen/-/cordova-plugin-splashscreen-4.1.0.tgz#81028ab7643e615593d27f2ad02445611f1946b6"
 
+cordova-plugin-statusbar@^2.4.1:
+  version "2.4.1"
+  resolved "http://registry.npm.taobao.org/cordova-plugin-statusbar/download/cordova-plugin-statusbar-2.4.1.tgz#222628a78aa54d34d4c927990020d0a3bace5545"
+
 cordova-plugin-telerik-imagepicker@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/cordova-plugin-telerik-imagepicker/-/cordova-plugin-telerik-imagepicker-2.1.8.tgz#e2d531db60950abeb9d9346ffd7bf1aed4799043"
