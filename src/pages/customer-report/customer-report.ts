@@ -1,34 +1,126 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, OnInit } from '@angular/core';
+import { NavController, ToastController, NavParams } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import moment from 'moment'
+
+import { FormValidator } from '../../utils/form-validator'
 import { CartListPage } from '../cart-list/cart-list'
 import { OrderCreatePage } from '../order-create/order-create'
 import { OrderTrackPage } from '../order-track/order-track'
-import {HeaderData} from '../../interface/header-data';
+import { HeaderData } from '../../interface/header-data';
+import { CustomerProvider } from '../../providers'
+import { Utils } from '../../utils/utils';
+
+const FORM_PHONE_OPTIONS = (data)=> [
+  {key:'phone', label:'手机号', defaultValue:'', validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/)}]},
+]
+
+const FORM_OPTIONS = (data)=> [
+  {key:'costMin', label:'消费金额', formatValue:(value)=>Utils.stringToInt(value), defaultValue:'', validators:[{key:'pattern', validator:Validators.pattern(/^[1-9]\d*$/)}]},
+  {key:'costMax', label:'消费金额', formatValue:(value)=>Utils.stringToInt(value), defaultValue:'', validators:[{key:'pattern', validator:Validators.pattern(/^[1-9]\d*$/)}]},
+  {key:'day', label:'天数', defaultValue:'', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'pattern', validator:Validators.pattern(/^[1-9]\d*$/)}]},
+  {key:'costCountMin', label:'消费次数', formatValue:(value)=>Utils.stringToInt(value), defaultValue:'', validators:[{key:'pattern', validator:Validators.pattern(/^[1-9]\d*$/)}]},
+  {key:'costCountMax', label:'消费次数', formatValue:(value)=>Utils.stringToInt(value), defaultValue:'', validators:[{key:'pattern', validator:Validators.pattern(/^[1-9]\d*$/)}]},
+  {key:'dateBegan', label:'生日', defaultValue:'', validators:[]},
+  {key:'dateEnd', label:'生日', defaultValue:'', validators:[]},
+  {key:'vipTag', label:'标签', defaultValue:'', validators:[]},
+]
 
 @Component({
   selector: 'page-customer-report',
   templateUrl: 'customer-report.html'
 })
-export class CustomerReportPage {
+export class CustomerReportPage implements OnInit {
   headerData: HeaderData = {title:'会员管理', menuEnable:false, type:'customer'};
-  sexDataList:Array<any> = [{value:'1', label:'test1'},{value:'2', label:'test2'}];
-  vipTagList:Array<any> = [{value:'1', label:'土豪'}, {value:'2', label:'土豪2'}];
 
-  constructor(public navCtrl: NavController) {
+  formOptions: Array<any>;
+  formPhoneOptions: Array<any>;
+  unionGroup: FormGroup;
+  phoneGroup: FormGroup;
+  guideId: string = "";
+
+  constructor(
+    public navCtrl: NavController,
+    private formBuilder: FormBuilder,
+    private toastCtrl: ToastController,
+    private customerProvider: CustomerProvider,
+    public navParams: NavParams,
+  ) {
+    this.guideId = navParams.get('guideId');
   }
 
-  onNavClicked(nav: any) : void {
-    switch(nav.id) {
-      case 'create':
-      this.navCtrl.push(OrderCreatePage);
-      break;
-      case 'cart':
-      this.navCtrl.push(CartListPage);
-      break;
-      case 'track':
-      this.navCtrl.push(OrderTrackPage);
-      break;
+  ngOnInit(): void {
+    this.formOptions = FORM_OPTIONS(null);
+    this.unionGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
+
+    this.formPhoneOptions = FORM_PHONE_OPTIONS(null);
+    this.phoneGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formPhoneOptions));
+  }
+
+  btnSearchPhoneClicked = () => {
+    if (!this.phoneGroup.valid) {
+      let message = FormValidator.getValidError(this.phoneGroup.controls, this.formPhoneOptions);
+      if (message) {
+        this.toastCtrl.create({
+          message:message,
+          duration:1500,
+          position:'middle'
+        }).present();
+      }
+      return;
     }
+
+    this.customerProvider.getCustomerReportList(this.guideId, this.phoneGroup.value);
+  }
+
+  btnSearchUnionClicked = () => {
+    if (!this.unionGroup.valid) {
+      let message = FormValidator.getValidError(this.unionGroup.controls, this.formOptions);
+      if (message) {
+        this.toastCtrl.create({
+          message:message,
+          duration:1500,
+          position:'middle'
+        }).present();
+      }
+      return;
+    }
+    let values = this.unionGroup.value;
+
+    if (values.costMin && values.costMax) {
+      if (values.costMin > values.costMax) {
+        this.toastCtrl.create({
+          message:'请填写正确的消费金额范围！',
+          duration:1500,
+          position:'middle'
+        }).present();
+        return;
+      }
+    }
+
+    if (values.costCountMin && values.costCountMax) {
+      if (values.costCountMin > values.costCountMax) {
+        this.toastCtrl.create({
+          message:'请填写正确的消费次数范围！',
+          duration:1500,
+          position:'middle'
+        }).present();
+        return;
+      }
+    }
+
+    if (values.dateBegan && values.dateEnd) {
+      if (moment(values.dateEnd).isBefore(values.dateBegan)) {
+        this.toastCtrl.create({
+          message:'请填写正确的生日范围！',
+          duration:1500,
+          position:'middle'
+        }).present();
+        return;
+      }
+    }
+
+    this.customerProvider.getCustomerReportList(this.guideId, this.unionGroup.value);
   }
 
 }

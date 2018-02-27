@@ -73,6 +73,9 @@
 .search-input {
   display: flex;
 }
+.search-input .item-cover {
+  width: auto;
+}
 .search-input span {
   display: inline-block;
   font-weight: normal;
@@ -94,25 +97,62 @@
 .search-input .vip-tag {
   max-width: 40%;
 }
-.search-input .union-btn {
-  margin: 0 auto;
+.customer-search .union-btn {
+  display: block;
+  margin: 10px auto;
+  width: 50%;
 }
 
 .search-result {
-  height: 500px;
+  height: 360px;
 }
 .search-result-list {
+  display: block;
 }
 .search-result-list .item {
   display: flex;
-  width:auto;
-  min-width: 1000px;
+  width: 750px;
+  text-align: center;
+  color: #84878c;
+  font-size: 12px;
+  padding:5px 0;
+  border-bottom: 1px dashed #c1c3ce;
+}
+.search-result-list .item.header {
+  border-bottom: 0px;
 }
 .search-result-list .item .th {
-  min-width:120px;
-  text-align: center;
+  font-size: 14px;
+  color: #323232;
+  border-right: 1px solid #c1c3ce;
+  border-bottom: 0px;
+}
+.search-result-list .item th:first-child{
+  border-left:0px;
+}
+.search-result-list .item th:last-child{
+  border-right:0px;
 }
 .search-result-list .item .td {
-  min-width:120px;
+  width:110px;
   text-align: center;
+}
+
+.search-result-list .item-50 {
+  width:50px;
+}
+.search-result-list .item-120 {
+  width:120px;
+}
+.search-result-list .item-100 {
+  width:100px;
+}
+.search-result-list .item-160 {
+  width:160px;
+}
+
+@media screen and (max-width: 320px) {
+  .customer-header-box .item-title {
+    font-size: 12px;
+  }
 }

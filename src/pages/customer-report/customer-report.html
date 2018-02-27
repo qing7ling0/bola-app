@@ -29,14 +29,16 @@
       </div>
       <div class="customer-row customer-search">
         <div class="panel panel-info customer-panel">
-          <div class="panel-heading">
-            <span class="info-square"></span>
-            <h3 class="panel-title">手机号</h3>
-            <div class="search-phone">
-              <ion-input class="form-control pull-left" placeholder="请输入手机号"></ion-input>
-              <button class="btn pull-left"><ion-icon name="search"></ion-icon></button>
+          <form [formGroup]="phoneGroup">
+            <div class="panel-heading">
+              <span class="info-square"></span>
+              <h3 class="panel-title">手机号</h3>
+              <div class="search-phone">
+                <ion-input class="form-control pull-left" formControlName="phone" placeholder="请输入手机号"></ion-input>
+                <button class="btn pull-left" (click)="btnSearchPhoneClicked()"><ion-icon name="search"></ion-icon></button>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
         <div class="panel panel-info customer-panel">
           <div class="panel-heading">
@@ -44,39 +46,42 @@
             <h3 class="panel-title">组合查询</h3>
           </div>
           <div class="panel-body">
-            <ion-grid>
-              <ion-row>
-                <ion-col col-12>
-                  <div class="search-input">
-                    <span>累积消费金额</span>
-                    <ion-input class="form-text" placeholder="起始金额" type="text"></ion-input>
-                    <span>至</span>
-                    <ion-input class="form-text" placeholder="结束金额" type="text"></ion-input>
-                  </div>
-                </ion-col>
-                <ion-col col-12>
-                  <div class="search-input">
-                    <span>最后一次消费日期至今</span>
-                    <ion-input class="form-text" placeholder="输入天数" type="text"></ion-input>
-                    <span>天</span>
-                  </div>
-                </ion-col>
-                <ion-col col-12>
-                  <div class="search-input">
-                    <span>生日日期</span>
-                    <ion-datetime displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="开始"></ion-datetime>
-                    <span>至</span>
-                    <ion-datetime displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="结束"></ion-datetime>
-                  </div>
-                </ion-col>
-                <ion-col col-12>
-                  <div class="search-input">
-                    <span>会员标签</span>
-                    <bola-select class="form-text vip-tag" placeholder="会员标签" [source]="vipTagList"></bola-select>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+            <form [formGroup]="unionGroup">
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-12>
+                    <div class="search-input">
+                      <span>累积消费金额</span>
+                      <ion-input class="form-text" formControlName="costMin" placeholder="起始金额" type="text"></ion-input>
+                      <span>至</span>
+                      <ion-input class="form-text" formControlName="costMax" placeholder="结束金额" type="text"></ion-input>
+                    </div>
+                  </ion-col>
+                  <ion-col col-12>
+                    <div class="search-input">
+                      <span>最后一次消费日期至今</span>
+                      <ion-input class="form-text" formControlName="day" placeholder="输入天数" type="text"></ion-input>
+                      <span>天</span>
+                    </div>
+                  </ion-col>
+                  <ion-col col-12>
+                    <div class="search-input">
+                      <span>生日日期</span>
+                      <ion-datetime formControlName="dateBegan" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="开始"></ion-datetime>
+                      <span>至</span>
+                      <ion-datetime formControlName="dateEnd" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="结束"></ion-datetime>
+                    </div>
+                  </ion-col>
+                  <ion-col col-12>
+                    <div class="search-input">
+                      <span>会员标签</span>
+                      <bola-select formControlName="vipTag" class="form-text vip-tag" placeholder="会员标签" [source]="vipTagList"></bola-select>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </form>
+            <div class="btn union-btn" (click)="btnSearchUnionClicked()">点击查询</div>
           </div>
         </div>
       </div>
@@ -89,23 +94,104 @@
           <div class="panel-body">
             <ion-scroll class="search-result" scrollX="true" scrollY="true">
               <div class="search-result-list">
-                <div class="item">
-                  <div class="th"><label>手机号</label></div>
-                  <div class="th">姓名</div>
-                  <div class="th">性别</div>
-                  <div class="th">生日</div>
-                  <div class="th"><label>最后一次消费日期</label></div>
-                  <div class="th">消费次数</div>
-                  <div class="th">消费金额</div>
+                <div class="item header">
+                  <div class="th item-120">手机号</div>
+                  <div class="th item-100">姓名</div>
+                  <div class="th item-50">性别</div>
+                  <div class="th item-100">生日</div>
+                  <div class="th item-160">最后一次消费日期</div>
+                  <div class="th item-100">消费次数</div>
+                  <div class="th item-100">消费金额</div>
                 </div>
                 <div class="item">
-                  <div class="td">13817280081</div>
-                  <div class="td">吴大华</div>
-                  <div class="td">男</div>
-                  <div class="td">2016/12/02</div>
-                  <div class="td">2015/02/03 14:12:08</div>
-                  <div class="td">5</div>
-                  <div class="td">293654.6元</div>
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
+                </div>
+                <div class="item">
+                  <div class="item-120">+83-13817280081</div>
+                  <div class="item-100">吴大华</div>
+                  <div class="item-50">男</div>
+                  <div class="item-100">2016/12/02</div>
+                  <div class="item-160">2015/02/03 14:12:08</div>
+                  <div class="item-100">5</div>
+                  <div class="item-100">293654.6元</div>
                 </div>
               </div>
             </ion-scroll>

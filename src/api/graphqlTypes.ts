@@ -156,14 +156,15 @@ export const orderWatchStrapType = `{
   shop {_id, name},
 }
 `
-
 export const orderTypes ={
   orderShoes:orderShoseType,
   orderBelt:orderBeltType,
   orderWatchStrap:orderWatchStrapType
 }
 
-export const pageListType = (itemType) =>{ 
+export const customerReportType = `{customer ${customerType}, lastCostTime, costCount, costAmount}`
+
+export const pageListType = (itemType) =>{
   return`
     {page {page,pageSize,total}
     list ${itemType}}
