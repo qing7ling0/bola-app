@@ -311,7 +311,7 @@ export class OrderShoesDesignPage implements OnInit {
   isEditing = () => {
     return !this.viewProfile;
   }
-  
+
   btnPicAddClicked(): void {
     if (!this.isEditing()) return;
     this.pics.push({file:'', desc:''});

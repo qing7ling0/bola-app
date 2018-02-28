@@ -6,7 +6,7 @@ import { OrderCreatePage } from '../order-create/order-create'
 import {HeaderData} from '../../interface/header-data';
 import * as constants from '../../constants/constants'
 import { CartProvider, CommonProvider } from '../../providers';
-
+import * as commonUtils from '../../utils/common-utils'
 
 @Component({
   selector: 'page-cart-pay',
@@ -171,7 +171,7 @@ export class CartPayPage {
       let sub = {...good};
       sub.shop = this.shopId;
       sub.guide = this.guideId;
-      sub.customer = this.customer;
+      sub.customer = commonUtils.copyProperty(this.customer,['phone', 'name', 'sex', 'birthday', 'weixin', 'country', 'city', 'address', 'zipcode']);
       subOrders.push(sub);
     }
     order.sub_orders = subOrders;

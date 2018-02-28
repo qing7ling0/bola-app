@@ -43,9 +43,14 @@ export class CustomerProvider {
   getCustomerReportList(guideId: string, conditions: any): Promise<any> {
     let query = `
       query Query {
-        customerReportList(id:"${guideId}", conditions:"")${graphqlTypes.customerReportType}
+        customerReportList(id:"${guideId}", conditions:"${encodeURIComponent(JSON.stringify(conditions))}")${graphqlTypes.customerReportType}
       }
     `;
-    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true);
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
+      if(result.code === 0) {
+        return result.data.customerReportList;
+      }
+      return null;
+    });
   }
 }

@@ -83,7 +83,7 @@ export const shopType = `{
 
 export const customerType = `{
   _id,name,phone,sex,birthday,weixin,weixin_code_pic,country,city,address,zipcode,
-  vip_card_date,vip_card_shop,vip_card_guide,vip_level,vip_exp,balance,join_type,
+  vip_card_date,vip_card_shop{_id, name},vip_card_guide{_id,name},vip_level,vip_exp,balance,join_type,
 }`
 
 export const rechargeType = `{_id, mount, reward}`
@@ -162,13 +162,10 @@ export const orderTypes ={
   orderWatchStrap:orderWatchStrapType
 }
 
-export const customerReportType = `{customer ${customerType}, lastCostTime, costCount, costAmount}`
+export const customerReportType = `{customer {_id,name,phone,sex,birthday}, lastCostTime, costCount, costAmount}`
 
 export const pageListType = (itemType) =>{
-  return`
-    {page {page,pageSize,total}
-    list ${itemType}}
-  `
+  return`{page {page,pageSize,total} list ${itemType}}`
 }
 
 export const resultType = `

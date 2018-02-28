@@ -137,11 +137,19 @@ export const SHOP_PRO = [
   {id:2, value:'2', 'label':'特卖'},
 ]
 
+export const E_CUSTOMER_TYPE = {
+  ORDER:'1',
+  WEB:'2',
+  ADMIN:'3',
+  OTHER:'99'
+}
+
 /** 客户来源 */
 export const CUSTOMER_TYPE = [
-  {value:'1', label:'订单'},
-  {value:'2', label:'网站'},
-  {value:'99', label:'其他'}
+  {value:E_CUSTOMER_TYPE.ORDER, label:'订单'},
+  {value:E_CUSTOMER_TYPE.WEB, label:'网站'},
+  {value:E_CUSTOMER_TYPE.ADMIN, label:'后台'},
+  {value:E_CUSTOMER_TYPE.OTHER, label:'其他'}
 ]
 
 /** 维修保养改型 */

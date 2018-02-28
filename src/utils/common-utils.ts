@@ -137,7 +137,7 @@ export const createGoodsNID = function(type, data, sex) {
       return NID;
 
     case constants.GOODS_ORNAMENT:
-      
+
     return NID;
   }
 }
@@ -180,4 +180,17 @@ export const getPower= function(user, powerId) {
   }
 
   return {};
+}
+
+export const copyProperty = function(value:any, filterKeys:Array<any>=null) {
+  if (!value) return null;
+
+  let ret = {};
+  for(let key in value) {
+    if (filterKeys && filterKeys.findIndex(item => item === key)!==-1) {
+      ret[key] = value[key];
+    }
+  }
+
+  return ret;
 }

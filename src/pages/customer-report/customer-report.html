@@ -103,95 +103,14 @@
                   <div class="th item-100">消费次数</div>
                   <div class="th item-100">消费金额</div>
                 </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
-                </div>
-                <div class="item">
-                  <div class="item-120">+83-13817280081</div>
-                  <div class="item-100">吴大华</div>
-                  <div class="item-50">男</div>
-                  <div class="item-100">2016/12/02</div>
-                  <div class="item-160">2015/02/03 14:12:08</div>
-                  <div class="item-100">5</div>
-                  <div class="item-100">293654.6元</div>
+                <div *ngFor="let data of list" class="item">
+                  <div class="item-120">{{data.customer.phone}}</div>
+                  <div class="item-100">{{data.customer.name}}</div>
+                  <div class="item-50">{{data.customer.sex}}</div>
+                  <div class="item-100">{{data.customer.birthday}}</div>
+                  <div class="item-160">{{data.lastCostTime}}</div>
+                  <div class="item-100">{{data.costCount}}次</div>
+                  <div class="item-100">{{data.costAmount}}元</div>
                 </div>
               </div>
             </ion-scroll>

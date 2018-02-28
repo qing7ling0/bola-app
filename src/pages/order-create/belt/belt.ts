@@ -119,7 +119,7 @@ export class OrderBeltPage implements OnInit {
       }
     })
   }
-  
+
   isEditing = () => {
     return !this.viewProfile;
   }
@@ -129,7 +129,7 @@ export class OrderBeltPage implements OnInit {
       this.customerControl.setCustomer(this.customerData);
       this.customerControl.setViewProfile(this.viewProfile);
       this.pics = this.goods.pics;
-      
+
       if (this.isEditing()) {
         this.urgent = this.goods.urgent && this.goods.urgent._id || '';
         this.currentUrgentData = this.urgentSource.find(item=>item._id === this.urgent);

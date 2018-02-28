@@ -38,6 +38,7 @@ export class CustomerReportPage implements OnInit {
   unionGroup: FormGroup;
   phoneGroup: FormGroup;
   guideId: string = "";
+  list: Array<any>=[];
 
   constructor(
     public navCtrl: NavController,
@@ -70,7 +71,9 @@ export class CustomerReportPage implements OnInit {
       return;
     }
 
-    this.customerProvider.getCustomerReportList(this.guideId, this.phoneGroup.value);
+    this.customerProvider.getCustomerReportList(this.guideId, this.phoneGroup.value).then((list)=>{
+      this.list = this.formatList(list);
+    });
   }
 
   btnSearchUnionClicked = () => {
@@ -120,7 +123,29 @@ export class CustomerReportPage implements OnInit {
       }
     }
 
-    this.customerProvider.getCustomerReportList(this.guideId, this.unionGroup.value);
+    this.customerProvider.getCustomerReportList(this.guideId, this.formatFormValue(this.unionGroup.value, this.formOptions)).then((list)=>{
+      this.list = this.formatList(list);
+    });
+  }
+
+  formatFormValue(values: any, options: Array<any>) {
+    for(let op of options) {
+      if (op.formatValue && values[op.key] !== undefined) {
+        values[op.key] = op.formatValue(values[op.key]);
+      }
+    }
+    return values;
+  }
+
+  formatList(list) {
+    list = list || [];
+    return list.map((item)=> {
+      if (item.customer) {
+        item.customer.birthday = moment(item.customer.birthday).format("YYYY/MM/DD");
+      }
+      item.lastCostTime = moment(item.lastCostTime).format("YYYY/MM/DD HH:mm:ss");
+      return item;
+    })
   }
 
 }
