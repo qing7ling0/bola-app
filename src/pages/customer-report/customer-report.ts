@@ -39,6 +39,12 @@ export class CustomerReportPage implements OnInit {
   phoneGroup: FormGroup;
   guideId: string = "";
   list: Array<any>=[];
+  reportInfo: any = {
+    totalCount: 0,
+    monthCount: 0,
+    yearCount: 0,
+    notBuyCount: 0
+  };
 
   constructor(
     public navCtrl: NavController,
@@ -56,6 +62,15 @@ export class CustomerReportPage implements OnInit {
 
     this.formPhoneOptions = FORM_PHONE_OPTIONS(null);
     this.phoneGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formPhoneOptions));
+
+  }
+
+  ionViewDidLoad(): void {
+    this.customerProvider.getCustomerReportInfo(this.guideId).then((data)=>{
+      if (data) {
+        this.reportInfo = data;
+      }
+    });
   }
 
   btnSearchPhoneClicked = () => {
@@ -146,6 +161,22 @@ export class CustomerReportPage implements OnInit {
       item.lastCostTime = moment(item.lastCostTime).format("YYYY/MM/DD HH:mm:ss");
       return item;
     })
+  }
+
+  // 月复购率
+  getMonthPer = () => {
+    if (!this.reportInfo.totalCount) return "0%";
+    return new Number(this.reportInfo.monthCount*100/this.reportInfo.totalCount).toFixed(2) + '%';
+  }
+  // 年复购率
+  getYearPer = () => {
+    if (!this.reportInfo.totalCount) return "0%";
+    return new Number(this.reportInfo.yearCount*100/this.reportInfo.totalCount).toFixed(2) + '%';
+  }
+  // 年流失率
+  getYearNotBuyPer = () => {
+    if (!this.reportInfo.totalCount) return "0%";
+    return new Number(this.reportInfo.notBuyCount*100/this.reportInfo.totalCount).toFixed(2) + '%';
   }
 
 }

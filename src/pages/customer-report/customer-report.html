@@ -10,18 +10,18 @@
             <ion-row>
               <ion-col col-4 class="title">
                 <div class="item-title">月复购人数/率</div>
-                <div class="item-content item-content-left">100</div>
-                <div class="item-content item-content-right">50%</div>
+                <div class="item-content item-content-left">{{reportInfo.monthCount}}</div>
+                <div class="item-content item-content-right">{{getMonthPer()}}</div>
               </ion-col>
               <ion-col col-4 class="title">
                 <div class="item-title">年复购人数/率</div>
-                <div class="item-content item-content-left">100</div>
-                <div class="item-content item-content-right">50%</div>
+                <div class="item-content item-content-left">{{reportInfo.yearCount}}</div>
+                <div class="item-content item-content-right">{{getYearPer()}}</div>
               </ion-col>
               <ion-col col-4 class="title">
                 <div class="item-title">年流失人数/率</div>
-                <div class="item-content item-content-left">100</div>
-                <div class="item-content item-content-right">50%</div>
+                <div class="item-content item-content-left">{{reportInfo.notBuyCount}}</div>
+                <div class="item-content item-content-right">{{getYearNotBuyPer()}}</div>
               </ion-col>
             </ion-row>
           </ion-grid>

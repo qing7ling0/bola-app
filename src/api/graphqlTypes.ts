@@ -163,6 +163,7 @@ export const orderTypes ={
 }
 
 export const customerReportType = `{customer {_id,name,phone,sex,birthday}, lastCostTime, costCount, costAmount}`
+export const customerReportBaseType = `{totalCount, monthCount, yearCount, notBuyCount}`
 
 export const pageListType = (itemType) =>{
   return`{page {page,pageSize,total} list ${itemType}}`

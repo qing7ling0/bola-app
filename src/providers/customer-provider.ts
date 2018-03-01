@@ -53,4 +53,18 @@ export class CustomerProvider {
       return null;
     });
   }
+
+  getCustomerReportInfo(guideId: string): Promise<any> {
+    let query = `
+      query Query {
+        customerReportInfo(id:"${guideId}")${graphqlTypes.customerReportBaseType}
+      }
+    `;
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
+      if(result.code === 0) {
+        return result.data.customerReportInfo;
+      }
+      return null;
+    });
+  }
 }
