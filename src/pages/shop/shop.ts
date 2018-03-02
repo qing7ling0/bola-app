@@ -5,8 +5,10 @@ import { Storage } from '@ionic/storage';
 import { CartListPage } from '../cart-list/cart-list'
 import { OrderCreatePage } from '../order-create/order-create'
 import { OrderTrackPage } from '../order-track/order-track'
-import { CustomerReportPage } from '../customer-report/customer-report'
+import { CustomerReportPage } from '../customer/customer-report/customer-report'
+import { CustomerShopReportPage } from '../customer/customer-shop-report/customer-shop-report'
 import {HeaderData} from '../../interface/header-data';
+import * as constants from '../../constants/constants'
 
 const NAVS = [
   { id:'create', icon:'icon-order', label:'创建订单', url:'/create' },
@@ -56,7 +58,11 @@ export class ShopPage {
       this.navCtrl.push(OrderTrackPage);
       break;
       case 'vip':
-      this.navCtrl.push(CustomerReportPage, {guideId:this.loginUserId, shopId:this.loginUserShopId});
+      if (this.loginUserInfo.user_type === constants.USER_TYPES.admin ||this.loginUserInfo.user_type === constants.USER_TYPES.operate) {
+        this.navCtrl.push(CustomerShopReportPage, {guideId:this.loginUserId, shopId:this.loginUserShopId});
+      } else {
+        this.navCtrl.push(CustomerReportPage, {guideId:this.loginUserId, shopId:this.loginUserShopId});
+      }
       break;
     }
   }

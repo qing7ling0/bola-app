@@ -53,6 +53,15 @@ export class CommonProvider {
   });
   }
 
+  getCommonDataList(tag: string, type:string, graphqlType: string): Promise<any> {
+    return this.api.getDefaultList(`${tag}:commonList`, graphqlType, {type:type}).then((result)=>{
+      if(result.code === 0) {
+        return result.data[tag].list;
+      }
+      return null;
+    });
+  };
+
   getVipLevelList(): Promise<any> {
     return this.api.getDefaultList('vipLevelList:commonList', graphqlTypes.vipLevelType, {type:constants.E_COMMON_DATA_TYPES.VIP}).then((result)=>{
       if(result.code === 0) {

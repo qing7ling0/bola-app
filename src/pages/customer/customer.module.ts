@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { CustomerReportPage } from './customer-report';
+import { CustomerReportPage } from './customer-report/customer-report';
+import { CustomerShopReportPage } from './customer-shop-report/customer-shop-report';
 import { BoalCommonModule } from '../../common/common.module'
 
 @NgModule({
   declarations: [
-    CustomerReportPage
+    CustomerReportPage,
+    CustomerShopReportPage,
   ],
   imports: [
     IonicPageModule, BoalCommonModule
@@ -13,6 +15,6 @@ import { BoalCommonModule } from '../../common/common.module'
   exports: [
     IonicPageModule, BoalCommonModule
   ],
-  entryComponents:[CustomerReportPage]
+  entryComponents:[CustomerReportPage, CustomerShopReportPage]
 })
-export class CustomerReportModule {}
+export class CustomerModule {}

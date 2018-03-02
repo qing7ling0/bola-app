@@ -1,0 +1,99 @@
+<div class="sticky-header">
+  <header [headerData]="headerData"></header>
+  <!-- main content start-->
+  <ion-content class="main-content">
+    <!--body wrapper start-->
+    <div class="wrapper">
+      <div class="customer-row customer-header">
+        <div class="customer-header-box">
+          <ion-grid>
+            <ion-row>
+              <ion-col col-4 class="title">
+                <div class="item-title">月复购人数/率</div>
+                <div class="item-content item-content-left">{{reportInfo.monthCount}}</div>
+                <div class="item-content item-content-right">{{getMonthPer()}}</div>
+              </ion-col>
+              <ion-col col-4 class="title">
+                <div class="item-title">年复购人数/率</div>
+                <div class="item-content item-content-left">{{reportInfo.yearCount}}</div>
+                <div class="item-content item-content-right">{{getYearPer()}}</div>
+              </ion-col>
+              <ion-col col-4 class="title">
+                <div class="item-title">年流失人数/率</div>
+                <div class="item-content item-content-left">{{reportInfo.notBuyCount}}</div>
+                <div class="item-content item-content-right">{{getYearNotBuyPer()}}</div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </div>
+      <div class="customer-row customer-search">
+        <div class="panel panel-info customer-panel">
+          <div class="panel-body">
+            <form [formGroup]="searchGroup">
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-12>
+                    <div class="search-input">
+                      <span>区域</span>
+                      <bola-select formControlName="region" class="form-text vip-tag" placeholder="区域标签" [source]="regionList"></bola-select>
+                    </div>
+                  </ion-col>
+                  <ion-col col-12>
+                    <div class="search-input">
+                      <span>区域</span>
+                      <bola-select formControlName="shop" class="form-text vip-tag" placeholder="店铺" [source]="currentShopList"[onChanged]="onRegionChange"></bola-select>
+                    </div>
+                  </ion-col>
+                  <ion-col col-12>
+                    <div class="search-input">
+                      <span>日期</span>
+                      <ion-datetime formControlName="date" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="开始"></ion-datetime>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </form>
+            <div class="btn union-btn" (click)="btnSearchUnionClicked()">点击查询</div>
+          </div>
+        </div>
+      </div>
+      <div class="customer-row customer-search">
+        <div class="panel panel-info customer-panel">
+          <div class="panel-heading">
+            <span class="info-square"></span>
+            <h3 class="panel-title">查询结果</h3>
+          </div>
+          <div class="panel-body">
+            <ion-scroll *ngIf="list.length > 0" class="search-result" scrollX="true" scrollY="true">
+              <div class="search-result-list">
+                <div class="item header">
+                  <div class="th item-120">手机号</div>
+                  <div class="th item-100">姓名</div>
+                  <div class="th item-50">性别</div>
+                  <div class="th item-100">生日</div>
+                  <div class="th item-160">最后一次消费日期</div>
+                  <div class="th item-100">消费次数</div>
+                  <div class="th item-100">消费金额</div>
+                </div>
+                <div *ngFor="let data of list" class="item">
+                  <div class="item-120">{{data.customer.phone}}</div>
+                  <div class="item-100">{{data.customer.name}}</div>
+                  <div class="item-50">{{data.customer.sex}}</div>
+                  <div class="item-100">{{data.customer.birthday}}</div>
+                  <div class="item-160">{{data.lastCostTime}}</div>
+                  <div class="item-100">{{data.costCount}}次</div>
+                  <div class="item-100">{{data.costAmount}}元</div>
+                </div>
+              </div>
+            </ion-scroll>
+            <span *ngIf="list.length === 0">暂无数据</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--body wrapper end-->
+
+  </ion-content>
+  <!-- main content end-->
+</div>

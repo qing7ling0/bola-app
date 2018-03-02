@@ -50,6 +50,8 @@ export const E_COMMON_DATA_TYPES = {
   SHOES_TIE_BIAN:'17', // 贴边,
   RECHARGE_REWARD:'18', // 充值奖励
   VIP:'19', // VIP等级
+  CUSTOMER_TAGS:'20', // 客户标签
+  SHOP_REGION:'21', // 店铺区域
 }
 
 export const MENU_IDS = {

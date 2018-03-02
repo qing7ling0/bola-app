@@ -92,7 +92,7 @@
             <h3 class="panel-title">查询结果</h3>
           </div>
           <div class="panel-body">
-            <ion-scroll class="search-result" scrollX="true" scrollY="true">
+            <ion-scroll *ngIf="list.length > 0" class="search-result" scrollX="true" scrollY="true">
               <div class="search-result-list">
                 <div class="item header">
                   <div class="th item-120">手机号</div>
@@ -114,6 +114,7 @@
                 </div>
               </div>
             </ion-scroll>
+            <span *ngIf="list.length === 0">暂无数据</span>
           </div>
         </div>
       </div>

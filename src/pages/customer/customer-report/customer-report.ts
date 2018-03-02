@@ -3,13 +3,15 @@ import { NavController, ToastController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import moment from 'moment'
 
-import { FormValidator } from '../../utils/form-validator'
-import { CartListPage } from '../cart-list/cart-list'
-import { OrderCreatePage } from '../order-create/order-create'
-import { OrderTrackPage } from '../order-track/order-track'
-import { HeaderData } from '../../interface/header-data';
-import { CustomerProvider } from '../../providers'
-import { Utils } from '../../utils/utils';
+import { FormValidator } from '../../../utils/form-validator'
+import { CartListPage } from '../../cart-list/cart-list'
+import { OrderCreatePage } from '../../order-create/order-create'
+import { OrderTrackPage } from '../../order-track/order-track'
+import { HeaderData } from '../../../interface/header-data';
+import { CustomerProvider, CommonProvider } from '../../../providers'
+import { Utils } from '../../../utils/utils';
+import * as graphqlTypes from '../../../api/graphqlTypes'
+import * as constants from '../../../constants/constants'
 
 const FORM_PHONE_OPTIONS = (data)=> [
   {key:'phone', label:'手机号', defaultValue:'', validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/)}]},
@@ -39,6 +41,7 @@ export class CustomerReportPage implements OnInit {
   phoneGroup: FormGroup;
   guideId: string = "";
   list: Array<any>=[];
+  vipTagList: Array<any>=[];
   reportInfo: any = {
     totalCount: 0,
     monthCount: 0,
@@ -51,6 +54,7 @@ export class CustomerReportPage implements OnInit {
     private formBuilder: FormBuilder,
     private toastCtrl: ToastController,
     private customerProvider: CustomerProvider,
+    private commonProvider: CommonProvider,
     public navParams: NavParams,
   ) {
     this.guideId = navParams.get('guideId');
@@ -62,7 +66,6 @@ export class CustomerReportPage implements OnInit {
 
     this.formPhoneOptions = FORM_PHONE_OPTIONS(null);
     this.phoneGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formPhoneOptions));
-
   }
 
   ionViewDidLoad(): void {
@@ -70,6 +73,9 @@ export class CustomerReportPage implements OnInit {
       if (data) {
         this.reportInfo = data;
       }
+    });
+    this.commonProvider.getCommonDataList('vipTagList', constants.E_COMMON_DATA_TYPES.CUSTOMER_TAGS, graphqlTypes.salesBaseType).then((list)=>{
+      this.vipTagList = list || [];
     });
   }
 
@@ -154,13 +160,20 @@ export class CustomerReportPage implements OnInit {
 
   formatList(list) {
     list = list || [];
-    return list.map((item)=> {
+    let ret = list.map((item)=> {
       if (item.customer) {
         item.customer.birthday = moment(item.customer.birthday).format("YYYY/MM/DD");
       }
       item.lastCostTime = moment(item.lastCostTime).format("YYYY/MM/DD HH:mm:ss");
       return item;
     })
+    ret.sort((a,b)=> {
+      let namea = a.customer.name||'';
+      let nameb = b.customer.name||'';
+      return nameb.localeCompare(namea);
+    })
+
+    return ret;
   }
 
   // 月复购率

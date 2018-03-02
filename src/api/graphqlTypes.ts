@@ -89,6 +89,7 @@ export const customerType = `{
 export const rechargeType = `{_id, mount, reward}`
 export const vipLevelType = `{_id, level, exp, discount}`
 
+export const regionType = `{_id, name, editor_name, editor_time}`
 export const materialType = `{_id, name, NID, color{_id,name}, count}`
 export const salesBaseType = `{_id, name, NID, editor_name, editor_time}`
 export const colorType = `{_id, name, NID, editor_name, editor_time}`
@@ -164,6 +165,7 @@ export const orderTypes ={
 
 export const customerReportType = `{customer {_id,name,phone,sex,birthday}, lastCostTime, costCount, costAmount}`
 export const customerReportBaseType = `{totalCount, monthCount, yearCount, notBuyCount}`
+export const customerShopReportType = `{guide ${userType}, shop${shopType}, totalCount, monthCount, yearCount, notBuyCount}`
 
 export const pageListType = (itemType) =>{
   return`{page {page,pageSize,total} list ${itemType}}`

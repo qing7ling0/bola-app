@@ -54,6 +54,20 @@ export class CustomerProvider {
     });
   }
 
+  getCustomerShopReportList(conditions: any): Promise<any> {
+    let query = `
+      query Query {
+        customerShopReportList(conditions:"${encodeURIComponent(JSON.stringify(conditions))}")${graphqlTypes.customerShopReportType}
+      }
+    `;
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
+      if(result.code === 0) {
+        return result.data.customerReportList;
+      }
+      return null;
+    });
+  }
+
   getCustomerReportInfo(guideId: string): Promise<any> {
     let query = `
       query Query {
@@ -63,6 +77,20 @@ export class CustomerProvider {
     return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
       if(result.code === 0) {
         return result.data.customerReportInfo;
+      }
+      return null;
+    });
+  }
+
+  getShopList(): Promise<any> {
+    let query = `
+      query Query {
+        shopList${graphqlTypes.shopType}
+      }
+    `;
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
+      if(result.code === 0) {
+        return result.data.shopList;
       }
       return null;
     });
