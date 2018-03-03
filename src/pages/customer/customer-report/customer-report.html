@@ -103,7 +103,7 @@
                   <div class="th item-100">消费次数</div>
                   <div class="th item-100">消费金额</div>
                 </div>
-                <div *ngFor="let data of list" class="item">
+                <div *ngFor="let data of list" class="item" (click)="btnItemClicked(data)">
                   <div class="item-120">{{data.customer.phone}}</div>
                   <div class="item-100">{{data.customer.name}}</div>
                   <div class="item-50">{{data.customer.sex}}</div>

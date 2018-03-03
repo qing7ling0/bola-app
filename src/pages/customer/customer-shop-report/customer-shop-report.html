@@ -11,17 +11,17 @@
               <ion-col col-4 class="title">
                 <div class="item-title">月复购人数/率</div>
                 <div class="item-content item-content-left">{{reportInfo.monthCount}}</div>
-                <div class="item-content item-content-right">{{getMonthPer()}}</div>
+                <div class="item-content item-content-right">{{getMonthPer(reportInfo)}}</div>
               </ion-col>
               <ion-col col-4 class="title">
                 <div class="item-title">年复购人数/率</div>
                 <div class="item-content item-content-left">{{reportInfo.yearCount}}</div>
-                <div class="item-content item-content-right">{{getYearPer()}}</div>
+                <div class="item-content item-content-right">{{getYearPer(reportInfo)}}</div>
               </ion-col>
               <ion-col col-4 class="title">
                 <div class="item-title">年流失人数/率</div>
                 <div class="item-content item-content-left">{{reportInfo.notBuyCount}}</div>
-                <div class="item-content item-content-right">{{getYearNotBuyPer()}}</div>
+                <div class="item-content item-content-right">{{getYearNotBuyPer(reportInfo)}}</div>
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -36,19 +36,19 @@
                   <ion-col col-12>
                     <div class="search-input">
                       <span>区域</span>
-                      <bola-select formControlName="region" class="form-text vip-tag" placeholder="区域标签" [source]="regionList"></bola-select>
+                      <bola-select formControlName="region" class="form-text vip-tag" placeholder="区域标签" [source]="regionList" [onChanged]="onRegionChange"></bola-select>
                     </div>
                   </ion-col>
                   <ion-col col-12>
                     <div class="search-input">
-                      <span>区域</span>
-                      <bola-select formControlName="shop" class="form-text vip-tag" placeholder="店铺" [source]="currentShopList"[onChanged]="onRegionChange"></bola-select>
+                      <span>店铺</span>
+                      <bola-select formControlName="shop" class="form-text vip-tag" placeholder="店铺" [source]="currentShopList"></bola-select>
                     </div>
                   </ion-col>
                   <ion-col col-12>
                     <div class="search-input">
                       <span>日期</span>
-                      <ion-datetime formControlName="date" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date" placeholder="开始"></ion-datetime>
+                      <ion-datetime formControlName="date" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date vip-tag" placeholder="订单日期"></ion-datetime>
                     </div>
                   </ion-col>
                 </ion-row>
@@ -65,25 +65,31 @@
             <h3 class="panel-title">查询结果</h3>
           </div>
           <div class="panel-body">
+            <div class="search-sort">
+              <bola-select class="form-text vip-tag box" placeholder="" [source]="sortKeyList" [onChanged]="onSortChange"></bola-select>
+              <div class="btn" (click)="btnSortClicked()">{{sortDesc?"降序":"升序"}}</div>
+            </div>
             <ion-scroll *ngIf="list.length > 0" class="search-result" scrollX="true" scrollY="true">
               <div class="search-result-list">
                 <div class="item header">
-                  <div class="th item-120">手机号</div>
-                  <div class="th item-100">姓名</div>
-                  <div class="th item-50">性别</div>
-                  <div class="th item-100">生日</div>
-                  <div class="th item-160">最后一次消费日期</div>
-                  <div class="th item-100">消费次数</div>
-                  <div class="th item-100">消费金额</div>
+                  <div class="th item-100">店铺名称</div>
+                  <div class="th item-100">导购姓名</div>
+                  <div class="th item-100">月复购人数</div>
+                  <div class="th item-100">月复购率</div>
+                  <div class="th item-100">年复购人数</div>
+                  <div class="th item-100">年复购率</div>
+                  <div class="th item-100">年流失人数</div>
+                  <div class="th item-100">年流失率</div>
                 </div>
                 <div *ngFor="let data of list" class="item">
-                  <div class="item-120">{{data.customer.phone}}</div>
-                  <div class="item-100">{{data.customer.name}}</div>
-                  <div class="item-50">{{data.customer.sex}}</div>
-                  <div class="item-100">{{data.customer.birthday}}</div>
-                  <div class="item-160">{{data.lastCostTime}}</div>
-                  <div class="item-100">{{data.costCount}}次</div>
-                  <div class="item-100">{{data.costAmount}}元</div>
+                  <div class="item-100">{{data.shop.name}}</div>
+                  <div class="item-100">{{data.guide.name}}</div>
+                  <div class="item-100">{{data.monthCount}}</div>
+                  <div class="item-100">{{getMonthPer(data)}}</div>
+                  <div class="item-100">{{data.yearCount}}</div>
+                  <div class="item-100">{{getYearPer(data)}}</div>
+                  <div class="item-100">{{data.notBuyCount}}</div>
+                  <div class="item-100">{{getYearNotBuyPer(data)}}</div>
                 </div>
               </div>
             </ion-scroll>

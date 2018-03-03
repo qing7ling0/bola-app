@@ -1,4 +1,4 @@
-import { FormControl, Validators, AbstractControl } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 export class FormValidator {
 

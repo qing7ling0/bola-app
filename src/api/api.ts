@@ -4,10 +4,9 @@ import { Events, ToastController, LoadingController } from 'ionic-angular';
 import { Headers, Http } from '@angular/http';
 
 import * as constants from '../constants/constants'
-import { NetUtils } from '../utils/net-utils'
 import { Utils } from '../utils/utils'
 import * as graphqlTypes from './graphqlTypes'
-import * as orderTypes from './orderTypes'
+// import * as orderTypes from './orderTypes'
 
 @Injectable()
 export class API {

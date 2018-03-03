@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { Events, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
-import { User } from '../interface/user'
-import { NetUtils } from '../utils/net-utils'
 import * as constants from '../constants/constants'
 import { API } from '../api/api'
 import * as graphqlTypes from '../api/graphqlTypes'

@@ -69,6 +69,7 @@ export const shopType = `{
   area,
   country,
   region,
+  region_id {_id,name},
   province,
   marketLevel,
   property,
@@ -82,7 +83,7 @@ export const shopType = `{
 }`
 
 export const customerType = `{
-  _id,name,phone,sex,birthday,weixin,weixin_code_pic,country,city,address,zipcode,
+  _id,name,phone,sex,birthday,weixin,weixin_code_pic,country,city,address,zipcode,tags{tag},
   vip_card_date,vip_card_shop{_id, name},vip_card_guide{_id,name},vip_level,vip_exp,balance,join_type,
 }`
 

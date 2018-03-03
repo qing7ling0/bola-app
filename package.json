@@ -44,6 +44,7 @@
     "moment": "^2.20.1",
     "rxjs": "5.5.2",
     "sw-toolbox": "3.6.0",
+    "uglify-es": "^3.3.9",
     "zone.js": "0.8.18"
   },
   "devDependencies": {

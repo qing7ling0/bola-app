@@ -73,7 +73,7 @@
 .search-input {
   display: flex;
 }
-.search-input .item-cover {
+.search-input .item-cover,.search-sort .item-cover, {
   width: auto;
 }
 .search-input span {
@@ -149,6 +149,23 @@
 }
 .search-result-list .item-160 {
   width:160px;
+}
+
+.search-sort {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.search-sort .box {
+  border: 1px solid #c1c3ce;
+  padding: 2px 5px;
+  height: 26px;
+}
+.search-sort .btn {
+  height: 26px;
+  padding: 0 5px;
+  line-height: 26px;
+  font-size: 12px;
 }
 
 @media screen and (max-width: 320px) {

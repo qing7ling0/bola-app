@@ -24,7 +24,7 @@ export const BOLA_SELECT_VALUE_ACCESSOR: any = {
 export class SelectComponent implements ControlValueAccessor {
   @Input() source: Array<any>;
   @Input() placeholder: string;
-  @Input() onChanged: () => void = noop;
+  @Input() onChanged: (value:any) => void = noop;
 
   private _onTouchedCallback: () => void = noop;
   private _onChangeCallback: (_: any) => void = noop;
@@ -47,6 +47,6 @@ export class SelectComponent implements ControlValueAccessor {
 
   onChange() : void {
     this._onChangeCallback(this._value);
-    this.onChanged();
+    this.onChanged(this._value);
   }
 }

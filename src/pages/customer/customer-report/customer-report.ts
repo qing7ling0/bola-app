@@ -12,6 +12,7 @@ import { CustomerProvider, CommonProvider } from '../../../providers'
 import { Utils } from '../../../utils/utils';
 import * as graphqlTypes from '../../../api/graphqlTypes'
 import * as constants from '../../../constants/constants'
+import { CustomerProfilePage } from '../customer-profile/customer-profile';
 
 const FORM_PHONE_OPTIONS = (data)=> [
   {key:'phone', label:'手机号', defaultValue:'', validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/)}]},
@@ -75,7 +76,11 @@ export class CustomerReportPage implements OnInit {
       }
     });
     this.commonProvider.getCommonDataList('vipTagList', constants.E_COMMON_DATA_TYPES.CUSTOMER_TAGS, graphqlTypes.salesBaseType).then((list)=>{
-      this.vipTagList = list || [];
+      this.vipTagList = (list || []).map(item=>{
+        item.value = item._id;
+        item.label = item.name;
+        return item;
+      });
     });
   }
 
@@ -147,6 +152,12 @@ export class CustomerReportPage implements OnInit {
     this.customerProvider.getCustomerReportList(this.guideId, this.formatFormValue(this.unionGroup.value, this.formOptions)).then((list)=>{
       this.list = this.formatList(list);
     });
+  }
+
+  btnItemClicked = (data) => {
+    if (data && data.customer) {
+      this.navCtrl.push(CustomerProfilePage, {customerPhone:data.customer.phone});
+    }
   }
 
   formatFormValue(values: any, options: Array<any>) {

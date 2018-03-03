@@ -3,8 +3,6 @@ import { Injectable } from '@angular/core';
 import { Events, ToastController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
-import { User } from '../interface/user'
-import { NetUtils } from '../utils/net-utils'
 import * as constants from '../constants/constants'
 import { API } from '../api/api'
 import * as graphqlTypes from '../api/graphqlTypes'
@@ -62,7 +60,7 @@ export class CustomerProvider {
     `;
     return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
       if(result.code === 0) {
-        return result.data.customerReportList;
+        return result.data.customerShopReportList;
       }
       return null;
     });
@@ -85,12 +83,12 @@ export class CustomerProvider {
   getShopList(): Promise<any> {
     let query = `
       query Query {
-        shopList${graphqlTypes.shopType}
+        shopList(page:0, pageSize:0)${graphqlTypes.pageListType(graphqlTypes.shopType)}
       }
     `;
     return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
       if(result.code === 0) {
-        return result.data.shopList;
+        return result.data.shopList.list;
       }
       return null;
     });
