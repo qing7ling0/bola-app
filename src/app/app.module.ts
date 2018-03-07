@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { CodePush } from '@ionic-native/code-push';
 import { File } from '@ionic-native/file';
 import { ImagePicker } from '@ionic-native/image-picker'
 
@@ -56,7 +57,8 @@ import { CustomerModule } from '../pages/customer/customer.module';
     CartProvider,
     File,
     FileTransfer,
-    ImagePicker
+    ImagePicker,
+    CodePush
   ]
 })
 export class AppModule {}

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, Events, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CodePush, InstallMode } from '@ionic-native/code-push';
 
 import { ShopPage } from '../shop/shop'
 import { UserProvider } from '../../providers/user-provider'
@@ -20,7 +21,8 @@ export class HomePage implements OnInit {
     public navCtrl: NavController,
     public userProvider: UserProvider,
     private formBuilder: FormBuilder,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private codePush: CodePush
   ) {
     this.subscribeEvents();
   }
@@ -40,9 +42,14 @@ export class HomePage implements OnInit {
         this.accountGroup.controls.password.setValue(data.password);
       }
     });
+    // this.codePush.notifyApplicationReady();
+
+    // const downloadProgress = (progress) => { console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); }
+    // this.codePush.sync({}, downloadProgress).subscribe((syncStatus) => console.log(syncStatus));
   }
 
   login(form: FormGroup) {
+  // return;
     if (form.valid) {
       this.userProvider.login(form.value.account, form.value.password)
     } else {
@@ -64,6 +71,12 @@ export class HomePage implements OnInit {
           position:'middle'
         }).present();
       }
+    }
+    try {
+      this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
+
+    } catch (error) {
+      
     }
   }
 
