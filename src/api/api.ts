@@ -69,7 +69,7 @@ export class API {
 
 
   getDefaultList(tag:string, type: any, conditions: any=null, pageIndex:number=-1, pageSize:number=constants.DEFAULT_PAGE_SIZE, waitting:boolean=false) {
-    
+
     let _conditions = '';
     if (!Utils.ObjectIsEmpty(conditions)) {
       _conditions = `, conditions: "${encodeURIComponent(JSON.stringify(conditions))}"`
@@ -78,8 +78,8 @@ export class API {
     if (pageIndex === undefined || pageIndex === null) {
       pageIndex = -1;
       pageSize = 0;
-    } 
-    
+    }
+
     let query = `
       query Query {
         ${tag}(page:${pageIndex}, pageSize:${pageSize} ${_conditions})${graphqlTypes.pageListType(type)}
@@ -87,7 +87,7 @@ export class API {
     `;
     return this.graphqlJson(constants.API_SERVER_ADDRESS, query, waitting);
   }
-  
+
   getDefaultProfileById(id, tag, type, waitting?:boolean) {
     let query = `
       query Query {
@@ -105,7 +105,7 @@ export class API {
     `;
     return this.graphqlJson(constants.API_SERVER_ADDRESS, query, waitting);
   }
-  
+
   addDefault(tag, type, data, waitting?:boolean) {
     let name = tag;
     let index = tag.lastIndexOf('List');
@@ -131,7 +131,7 @@ export class API {
       mutation Mutation {
         ${name}Remove(ids:${this.object2String(ids)})
       }
-    `    
+    `
     return this.graphqlJson(constants.API_SERVER_ADDRESS, mut, waitting);
   }
 
@@ -141,12 +141,31 @@ export class API {
     if (index !== -1) {
       name = tag.substring(0, index);
     }
-    
+
     let mut = `
       mutation Mutation {
         ${name}Update(doc:${this.object2String(data)}, id:"${id}") ${graphqlTypes.resultType}
       }
-    `    
+    `
+    return this.graphqlJson(constants.API_SERVER_ADDRESS, mut, waitting);
+  }
+
+  mutationDefault(tag, resultType, params, waitting?:boolean) {
+    let paramsString = '';
+    if (params) {
+      for(let key in params) {
+        if (paramsString) paramsString += ',';
+        paramsString += `${key}:${this.object2String(params[key])}`;
+      }
+    }
+    if (paramsString) {
+      paramsString = `(${paramsString})`
+    }
+    let mut = `
+      mutation Mutation {
+        ${tag}${paramsString}${resultType}
+      }
+    `
     return this.graphqlJson(constants.API_SERVER_ADDRESS, mut, waitting);
   }
 

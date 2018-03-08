@@ -286,6 +286,8 @@ export const ORDER_STATUS_LIST = [
   {value:E_ORDER_STATUS.MAKING_3, label:'染色水洗'},
   {value:E_ORDER_STATUS.MAKING_4, label:'品检出货'},
   {value:E_ORDER_STATUS.TRANSPORT, label:'已发货'},
+  {value:E_ORDER_STATUS.INBOUND, label:'入库'},
+  {value:E_ORDER_STATUS.OUTBOUND, label:'出库'},
   {value:E_ORDER_STATUS.COMPLETED, label:'已完成'},
   {value:E_ORDER_STATUS.REJECTED, label:'客户拒绝收货'},
   {value:E_ORDER_STATUS.CANCEL, label:'已取消'},
@@ -444,4 +446,22 @@ export const Powers = [
     id:MENU_IDS.systemAdmin,
     powers:[]
   }
+]
+
+// 样品调拨状态
+export const E_SAMPLE_ALLOT_STATUS = {
+  REVIEW: 1, // 审核中
+  REVIEW_FINISH:200, // 已审核等待发货
+  TRANSPORT:300, // 发货中
+  INBOUND:400, // 已入库
+  COMPLETED: 500 // 已完成
+};
+
+// 样品调拨状态
+export const SAMPLE_ALLOT_STATUS_DATAS = [
+  {value:E_SAMPLE_ALLOT_STATUS.REVIEW, label:'等待审核'}, // 审核中
+  {value:E_SAMPLE_ALLOT_STATUS.REVIEW_FINISH, label:'等待发货'}, // 已审核等待发货
+  {value:E_SAMPLE_ALLOT_STATUS.TRANSPORT, label:'已发货'}, // 发货中
+  {value:E_SAMPLE_ALLOT_STATUS.INBOUND, label:'已入库'}, // 已入库
+  {value:E_SAMPLE_ALLOT_STATUS.COMPLETED, label:'完成'}, // 已完成
 ]

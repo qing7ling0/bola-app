@@ -2702,10 +2702,6 @@ ionicons@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-3.0.0.tgz#40b8daf4fd7a31150bd002160f66496e22a98c3c"
 
-ios-deploy@^1.9.2:
-  version "1.9.2"
-  resolved "http://registry.npm.taobao.org/ios-deploy/download/ios-deploy-1.9.2.tgz#c2f4c46b06db4771939b29f980c7c1a8906b47a2"
-
 ios-sim@^6.1.2:
   version "6.1.2"
   resolved "https://registry.yarnpkg.com/ios-sim/-/ios-sim-6.1.2.tgz#7b9df7c35abd5b9d4c014248174e8b9e5b97ecc4"
