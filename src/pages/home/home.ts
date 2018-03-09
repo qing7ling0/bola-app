@@ -72,12 +72,12 @@ export class HomePage implements OnInit {
         }).present();
       }
     }
-    try {
-      this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
+    // try {
+    //   this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
 
-    } catch (error) {
-      
-    }
+    // } catch (error) {
+
+    // }
   }
 
   subscribeEvents() {

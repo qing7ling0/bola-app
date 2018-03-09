@@ -4,100 +4,32 @@
   <ion-content class="main-content">
     <!--body wrapper start-->
     <div class="wrapper">
-      <form [formGroup]="customerGroup">
-        <div class="panel">
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <span class="required">*</span>
-                  <label class="control-label">姓 &nbsp;名</label>
-                  <bola-form-text class="form-text" formControlName="name" placeholder="输入姓名" type="text"></bola-form-text>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <span class="required">*</span>
-                  <label class="control-label">性 &nbsp;别</label>
-                  <bola-form-text formControlName="sex" class="form-text" className="test" placeholder="请选择性别"></bola-form-text>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <span class="required">*</span>
-                  <label class="control-label">生 &nbsp;日</label>
-                  <bola-form-text formControlName="birthday" dateFormat="YYYY/MM/DD" isDate="true" class="form-text form-date" placeholder="请选择日期"></bola-form-text>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <span class="required">*</span>
-                  <label class="control-label">手 &nbsp;机</label>
-                  <bola-form-text class="form-text" formControlName="phone" placeholder="输入手机" type="text"></bola-form-text>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <span class="required">*</span>
-                  <label class="control-label">微 &nbsp;信</label>
-                  <bola-form-text class="form-text" formControlName="weixin" placeholder="输入微信" type="text"></bola-form-text>
-                </div>
-              </div>
-            </div>
-            <div class="mtop10"></div>
-            <div class="row">
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label class="control-label">国 &nbsp;家</label>
-                  <bola-form-text class="form-text" formControlName="country" placeholder="输入国家" type="text"></bola-form-text>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label class="control-label">城 &nbsp;市</label>
-                  <bola-form-text class="form-text" formControlName="city" placeholder="输入城市" type="text"></bola-form-text>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="form-group">
-                  <label class="control-label">地 &nbsp;址</label>
-                  <bola-form-text class="form-text" formControlName="address" placeholder="输入地址" type="text"></bola-form-text>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">邮 &nbsp;编</label>
-                  <bola-form-text class="form-text" formControlName="zipcode" placeholder="输入邮编" type="text"></bola-form-text>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="form-group">
-                  <label class="control-label">标 &nbsp;签</label>
-                  <bola-form-text class="form-text" formControlName="tags" type="text"></bola-form-text>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">折 &nbsp;扣</label>
-                  <div class="form-text">{{getCurrentDiscount()}}</div>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">余 &nbsp;额</label>
-                  <div class="form-text">{{customerProfile && customerProfile.balance||0}} 元</div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <form [formGroup]="formGroup">
+        <div class="search-mod">
+          <label class="pull-left" for="mobileNumber">搜索栏</label>
+          <input type="text" class="form-control" formControlName="NID" id="mobileNumber" placeholder="输入样品货号">
+          <a href="#" class="btn pull-right"><span class="fa fa-search"></span></a>
         </div>
       </form>
+      <div class="allot">
+        <ion-list class="allotList">
+          <ion-item-sliding class="allot-listInfo" *ngFor="let sample of sampleList; let sampleIndex = index">
+            <ion-item>
+              <div class="clearfix">
+                <p class="item-img pull-left" *ngIf="getSampleIcon(sample)"><img src="getSampleIcon(sample)" class="img-responsive"></p>
+                <p class="item-img pull-left" *ngIf="!getSampleIcon(sample)">暂无图片</p>
+                <p class="item-info pull-left"> <span class="title">货号：{{sample.NID}}</span> <span class="position">位置：{{sample.shop.name}}</span> </p>
+                <p class="allot-img left pull-right"></p>
+              </div>
+            </ion-item>
+            <ion-item-options side="right" *ngIf="getSampleRightBtnLabel(sample)">
+              <div class="allot-item-right">
+                <div class="allotBtns-apply show" ><a class="btn btn-block" (click)="onItemRightClicked(sample)">{{getSampleRightBtnLabel(sample)}}</a></div>
+              </div>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </div>
     </div>
     <!--body wrapper end-->
 

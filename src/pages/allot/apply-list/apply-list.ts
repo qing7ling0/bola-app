@@ -1,3 +1,7 @@
+/**
+ * 我的申请
+ */
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, ToastController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
@@ -21,19 +25,20 @@ const FORM_OPTIONS = (data)=> [
 
 
 @Component({
-  selector: 'page-sample-list',
-  templateUrl: 'sample-list.html'
+  selector: 'page-apply-list',
+  templateUrl: 'apply-list.html'
 })
-export class SampleListPage implements OnInit {
-  headerData: HeaderData = {title:'样品调拨', menuEnable:false, type:'sample-list'};
+export class ApplyListPage implements OnInit {
+  headerData: HeaderData = {title:'样品调拨', menuEnable:false, type:'apply-list'};
 
   formOptions: Array<any>;
   formGroup: FormGroup;
   searchNID: string = '';
-  sampleList: Array<any>;
-  sampleListPage: any = {page:0,pageSize:0,total:0}
+  applyList: Array<any>;
+  applyListPage: any = {page:0,pageSize:0,total:0}
   loginUserId: string = '';
   loginUserShopId: string = '';
+  isShopManager: Boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -50,6 +55,7 @@ export class SampleListPage implements OnInit {
       if (user.shop) {
         this.loginUserShopId = user.shop._id;
       }
+      this.isShopManager = user.manager;
     }
   }
 
@@ -59,10 +65,18 @@ export class SampleListPage implements OnInit {
   }
 
   ionViewDidLoad(): void {
-    this.allotProvider.getSampleList(this.loginUserShopId).then((data:any) => {
+    let con: any = {
+      status:{$lt:constants.E_SAMPLE_ALLOT_STATUS.COMPLETED}
+    };
+    if (this.isShopManager) {
+      con.apply_shop = this.loginUserShopId;
+    } else {
+      con.apply_shop_guide = this.loginUserId;
+    }
+    this.allotProvider.getSampleAllotList(con).then((data:any) => {
       if (data) {
-        this.sampleList = data.list;
-        this.sampleListPage = data.page;
+        this.applyList = data.list;
+        this.applyListPage = data.page;
       }
     })
   }

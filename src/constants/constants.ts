@@ -1,4 +1,4 @@
-export const DEBUG = false;
+export const DEBUG = true;
 
 // export const DEV_SERVER = 'http://192.168.0.105:3001';
 export const DEV_SERVER = 'http://127.0.0.1:3001';

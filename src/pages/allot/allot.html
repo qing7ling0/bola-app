@@ -1,0 +1,9 @@
+<div class="sticky-header">
+  <header [headerData]="headerData"></header>
+  <!-- main content start-->
+  <ion-tabs>
+    <ion-tab [root]="pages[0]" tabTitle="当前库存" [rootParams]="{user:user}"></ion-tab>
+    <ion-tab [root]="pages[1]" tabTitle="我的申请" [rootParams]="{user:user}"></ion-tab>
+    <ion-tab [root]="pages[2]" tabTitle="调拨记录" [rootParams]="{user:user}"></ion-tab>
+  </ion-tabs>
+</div>

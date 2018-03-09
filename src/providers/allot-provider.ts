@@ -18,8 +18,8 @@ export class AllotProvider {
     public api: API
   ) {}
 
-  getSampleList(page:number=0, pageSize:number=constants.DEFAULT_PAGE_SIZE): Promise<any> {
-    return this.api.getDefaultList('sampleGoodsList', orderTypes.sampleGoodsType, {}, page, pageSize, true).then((result)=>{
+  getSampleList(shopId: string, page:number=-1, pageSize:number=constants.DEFAULT_PAGE_SIZE): Promise<any> {
+    return this.api.getDefaultList('sampleGoodsList', orderTypes.sampleGoodsType, {shop:shopId}, page, pageSize, true).then((result)=>{
       if(result.code === 0) {
         return result.data.sampleGoodsList;
       }
@@ -27,10 +27,10 @@ export class AllotProvider {
     });
   }
 
-  getSampleAllotList(page:number=0, pageSize:number=constants.DEFAULT_PAGE_SIZE): Promise<any> {
-    return this.api.getDefaultList('sampleAllotList', orderTypes.sampleAllotType, {}, page, pageSize, true).then((result)=>{
+  getSampleAllotList(conditions:any, page:number=-1, pageSize:number=constants.DEFAULT_PAGE_SIZE): Promise<any> {
+    return this.api.getDefaultList('sampleAllotList', orderTypes.sampleAllotType, conditions, page, pageSize, true).then((result)=>{
       if(result.code === 0) {
-        return result.data.sampleAllotList;
+        return result.data.sampleAllotList.list;
       }
       return null;
     });
