@@ -42,10 +42,22 @@ export class HomePage implements OnInit {
         this.accountGroup.controls.password.setValue(data.password);
       }
     });
+    // try {
+    //   this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
+
+    // } catch (error) {
+
+    // }
     // this.codePush.notifyApplicationReady();
 
     // const downloadProgress = (progress) => { console.log(`Downloaded ${progress.receivedBytes} of ${progress.totalBytes}`); }
     // this.codePush.sync({}, downloadProgress).subscribe((syncStatus) => console.log(syncStatus));
+    try {
+      this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
+
+    } catch (error) {
+
+    }
   }
 
   login(form: FormGroup) {
@@ -72,12 +84,6 @@ export class HomePage implements OnInit {
         }).present();
       }
     }
-    // try {
-    //   this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
-
-    // } catch (error) {
-
-    // }
   }
 
   subscribeEvents() {
