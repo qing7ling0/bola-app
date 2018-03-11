@@ -3,6 +3,8 @@ import { IonicPageModule } from 'ionic-angular';
 import { AllotPage } from './allot';
 import { SampleListPage } from './sample-list/sample-list';
 import { ApplyListPage } from './apply-list/apply-list';
+import { AllotListPage } from './allot-list/allot-list';
+import { OutboundComponent } from './allot.component/outbound';
 import { BoalCommonModule } from '../../common/common.module'
 import { OrderCustomerEditComponent } from '../order-create/customer-edit/customer-edit.component'
 
@@ -10,7 +12,9 @@ import { OrderCustomerEditComponent } from '../order-create/customer-edit/custom
   declarations: [
     AllotPage,
     SampleListPage,
-    ApplyListPage
+    ApplyListPage,
+    AllotListPage,
+    OutboundComponent
   ],
   imports: [
     IonicPageModule, BoalCommonModule,
@@ -18,6 +22,6 @@ import { OrderCustomerEditComponent } from '../order-create/customer-edit/custom
   exports: [
     IonicPageModule, BoalCommonModule
   ],
-  entryComponents:[AllotPage, ApplyListPage, SampleListPage, OrderCustomerEditComponent]
+  entryComponents:[AllotPage, ApplyListPage, AllotListPage, SampleListPage, OrderCustomerEditComponent, OutboundComponent]
 })
 export class AllotModule {}

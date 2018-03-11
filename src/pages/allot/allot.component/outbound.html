@@ -1,0 +1,49 @@
+<div class="sticky-header">
+  <header [headerData]="headerData"></header>
+  <ion-content class="main-content">
+  <!--body wrapper start-->
+    <div class="wrapper">
+      <form [formGroup]="formGroup">
+        <div class="allot">
+          <div class="allotDelivery">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">收货店铺</label>
+                  <bola-form-text formControlName="apply_shop_name" class="form-text"></bola-form-text>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">快递公司</label>
+                  <ion-input class="form-text" formControlName="transport_company" type="text" placeholder="请输入快递公司"></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">快递单号</label>
+                  <ion-input class="form-text" formControlName="transport_id" type="text" placeholder="请输入订单号"></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">联系电话</label>
+                  <ion-input class="form-text" formControlName="transport_phone" placeholder="请输入号码" type="text"></ion-input>
+                </div>
+              </div>
+            </div>
+            <div class="text-center"> <a class="btn" (click)="onSureClicked()"> 确定 </a> </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--body wrapper end-->
+
+  </ion-content>
+</div>

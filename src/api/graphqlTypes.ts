@@ -28,6 +28,7 @@ export const userType = `
     sex,
     phone,
     user_type,
+    department,
     editor_name,
     editor_time,
     account {
