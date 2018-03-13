@@ -3,6 +3,9 @@ import { NavController, Events, ToastController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CodePush, InstallMode } from '@ionic-native/code-push';
 
+// import * as rasterizeHTML from 'rasterizehtml';
+import rasterizeHTML from '../../../node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js';
+
 import { ShopPage } from '../shop/shop'
 import { UserProvider } from '../../providers/user-provider'
 import * as constants from '../../constants/constants'
@@ -48,30 +51,43 @@ export class HomePage implements OnInit {
     // this.codePush.sync({}, downloadProgress).subscribe((syncStatus) => console.log(syncStatus));
   }
 
+  rasterTest() {
+    var canvas:any = document.getElementById("canvas");
+    rasterizeHTML.drawHTML('Some ' +
+                       '<span style="color: green; font-size: 20px;">HTML</span>' +
+                       ' with an image',
+                       ).then(function (renderResult) {
+                         let x = 0;
+                         x = 1;
+                         canvas.getContext('2d').drawImage(renderResult.image, 10, 25);
+                    });;
+  }
+
   login(form: FormGroup) {
-  // return;
-    if (form.valid) {
-      this.userProvider.login(form.value.account, form.value.password)
-    } else {
-      if (form.controls.account.hasError('required') ||form.controls.password.hasError('required')) {
-        this.toastCtrl.create({
-          message:'请填写账号密码！',
-          duration:1500,
-          position:'middle'
-        }).present();
-      } else if (
-        form.controls.account.hasError('minlength') ||
-        form.controls.account.hasError('maxlength') ||
-        form.controls.password.hasError('minlength')||
-        form.controls.password.hasError('maxlength')
-      ) {
-        this.toastCtrl.create({
-          message:`账号密码不合法，输入${constants.ACCOUNT_MIN_LENGTH}-${constants.ACCOUNT_MAX_LENGTH}长度的英文和字母！`,
-          duration:1500,
-          position:'middle'
-        }).present();
-      }
-    }
+    this.rasterTest();
+    return;
+    // if (form.valid) {
+    //   this.userProvider.login(form.value.account, form.value.password)
+    // } else {
+    //   if (form.controls.account.hasError('required') ||form.controls.password.hasError('required')) {
+    //     this.toastCtrl.create({
+    //       message:'请填写账号密码！',
+    //       duration:1500,
+    //       position:'middle'
+    //     }).present();
+    //   } else if (
+    //     form.controls.account.hasError('minlength') ||
+    //     form.controls.account.hasError('maxlength') ||
+    //     form.controls.password.hasError('minlength')||
+    //     form.controls.password.hasError('maxlength')
+    //   ) {
+    //     this.toastCtrl.create({
+    //       message:`账号密码不合法，输入${constants.ACCOUNT_MIN_LENGTH}-${constants.ACCOUNT_MAX_LENGTH}长度的英文和字母！`,
+    //       duration:1500,
+    //       position:'middle'
+    //     }).present();
+    //   }
+    // }
     // try {
     //   this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
 

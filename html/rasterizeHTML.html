@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>rasterizeHTML.js example</title>
+    <script type="text/javascript" src="./js/rasterizeHTML.allinone.js"></script>
+    <style type="text/css">
+        h2{text-align: center;}
+        .content{ width:600px; height:500px; border:1px solid #ccc; margin: 0 auto;}
+      canvas{width:600px;height:500px;}
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="200"></canvas>
+    <img id="img" src="./images/login-logo.png" />
+    <div id="imgRoot"></div>
+    <div id="thehtml">
+        <style>
+            .test {
+              font-size: 20px;
+              background-color: yellow;
+            }
+        </style>
+        <div class="test">Render this</div>
+    </div>
+    <h2>
+        canvas简单画板
+    </h2>
+    <div class="content">
+        <canvas id="can" width="600" height="500"></canvas>
+    </div>
+    <script type="text/javascript">
+        var canvas = document.getElementById("canvas"),
+        context = canvas.getContext('2d'),
+        html_container = document.getElementById("thehtml"),
+        html_img = document.getElementById("img"),
+        html_imgRoot = document.getElementById("imgRoot"),
+        html = html_container.innerHTML;
+
+        rasterizeHTML.drawHTML(html).then(function (renderResult) {
+            // context.drawImage(renderResult.image, 10, 25);
+            // html_img.setAttribute('src', renderResult.image)
+            html_imgRoot.appendChild(renderResult.image);
+        });
+    </script>
+    <script type="text/javascript">
+      (function(){
+          var canvas = document.getElementById('can'),
+              context= canvas.getContext('2d'),
+              options = {     //定义画笔相关参数
+                  lineWidth : 1,      //粗细
+                  strokeStyle: '#f60' //颜色
+              },
+              events = {
+                  mousedown: function(e){ //鼠标按下记住
+                      this.isButtonDown = true;
+                      context.beginPath();
+                      context.moveTo( e.offsetX,e.offsetY )
+                  },
+                  mousemove:function(e){  //移动画图
+                      var pos = { x:e.offsetX, y:e.offsetY };
+
+
+                      if(this.isButtonDown){
+                        setTimeout(function(){
+                          context.lineTo(pos.x, pos.y);
+                          context.stroke();
+                        },0);
+
+                      }
+                  },
+                  mouseup:function(e){    //鼠标放开停止画图
+                     this.isButtonDown = false;
+                  }
+              };
+
+          /*把画笔相关参数赋值*/
+          for(var k in options){
+              context[k] = options[k]
+          }
+          /*绑定相关事件*/
+          for(var i in events){
+              canvas.addEventListener(i,events[i]);
+          }
+
+
+
+
+      })();
+      </script>
+</body>
+</html>
