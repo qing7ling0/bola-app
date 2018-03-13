@@ -76,38 +76,6 @@ export class HomePage implements OnInit {
   }
 
   login(form: FormGroup) {
-<<<<<<< HEAD
-    this.rasterTest();
-    return;
-    // if (form.valid) {
-    //   this.userProvider.login(form.value.account, form.value.password)
-    // } else {
-    //   if (form.controls.account.hasError('required') ||form.controls.password.hasError('required')) {
-    //     this.toastCtrl.create({
-    //       message:'请填写账号密码！',
-    //       duration:1500,
-    //       position:'middle'
-    //     }).present();
-    //   } else if (
-    //     form.controls.account.hasError('minlength') ||
-    //     form.controls.account.hasError('maxlength') ||
-    //     form.controls.password.hasError('minlength')||
-    //     form.controls.password.hasError('maxlength')
-    //   ) {
-    //     this.toastCtrl.create({
-    //       message:`账号密码不合法，输入${constants.ACCOUNT_MIN_LENGTH}-${constants.ACCOUNT_MAX_LENGTH}长度的英文和字母！`,
-    //       duration:1500,
-    //       position:'middle'
-    //     }).present();
-    //   }
-    // }
-    // try {
-    //   this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
-
-    // } catch (error) {
-
-    // }
-=======
   // return;
     if (form.valid) {
       this.userProvider.login(form.value.account, form.value.password)
@@ -131,7 +99,6 @@ export class HomePage implements OnInit {
         }).present();
       }
     }
->>>>>>> fd97aa9bbaa206e6fac71d8fb59c2ad8fc0ef19d
   }
 
   subscribeEvents() {
