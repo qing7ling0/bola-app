@@ -4766,6 +4766,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
+signature_pad@^2.3.2:
+  version "2.3.2"
+  resolved "http://registry.npm.taobao.org/signature_pad/download/signature_pad-2.3.2.tgz#ca7230021c89cedeead27b33d8d16ff254e5f04a"
+
 simctl@0.0.9:
   version "0.0.9"
   resolved "http://registry.npm.taobao.org/simctl/download/simctl-0.0.9.tgz#cd36c9d3a1ae1709645f97e0ce205cc3cac6fd1b"

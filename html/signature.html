@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head><title>Touch Test</title></head>
+<style type="text/css">
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+
+    .work_area {
+
+
+        width: 900px;
+        height: 400px;
+        border: solid 1px #06C;
+        text-align: center;
+    }
+
+
+    .work_area .button_area {
+        width: 100%;
+        height: 100px;
+        background-color: #ff4500;
+        text-align: right;
+    }
+
+
+    .work_area .button_area .button {
+        margin: 5px;
+        height: 75px;
+        width: 150px;
+        font-size: 35px;
+        border-radius: 15px;
+    }
+
+
+        /* .work_area .button_area .button_r {
+            margin: 5px 25px 5px 5px;
+        }*/
+
+
+    .work_area .editing_area {
+        width: 100%;
+        height: 20px;
+        border: none;
+    }
+
+
+    .work_show {
+        width: 100%;
+        height: 300px;
+        border: none;
+    }
+
+
+        /*.work_show .preview {*/
+        /*width: 300px;*/
+        /*height: 126px;*/
+        /*float: left;*/
+        /*}*/
+</style>
+<body>
+
+
+
+
+<div class="work_area">
+    <!-- 按钮区域 用来显示一些按钮 -->
+    <div class="button_area">
+        <input class="button" name="rewrite" type="button" value="取消" onClick="rewrite()"/>
+        <input class="button" name="preview" type="button" value="确定" onClick="preview()"/>
+        <!--<input class="button_r" name="save" type="button" value="保存" onClick="save()"/>-->
+    </div>
+    <!-- 编辑区域 用来写字的 -->
+    <div class="editing_area">
+        <!--<canvas width="600" height="250" id="canvasEdit"></canvas>-->
+        <canvas id="canvas" width="900" height="1300" style="border:none ;">
+            Your browser does not support canvas element.
+        </canvas>
+    </div>
+
+
+    <div class="work_show">
+        <div id="previewShow" class="preview"></div>
+        <!--<div class="preview"><textarea id="textarea" style="width:299px; float:left;" rows="8"></textarea></div>-->
+    </div>
+
+
+</div>
+<br>
+<br>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/jSignature.min.js"></script>
+
+<script type="text/javascript">
+  $("#previewShow").jSignature();
+</script>
+<!--Log:
+<pre id="log" style="border: 1px solid #ccc;"></pre>-->
+<!-- <script type="text/javascript">
+  document.body.onload = startup; //文档加载完毕触发
+
+
+  var ongoingTouches = new Array(); //用来保存跟踪正在发送的触摸事件
+
+
+  //设置事件处理程序
+  function startup() {
+      var el = document.getElementsByTagName("canvas")[0];
+      el.addEventListener("touchstart", handleStart, false);
+      el.addEventListener("touchend", handleEnd, false);
+      el.addEventListener("touchcancel", handleCancel, false);
+      el.addEventListener("touchleave", handleEnd, false);
+      el.addEventListener("touchmove", handleMove, false);
+      log("initialized.");
+  }
+  //图片记录
+  var context = canvas.getContext('2d');
+  var linex = new Array();
+  var liney = new Array();
+  var linen = new Array();
+  var lastX = 1;
+  var lastY = 30;
+  var flag = 0;
+  function onMouseMove(evt) {
+      if (flag == 1) {
+          linex.push(evt.layerX);
+          liney.push(evt.layerY);
+          linen.push(1);
+          context.save();
+          context.translate(context.canvas.width / 2, context.canvas.height / 2);
+          context.translate(-context.canvas.width / 2, -context.canvas.height / 2 - 33);
+          context.beginPath();
+          context.lineWidth = 2;
+          for (var i = 1; i < linex.length; i++) {
+              lastX = linex[i];
+              lastY = liney[i];
+              if (linen[i] == 0)
+                  context.moveTo(lastX, lastY);
+              else
+                  context.lineTo(lastX, lastY);
+          }
+          //context.strokeStyle = 'hsl(50%, 50%, 50%)';
+          //context.shadowColor = 'white';
+          context.shadowBlur = 10;
+          context.stroke();
+          context.restore();
+      }
+  }
+  //处理触摸开始事件
+  function handleStart(evt) {
+      evt.preventDefault(); //阻止事件的默认行为
+      //log("touchstart.");
+      var el = document.getElementsByTagName("canvas")[0];
+      var ctx = el.getContext("2d");
+      var touches = evt.changedTouches;
+
+
+      for (var i = 0; i < touches.length; i++) {
+          //log("touchstart:" + i + "...");
+          ongoingTouches.push(copyTouch(touches[i]));
+          var color = colorForTouch(touches[i]);
+          ctx.beginPath();
+          ctx.arc(touches[i].pageX, touches[i].pageY, 4, 0, 2 * Math.PI, false);  // a circle at the start
+          ctx.fillStyle = color;
+          ctx.fill();
+          //log("touchstart:" + i + ".");
+      }
+  }
+
+
+  //处理触摸移动事件
+  function handleMove(evt) {
+      evt.preventDefault();
+      var el = document.getElementsByTagName("canvas")[0];
+      var ctx = el.getContext("2d");
+      var touches = evt.changedTouches;
+
+
+      for (var i = 0; i < touches.length; i++) {
+          var color = colorForTouch(touches[i]);
+          var idx = ongoingTouchIndexById(touches[i].identifier);
+
+
+          if (idx >= 0) {
+              //log("continuing touch " + idx);
+              ctx.beginPath();
+              //log("ctx.moveTo(" + ongoingTouches[idx].pageX + ", " + ongoingTouches[idx].pageY + ");");
+              ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+              //log("ctx.lineTo(" + touches[i].pageX + ", " + touches[i].pageY + ");");
+              ctx.lineTo(touches[i].pageX, touches[i].pageY);
+              ctx.lineWidth = 6;
+              ctx.strokeStyle = color;
+              ctx.stroke();
+
+
+              ongoingTouches.splice(idx, 1, copyTouch(touches[i]));  // swap in the new touch record
+              //log(".");
+          } else {
+              log("can't figure out which touch to continue");
+          }
+      }
+  }
+
+
+  //处理触摸结束事件
+  function handleEnd(evt) {
+      evt.preventDefault();
+      //log("touchend/touchleave.");
+      var el = document.getElementsByTagName("canvas")[0];
+      var ctx = el.getContext("2d");
+      var touches = evt.changedTouches;
+
+
+      for (var i = 0; i < touches.length; i++) {
+          var color = colorForTouch(touches[i]);
+          var idx = ongoingTouchIndexById(touches[i].identifier);
+
+
+          if (idx >= 0) {
+              ctx.lineWidth = 6;
+              ctx.fillStyle = color;
+              ctx.beginPath();
+              ctx.moveTo(ongoingTouches[idx].pageX, ongoingTouches[idx].pageY);
+              ctx.lineTo(touches[i].pageX, touches[i].pageY);
+              ctx.fillRect(touches[i].pageX - 4, touches[i].pageY - 4, 8, 8);  // and a square at the end
+              ongoingTouches.splice(idx, 6);  // remove it; we're done
+          } else {
+              log("can't figure out which touch to end");
+          }
+      }
+  }
+
+
+  //处理触摸对出事件
+  function handleCancel(evt) {
+      evt.preventDefault();
+      //log("touchcancel.");
+      var touches = evt.changedTouches;
+
+
+      for (var i = 0; i < touches.length; i++) {
+          ongoingTouches.splice(i, 1);  // remove it; we're done
+      }
+  }
+
+
+  //选择颜色
+  function colorForTouch(touch) {
+      var r = touch.identifier % 16;
+      var g = Math.floor(touch.identifier / 3) % 16;
+      var b = Math.floor(touch.identifier / 7) % 16;
+      r = r.toString(16); // make it a hex digit
+      g = g.toString(16); // make it a hex digit
+      b = b.toString(16); // make it a hex digit
+      var color = "#" + r + g + b;
+      //log("color for touch with identifier " + touch.identifier + " = " + color);
+      return color;
+  }
+
+
+  //拷贝一个触摸对象
+  function copyTouch(touch) {
+      return { identifier:touch.identifier, pageX:touch.pageX, pageY:touch.pageY };
+  }
+
+
+  //找出正在进行的触摸
+  function ongoingTouchIndexById(idToFind) {
+      for (var i = 0; i < ongoingTouches.length; i++) {
+          var id = ongoingTouches[i].identifier;
+
+
+          if (id == idToFind) {
+              return i;
+          }
+      }
+      return -1;    // not found
+  }
+
+
+  //记录日志
+  function log(msg) {
+      var p = document.getElementById('log');
+      //p.innerHTML = msg + "\n" + p.innerHTML;
+  }
+  // 重画
+  function rewrite() {
+      linex = new Array();
+      liney = new Array();
+      linen = new Array();
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      preview();
+  }
+  function preview() {
+      var show = document.getElementById("previewShow");
+      show.innerHTML = "";
+      show.appendChild(convertCanvasToImage(canvas));
+      // window.history.go(-1);
+      //alert(window.location.search);
+      setTimeout("location.href='../pageApp/index.html'", 3000);
+      //location.href="../index.html" ;
+
+
+  }
+  //    function save() {
+  //        var textarea = document.getElementById("textarea");
+  //        textarea.innerHTML = "";
+  //        textarea.appendChild(convertCanvasToImage(canvas));
+  //    }
+  function convertCanvasToImage(canvas) {
+      var image = new Image();
+      image.width = 300;
+      image.height = 125;
+      image.src = canvas.toDataURL("i/png");
+      console.log("image" + image);
+      return image;
+
+
+  }
+</script> -->
+</body>
+</html>

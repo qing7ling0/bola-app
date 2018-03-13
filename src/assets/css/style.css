@@ -4207,8 +4207,10 @@ ol.comment-list {
 	/* line-height: 48px; */
 }
 /*签名*/
-.body-autograph .modal-dialog {
-	margin: 140px 0 0;
+.body-autograph .modal-dialog.autograph {
+  /* margin: 140px 0 0; */
+  top:50%;
+  transform: translateY(-50%);
 }
 .autograph-area {
 	height: 248px;
