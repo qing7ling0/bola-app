@@ -3,7 +3,7 @@
  */
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, ToastController, NavParams } from 'ionic-angular';
+import { NavController, ToastController, NavParams, ModalController, Events } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import moment from 'moment'
@@ -13,6 +13,7 @@ import { FormValidator } from '../../../utils/form-validator'
 import { CartListPage } from '../../cart-list/cart-list'
 import { OrderCreatePage } from '../../order-create/order-create'
 import { OrderTrackPage } from '../../order-track/order-track'
+import { OutboundComponent } from '../allot.component/outbound'
 import { HeaderData } from '../../../interface/header-data';
 import { AllotProvider, CommonProvider } from '../../../providers'
 import { Utils } from '../../../utils/utils';
@@ -25,36 +26,40 @@ const FORM_OPTIONS = (data)=> [
 
 
 @Component({
-  selector: 'page-apply-list',
-  templateUrl: 'apply-list.html'
+  selector: 'page-allot-list',
+  templateUrl: 'allot-list.html'
 })
-export class ApplyListPage implements OnInit {
-  headerData: HeaderData = {title:'样品调拨', menuEnable:false, type:'apply-list'};
+export class AllotListPage implements OnInit {
+  headerData: HeaderData = {title:'样品调拨', menuEnable:false, type:'allot-list'};
 
   formOptions: Array<any>;
   formGroup: FormGroup;
   searchNID: string = '';
-  applyList: Array<any>;
+  allotList: Array<any>;
+  allotListPage: any = {page:0,pageSize:0,total:0}
   loginUserId: string = '';
   loginUserShopId: string = '';
   isShopManager: Boolean = false;
+  user: any = null;
 
   constructor(
     public navCtrl: NavController,
     private formBuilder: FormBuilder,
     private toastCtrl: ToastController,
+    private modalCtrl: ModalController ,
     private allotProvider: AllotProvider,
     private commonProvider: CommonProvider,
     private storage: Storage,
     public navParams: NavParams,
+    private events: Events
   ) {
-    let user = navParams.get('user');
-    if (user) {
-      this.loginUserId = user._id;
-      if (user.shop) {
-        this.loginUserShopId = user.shop._id;
+    this.user = navParams.get('user');
+    if (this.user) {
+      this.loginUserId = this.user._id;
+      if (this.user.shop) {
+        this.loginUserShopId = this.user.shop._id;
       }
-      this.isShopManager = user.manager;
+      this.isShopManager = this.user.manager;
     }
   }
 
@@ -71,10 +76,14 @@ export class ApplyListPage implements OnInit {
     let con: any = {
       status:{$lt:constants.E_SAMPLE_ALLOT_STATUS.COMPLETED}
     };
-    con.apply_shop = this.loginUserShopId;
+    if (this.isShopManager) {
+      con.accept_shop = this.loginUserShopId;
+    } else {
+      con.accept_shop_guide = this.loginUserId;
+    }
     this.allotProvider.getSampleAllotList(con).then((data:any) => {
       if (data) {
-        this.applyList = data;
+        this.allotList = data;
       }
     })
   }
@@ -86,40 +95,27 @@ export class ApplyListPage implements OnInit {
     return '';
   }
 
-  getAllotStep = (data: any): number => {
-    if (data) {
-      if (data.status <= constants.E_SAMPLE_ALLOT_STATUS.REVIEW) return 0;
-      if (data.status <= constants.E_SAMPLE_ALLOT_STATUS.REVIEW_FINISH) return 1;
-      if (data.status <= constants.E_SAMPLE_ALLOT_STATUS.TRANSPORT) return 2;
-    }
-    return 0;
-  }
-
-  getSampleShoesCountClass = (data: any): string => {
-    if (data) {
-      if (data.left_count > 0 && data.right_count > 0) return 'both';
-      if (data.left_count > 0 && data.right_count === 0) return 'left';
-      if (data.left_count === 0 && data.right_count > 0) return 'right';
-    }
-    return '';
-  }
-
   getSampleRightBtnLabel = (data: any): string => {
-    if (data && data.status === constants.E_SAMPLE_ALLOT_STATUS.TRANSPORT) {
-      return '入库';
+    if (data && data.status === constants.E_SAMPLE_ALLOT_STATUS.REVIEW_FINISH) {
+      return '出库';
     }
 
     return '';
   }
 
   onItemRightClicked = (data: any) => {
-    if (data && data.status === constants.E_SAMPLE_ALLOT_STATUS.TRANSPORT) {
-      this.allotProvider.sampleAllotInbound(data._id).then(data=>{
-        if (data.code === 0) {
+    if (data && data.status === constants.E_SAMPLE_ALLOT_STATUS.REVIEW_FINISH) {
+      let profileModal = this.modalCtrl.create(OutboundComponent, {allot:data, user:this.user});
+      profileModal.onDidDismiss(data => {
+        if (data.success) {
           this.onReqList();
         }
       });
+      profileModal.present();
     }
+  }
+  
+  subscribeEvents() {
   }
 
 }

@@ -1,4 +1,4 @@
-export const DEBUG = true;
+export const DEBUG = false;
 
 // export const DEV_SERVER = 'http://192.168.0.105:3001';
 export const DEV_SERVER = 'http://127.0.0.1:3001';
@@ -96,6 +96,18 @@ export const POWER_TYPES = {
   FACTORY_PRODUCTION:6, // 工厂制作人员
   ADMINISTRTOR:1000 // 系统管理员
 }
+
+/**
+ * 部门
+ */
+export const E_DEPARTMENT_TYPES = {
+  shop:1, // 商品
+  normal:2, // 各级管理人员
+}
+export const DEPARTMENT_TYPES_DATAS = [
+  {id:1, value:E_DEPARTMENT_TYPES.shop, label:'商品部'},
+  {id:2, value:E_DEPARTMENT_TYPES.normal, label:'普通管理'},
+]
 
 /**
  * 用户类型
@@ -453,7 +465,7 @@ export const E_SAMPLE_ALLOT_STATUS = {
   REVIEW: 1, // 审核中
   REVIEW_FINISH:200, // 已审核等待发货
   TRANSPORT:300, // 发货中
-  INBOUND:400, // 已入库
+  INBOUND:400, // 入库
   COMPLETED: 500 // 已完成
 };
 

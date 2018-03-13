@@ -8,6 +8,7 @@ import {HeaderData} from '../../interface/header-data';
 import {E_ORDER_TYPE, ORDER_TYPES} from '../../constants/constants'
 import { SampleListPage } from './sample-list/sample-list'
 import { ApplyListPage } from './apply-list/apply-list'
+import { AllotListPage } from './allot-list/allot-list'
 import { CartProvider, CommonProvider } from '../../providers';
 
 @Component({
@@ -16,7 +17,7 @@ import { CartProvider, CommonProvider } from '../../providers';
 })
 export class AllotPage implements OnInit {
   headerData: HeaderData = {title:'样品调拨', menuEnable:false, type:'allot'};
-  pages: Array<any> =[SampleListPage,ApplyListPage,SampleListPage]
+  pages: Array<any> =[SampleListPage, ApplyListPage, AllotListPage]
   user:any = null;
 
   constructor(

@@ -30,10 +30,13 @@ export class SampleListPage implements OnInit {
   formOptions: Array<any>;
   formGroup: FormGroup;
   searchNID: string = '';
-  sampleList: Array<any>;
+  sampleList: Array<any> = [];
   sampleListPage: any = {page:0,pageSize:0,total:0}
   loginUserId: string = '';
   loginUserShopId: string = '';
+  searchList: Array<any> = [];
+  searchListPage: any = {page:0,pageSize:0,total:0}
+  searching: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -58,8 +61,12 @@ export class SampleListPage implements OnInit {
     this.formGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
   }
 
-  ionViewDidLoad(): void {
-    this.allotProvider.getSampleList(this.loginUserShopId).then((data:any) => {
+  ionViewDidEnter(): void {
+    this.onReqList();
+  }
+
+  onReqList() {
+    this.allotProvider.getSampleList({shop:this.loginUserShopId, $or:[{left_count:{$gt:0}}, {right_count:{$gt:0}}]}).then((data:any) => {
       if (data) {
         this.sampleList = data.list;
         this.sampleListPage = data.page;
@@ -74,16 +81,88 @@ export class SampleListPage implements OnInit {
     return '';
   }
 
-  getSampleRightBtnLabel = (data: any): string => {
-    if (data.left_count > 0 && data.right_count > 0) {
-      return '出售';
+  getSampleShoesCountClass = (data: any): string => {
+    if (data) {
+      if (data.left_count > 0 && data.right_count > 0) return 'both';
+      if (data.left_count > 0 && data.right_count === 0) return 'left';
+      if (data.left_count === 0 && data.right_count > 0) return 'right';
     }
-
     return '';
   }
 
-  onItemRightClicked = (data: any) => {
+  getSampleRightBtnLabel = (data: any): string => {
+    if (data.shop._id === this.loginUserShopId) {
+      if (data.left_count > 0 && data.right_count > 0) {
+        return '出售';
+      }
+    } else {
+      if (data.left_count > 0 || data.right_count > 0) {
+        return '申请调拨';
+      }
+    }
+  
+    return '';
+  }
 
+  onReqSearchList() {
+    if (this.formGroup.value.NID) {
+      this.allotProvider.getSampleList({shop:{$ne:this.loginUserShopId},NID:{$regex:`/${this.formGroup.value.NID}/i`}}, 1, 20).then((data:any) => {
+        if (data) {
+          this.searchListPage = data.page;
+          this.searchList = [];
+          data.list.forEach(element => {
+            if (element.left_count > 0 && element.right_count > 0) {
+              // 左右拆分开
+              let info = Object.assign({}, element);
+              info.right_count = 0;
+              this.searchList.push(info);
+              info = Object.assign({}, element);
+              info.left_count = 0;
+              this.searchList.push(info);
+            } else if (element.left_count > 0 || element.right_count > 0) {
+              this.searchList.push(element);
+            }
+          });
+        }
+        this.searching = true;
+      })
+    }
+  }
+
+  onBtnSearchClicked = () => {
+    if (this.searching) {
+      let value = {NID:''};
+      this.formGroup.setValue(value);
+      this.searching = false;
+    } else {
+      this.onReqSearchList();
+    }
+  }
+
+  onItemRightClicked = (data: any) => {
+    if (data.shop._id === this.loginUserShopId) {
+      if (data.left_count > 0 && data.right_count > 0) {
+        return '出售';
+      }
+    } else {
+      if (data.left_count > 0 || data.right_count > 0) {
+
+        let value:any = {};
+        value.sample = data._id;
+        value.left_count = data.left_count;
+        value.right_count = data.right_count;
+        value.apply_shop = this.loginUserShopId;
+        value.apply_shop_guide = this.loginUserId;
+
+        // return '申请调拨';
+        this.allotProvider.sampleAllotApply(value).then(data=>{
+          if (data.code === 0) {
+            this.onReqSearchList();
+            this.onReqList();
+          }
+        });
+      }
+    }
   }
 
 }
