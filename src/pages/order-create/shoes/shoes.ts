@@ -308,7 +308,7 @@ export class OrderShoesPage implements OnInit {
   onBtnPickerClicked(pic: any) {
     if (!this.isEditing()) return;
 
-    this.imagePicker.getPictures({}).then((results) => {
+    this.imagePicker.getPictures({width:1024, height:1024}).then((results) => {
       for (var i = 0; i < results.length; i++) {
           console.log('Image URI: ' + results[i]);
           // let filePath = '/Users/wanglingling/play.png';

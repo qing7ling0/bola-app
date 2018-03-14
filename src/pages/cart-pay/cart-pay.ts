@@ -1,12 +1,18 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController, AlertController, Events } from 'ionic-angular';
+import { NavController, NavParams, ToastController, AlertController, Events, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { PhotoLibrary, LibraryItem } from '@ionic-native/photo-library';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import moment from 'moment'
 
+import { API } from '../../api/api'
 import { OrderCreatePage } from '../order-create/order-create'
 import {HeaderData} from '../../interface/header-data';
 import * as constants from '../../constants/constants'
 import { CartProvider, CommonProvider } from '../../providers';
 import * as commonUtils from '../../utils/common-utils'
+import { SignaturePage } from './signature/signature'
 
 @Component({
   selector: 'page-cart-pay',
@@ -26,16 +32,21 @@ export class CartPayPage {
   shopId: string = '';
   guideId: string = '';
   payTypeList: Array<any> = constants.PAY_TYPE;
+  signaturePic: string = '';
 
   constructor(
     public navCtrl: NavController,
     public toastCtrl: ToastController,
+    public modalCtrl: ModalController,
     public navParams: NavParams,
     private cartProvider: CartProvider,
     private commonProvider: CommonProvider,
     private storage: Storage,
     private alertCtrl: AlertController,
-    private events: Events
+    private events: Events,
+    private transfer: FileTransfer,
+    private file: File,
+    private photoLibrary: PhotoLibrary
   ) {
     this.goodsList = navParams.get('goodsList');
     this.customer = navParams.get('customer');
@@ -165,6 +176,7 @@ export class CartPayPage {
     order.pay_type = this.payType;
     order.store_card_selected = this.isUseStoreCard;
     order.cash_ticket_NID = ''; // 代金券
+    order.signature_pic = this.signaturePic;
 
     let subOrders = [];
     for(let good of this.goodsList) {
@@ -202,4 +214,53 @@ export class CartPayPage {
     });
   }
 
+  onPaySignature() {
+    let profileModal = this.modalCtrl.create(SignaturePage, {});
+    profileModal.onDidDismiss(data => {
+      if (data) {
+        this.photoLibrary.requestAuthorization().then(() => {
+          this.photoLibrary.saveImage(data, `${this.customer.name}-${moment().format("YYYY-MM-DD HH:mm:ss")}.jpg`).then((saveImageResult:LibraryItem)=>{
+
+          const fileTransfer: FileTransferObject = this.transfer.create();
+          let header = {
+            'auth':API.auth
+          }
+          // Upload a file:
+          fileTransfer.upload(saveImageResult.photoURL, constants.API_UPLOAD_SERVER_ADDRESS, {mimeType:'image/*', fileKey:'order', headers:header}).then((result: any)=>{
+            console.log(result);
+            if (result.response) {
+              let data = JSON.parse(result.response);
+              if (data.data.files && data.data.files.length > 0) {
+                this.signaturePic = data.data.files[0];
+                this.onPay();
+              } else {
+                this.toastCtrl.create({
+                  message:'签名文件上传失败!',
+                  duration:1500,
+                  position:'middle'
+                }).present();
+              }
+            } else {
+              this.toastCtrl.create({
+                message:'签名文件上传失败!',
+                duration:1500,
+                position:'middle'
+              }).present();
+            }
+          }).catch((error) => {
+            console.log(error);
+          });
+          });
+        })
+        .catch(err => {
+          this.toastCtrl.create({
+            message:'没有权限访问相册!',
+            duration:1500,
+            position:'middle'
+          }).present();
+        });
+      }
+    });
+    profileModal.present();
+  }
 }

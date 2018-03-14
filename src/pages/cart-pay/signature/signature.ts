@@ -42,6 +42,7 @@ export class SignaturePage implements OnInit {
   isShopManager: Boolean = false;
   signaturePad:any = null;
 
+
   @ViewChild('canvas') canvas: ElementRef;
 
   constructor(
