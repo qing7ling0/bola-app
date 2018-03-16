@@ -18,8 +18,10 @@ import { AllotProvider, CommonProvider } from '../../../providers'
 import { Utils } from '../../../utils/utils';
 import * as graphqlTypes from '../../../api/graphqlTypes'
 import * as constants from '../../../constants/constants'
-import { Signature } from '../../../utils/signature'
-import SignaturePad from 'signature_pad';
+// import * as SignaturePad from '../../../js/signature_pad';
+
+declare var SignaturePad;
+
 const FORM_OPTIONS = (data)=> [
   {key:'NID', label:'货号', defaultValue:data&&data.NID||'', validators:[{key:'required', validator:Validators.required}]},
 ]
@@ -86,7 +88,7 @@ export class SignaturePage implements OnInit {
     //   }
     // })
 
-    window.addEventListener("resize", this.resizeCanvas);
+    // window.addEventListener("resize", this.resizeCanvas);
     // this.resizeCanvas();
     let root = document.getElementById('canvasRoot')
     this.canvas.nativeElement.width = root.offsetWidth;
@@ -103,14 +105,7 @@ export class SignaturePage implements OnInit {
   }
 
   onBtnSureClicked = () => {
-    let data = this.signaturePad.toData();
-  }
-
-  resizeCanvas() {
-    // var ratio =  Math.max(window.devicePixelRatio || 1, 1);
-    // this.canvas.nativeElement.width = this.canvas.nativeElement.offsetWidth * ratio;
-    // this.canvas.nativeElement.height = this.canvas.nativeElement.offsetHeight * ratio;
-    // this.canvas.nativeElement.getContext("2d").scale(ratio, ratio);
-    // this.signaturePad.clear(); // otherwise isEmpty() might return incorrect value
+    let data = this.signaturePad.toDataUrl("image/jpeg");
+    this.viewCtrl.dismiss(data);
   }
 }

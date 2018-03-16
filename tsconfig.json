@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es5",
-    "allowJs": true
+    "allowJs": true,
+    "maxNodeModuleJsDepth":2
   },
   "include": [
     "src/**/*.ts"

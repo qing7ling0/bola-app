@@ -70,34 +70,33 @@ export class HomePage implements OnInit {
 
   login(form: FormGroup) {
 
-    let profileModal = this.modalCtrl.create(SignaturePage, {});
-      profileModal.onDidDismiss(data => {
-      });
-      profileModal.present();
+    // let profileModal = this.modalCtrl.create(SignaturePage, {});
+    //   profileModal.onDidDismiss(data => {
+    //   });
+    //   profileModal.present();
 
-  // return;
-    // if (form.valid) {
-    //   this.userProvider.login(form.value.account, form.value.password)
-    // } else {
-    //   if (form.controls.account.hasError('required') ||form.controls.password.hasError('required')) {
-    //     this.toastCtrl.create({
-    //       message:'请填写账号密码！',
-    //       duration:1500,
-    //       position:'middle'
-    //     }).present();
-    //   } else if (
-    //     form.controls.account.hasError('minlength') ||
-    //     form.controls.account.hasError('maxlength') ||
-    //     form.controls.password.hasError('minlength')||
-    //     form.controls.password.hasError('maxlength')
-    //   ) {
-    //     this.toastCtrl.create({
-    //       message:`账号密码不合法，输入${constants.ACCOUNT_MIN_LENGTH}-${constants.ACCOUNT_MAX_LENGTH}长度的英文和字母！`,
-    //       duration:1500,
-    //       position:'middle'
-    //     }).present();
-    //   }
-    // }
+    if (form.valid) {
+      this.userProvider.login(form.value.account, form.value.password)
+    } else {
+      if (form.controls.account.hasError('required') ||form.controls.password.hasError('required')) {
+        this.toastCtrl.create({
+          message:'请填写账号密码！',
+          duration:1500,
+          position:'middle'
+        }).present();
+      } else if (
+        form.controls.account.hasError('minlength') ||
+        form.controls.account.hasError('maxlength') ||
+        form.controls.password.hasError('minlength')||
+        form.controls.password.hasError('maxlength')
+      ) {
+        this.toastCtrl.create({
+          message:`账号密码不合法，输入${constants.ACCOUNT_MIN_LENGTH}-${constants.ACCOUNT_MAX_LENGTH}长度的英文和字母！`,
+          duration:1500,
+          position:'middle'
+        }).present();
+      }
+    }
   }
 
   subscribeEvents() {
