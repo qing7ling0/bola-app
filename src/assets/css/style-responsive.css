@@ -1,132 +1,125 @@
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 768px) {
+  body {
+      position: relative;
+  }
 
-    body {
-        position: relative;
-    }
+  .main-content {
+      margin-left: 0;
+      width: 100%;
+  }
 
-    .main-content {
-        margin-left: 0;
-        width: 100%;
-    }
+  .btn-demo {
+      margin-bottom: 20px;
+  }
 
-    .btn-demo {
-        margin-bottom: 20px;
-    }
+  .sticky-header .menu-right {
+      margin-right: 15px;
+  }
 
-    .sticky-header .menu-right {
-        margin-right: 15px;
-    }
+  .lock-wrapper {
+      margin: 25% auto;
+  }
 
-    .lock-wrapper {
-        margin: 25% auto;
-    }
+.stepy-error {
+      bottom: 50px;
+  }
 
-	.stepy-error {
-        bottom: 50px;
-    }
-
-    .form-signin {
-        max-width: 500px;
-    }
-
+  .form-signin {
+      max-width: 500px;
+  }
 }
 
 
 @media screen and (max-width: 767px) {
+  .searchform {
+      position: relative;
+  }
 
-    .searchform {
-        position: relative;
-    }
+  .searchform input {
+      background:#fff;
+  }
 
-    .searchform input {
-        background:#fff;
-    }
+  .notification-menu li:nth-child(4) {
+      display: none;
+  }
 
-    .notification-menu li:nth-child(4) {
-        display: none;
-    }
+  .breadcrumb-wrapper {
+      display: none;
+  }
 
-    .breadcrumb-wrapper {
-        display: none;
-    }
+  .notification-menu .dropdown-menu:after {
+      display: none;
+  }
 
-    .notification-menu .dropdown-menu:after {
-        display: none;
-    }
+  /*calendar*/
+  .fc-button-inner {
+      padding: 0;
+  }
 
-    /*calendar*/
-    .fc-button-inner {
-        padding: 0;
-    }
+  /*media gallery*/
+  .media-gal .item {
+      width: 100%;
+  }
+  .media-filter {
+      margin: 25px 0;
+  }
 
-    /*media gallery*/
-    .media-gal .item {
-        width: 100%;
-    }
-    .media-filter {
-        margin: 25px 0;
-    }
+  .media-filter + .pull-right, .media-filter + .pull-right + .btn  {
+      float: left !important;
+  }
 
-    .media-filter + .pull-right, .media-filter + .pull-right + .btn  {
-        float: left !important;
-    }
+  /*state info*/
+  .state-info {
+      position: static;
+      width: 100%;
+      margin-top: 15px;
+  }
 
-    /*state info*/
-    .state-info {
-        position: static;
-        width: 100%;
-        margin-top: 15px;
-    }
+  .state-info .panel {
+      width: 100%;
+  }
 
-    .state-info .panel {
-        width: 100%;
-    }
+  .lock-wrapper {
+      margin: 40% auto;
+  }
 
-    .lock-wrapper {
-        margin: 40% auto;
-    }
+  .pricing-table {
+      width: 100%;
+      margin-left: 0;
+  }
 
-    .pricing-table {
-        width: 100%;
-        margin-left: 0;
-    }
+  .mail-box > aside, .mail-box > section {
+      display: block;
+      margin-bottom: 10px;
+      width: 100%;
+  }
 
-    .mail-box > aside, .mail-box > section {
-        display: block;
-        margin-bottom: 10px;
-        width: 100%;
-    }
-
-    .mail-list {
-        height: auto;
-    }
-
+  .mail-list {
+      height: auto;
+  }
 }
 
-@media screen and (max-width: 640px) {
-
-}
+@media screen and (max-width: 640px) {}
 
 @media screen and (max-width: 480px) {
-    /*form wizard steps*/
-    .widget-container .stepy-titles li , .stepy-titles li{
-        width: 100%;
-    }
-    .directory-list li {
-        display: inline-block;
-        float: left;
-        width: auto;
-    }
+  /*form wizard steps*/
+  .widget-container .stepy-titles li , .stepy-titles li{
+    width: 100%;
+  }
+  .directory-list li {
+    display: inline-block;
+    float: left;
+    width: auto;
+  }
 
-    .directory-list li a {
-        display: block;
-        padding:5px 10px;
-        margin-bottom: 1px;
-    }
+  .directory-list li a {
+    display: block;
+    padding:5px 10px;
+    margin-bottom: 1px;
+  }
 }
-
 
 @media screen and (max-width: 479px) {
     /*calendar*/
@@ -155,7 +148,6 @@
         width: 100%;
     }
 
-
     .directory-list li {
         display: inline-block;
         float: left;
@@ -170,9 +162,6 @@
 }
 
 @media screen and (max-width: 360px) {
-
-
-
     .notification-menu li:first-child .dropdown-menu {
         margin-right: -90px;
     }
@@ -200,8 +189,16 @@
     .lock-wrapper .locked {
         right: 70px;
     }
+}
 
-
+@media screen and (max-width: 374px) {
+	.manage .sales {
+		width: 100%;
+		overflow-x: scroll;
+	}
+	.manage .sales .table-sales {
+		width: 375px;
+	}
 }
 
 @media screen and (max-width: 320px) {

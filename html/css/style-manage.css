@@ -1,0 +1,308 @@
+ul, ol, li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.text-center th {
+	text-align: center;
+}
+.body-manage {
+	background-color: #eff0f4;
+}
+/*日历*/
+.has-toolbar.fc {
+	background-color: #fff;
+}
+.sales-thisMonth {
+	color: #c0a64f;
+	padding: 5px 12px;
+	line-height: 18px;
+}
+.sales-thisMonth span {
+	display: block;
+	font-weight: bold;
+}
+/*申请*/
+.applyBox {
+	background: #fafaf8;
+	padding: 6px 14px 4px;
+	border-bottom: 2px solid #5aaba9;
+}
+.applyBox li {
+	float: left;
+	padding: 0 16px;
+	border-right: 1px solid #32374f;
+	line-height: 16px;
+}
+.applyBox li:first-child {
+	border-left: 1px solid #32374f;
+}
+.applyBox li.active a {
+	color: #5aaba9;
+	padding: 0 6px;
+}
+/*活动、销售、留言*/
+.nav-manage {
+	position: fixed;
+	bottom: 0;
+	background-color: #eff0f4;
+	width: 100%;
+	padding: 10px 6px;
+	border: 0;
+	z-index: 9999;
+}
+.nav-tabs.nav-manage > li {
+	width: 25%;
+	padding: 0 4px;
+	text-align: center;
+}
+.nav-tabs.nav-manage > li > a {
+	padding-left: 0;
+	padding-right: 0;
+	margin: 0;
+	background-color: #323232;
+	color: #fff;
+	border-radius: 0;
+}
+.nav-tabs.nav-manage > li.active > a, .nav-tabs.nav-manage > li.active > a:hover, .nav-tabs.nav-manage > li.active > a:focus {
+	background-color: #eff0f4;
+	color: #84878c;
+	border: 1px solid #323232;
+}
+.nav-tabs.nav-shopowner {
+	padding-left: 5%;
+	padding-right: 5%;
+	background-color: #fff;
+}
+.nav-tabs.nav-shopowner > li {
+	width: 33.33%;
+	padding: 0 5%;
+	position: relative;
+}
+.manage-tab {
+	margin-bottom: 60px;
+}
+.content-activity {
+	min-height: 210px;
+	margin: 20px 15px;
+	background: #fff;
+	border: 1px solid #626262;
+}
+.content-sales {
+	padding: 8px;
+}
+.content-sales .table > thead > tr > th {
+	font-size: 16px;
+	border-bottom: 1px dashed #7d7d7d;
+	padding-bottom: 2px;
+}
+.content-sales .table > tbody > tr > td {
+	border: none;
+	color: #767676;
+	padding-bottom: 0;
+	padding-top: 0;
+}
+.content-sales .table > tbody > tr:first-child > td {
+	padding-top: 6px;
+}
+.content-sales .table > tbody > tr:last-child > td {
+	padding-bottom: 8px;
+}
+.content-sales .table > tbody > tr > td:first-child {
+	font-weight: 500;
+}
+.content-sales .table > thead > tr > th:last-child, .content-sales .table > tbody > tr > td:last-child {
+	text-align: right;
+}
+.content-sales .table > tfoot > tr > td {
+	font-size: 16px;
+	color: #dc5569;
+	text-align: right;
+	border-color: #9b9b9b;
+	padding-top: 3px;
+	padding-bottom: 2px;
+}
+.content-message {
+	padding: 10px 12px 0;
+}
+.content-message .message-item:nth-of-type(n+2) {
+	border-top: 1px dashed #7d7d7d;
+}
+.content-message .message-item h3 {
+	font-size: 16px;
+	margin-top: 12px;
+}
+.content-message .message-item h3 span {
+	font-size: 12px;
+	padding-left: 10px;
+}
+.content-message .message-item p.info {
+	color: #767676;
+	line-height: 22px
+}
+.content-leaveMessage {
+	margin: 16px 14px 0;
+}
+.content-leaveMessage .special-select {
+	margin: 0 0 10px;
+	border-color: #626262;
+	color: #c1c3ce;
+	background-color: #fff;
+}
+.content-leaveMessage .special-select.selected {
+	color: #323232;
+}
+.content-leaveMessage .special-select .select-current {
+	padding-left: 20px;
+	font-weight: 500;
+}
+.content-leaveMessage .leaveMessage-body {
+	background-color: #fff;
+	border: 1px solid #626262;
+	padding: 0 12px;
+}
+.content-leaveMessage .leaveMessage-body .leaveMessage-input {
+	height: 132px;
+}
+.content-leaveMessage .leaveMessage-body .leaveMessage-input .form-control {
+	border: none;
+	padding: 0;
+	margin: 10px 0;
+	font-size: 14px
+}
+.leaveMessage-input .form-control::-webkit-input-placeholder {
+ color: #c1c3ce;
+}
+.leaveMessage-input .form-control::-moz-placeholder {
+ color: #c1c3ce;
+}
+.leaveMessage-input .form-control::-moz-placeholder {
+ color: #c1c3ce;
+}
+.leaveMessage-input .form-control::-ms-input-placeholder {
+ color: #c1c3ce;
+}
+.content-leaveMessage .leaveMessage-body .leaveMessage-operation {
+	text-align: center;
+	border-top: 1px dashed #a8a8a8;
+	padding: 4px 0 8px;
+}
+.content-leaveMessage .leaveMessage-body .leaveMessage-operation .btn {
+	margin: 0 8px;
+	width: 78px;
+}
+.content-leaveMessage .leaveMessage-body .leaveMessage-operation .btn-reset {
+	border: 1px solid #323232;
+	background-color: #eff0f4;
+	color: #84878c;
+}
+/*店长查看*/
+.nav-shopowner > li span.badge {
+	display: block;
+	position: absolute;
+	right: -8px;
+	top: -8px;
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	background-color: red;
+	border: 2px solid #fff;
+	border-radius: 8px;
+}
+.table-sales {
+	font-size: 12px;
+	margin: 0;
+}
+.table.table-sales > thead > tr > th {
+	font-weight: normal;
+	color: #84878c;
+	border-bottom: 1px solid #a3a3a3;
+	padding: 12px 2px 4px;
+	font-size: 14px;
+}
+.table.table-sales > thead > tr > th:nth-of-type(n+2) > span {
+	border-left: 1px solid #c1c3ce;
+	display: block;
+	width: 100%;
+}
+.table.table-sales > tbody > tr > td {
+	padding-left: 3px;
+	padding-right: 3px;
+	border-bottom: 1px dashed #7d7d7d;
+	border-top: 0;
+	vertical-align: middle;
+}
+.table.table-sales > tfoot > tr > td {
+	border-bottom: 1px solid #dddee3;
+	border-top: 0;
+	font-size: 14px;
+	text-align: right;
+}
+.table-sales .sales-thisMonth {
+	padding: 20px 0 0;
+}
+.salesRanking {
+	border-top: 4px solid #dddee3;
+}
+.salesRanking-inner {
+	margin: 8px 10px;
+	padding: 0 8px;
+	border: 1px solid #c1c3ce;
+	color: #84878c;
+}
+.table-salesRanking.table > thead > tr > th {
+	padding: 12px 3px 4px;
+	border: 0;
+	text-align: center;
+}
+.table-salesRanking.table > thead > tr > th:nth-of-type(n+2) > span {
+	border-left: 1px solid #c1c3ce;
+	display: block;
+	width: 100%;
+}
+.table-salesRanking.table > tbody > tr > td {
+	border: 0;
+	padding: 4px;
+}
+.table-salesRanking.table > tbody > tr:first-child > td {
+	border-top: 1px dashed #7d7d7d;
+	padding-top: 8px;
+}
+.table-salesRanking.table tr td:first-child {
+	font-weight: bold;
+}
+.table-salesRanking.table tr td:first-child.first {
+	color: #c0a64f;
+}
+
+.table-salesRanking.table tr td:last-child {
+	color: #323232;
+}
+.content-approvalApply {
+	position: relative;
+	text-align: left;
+	padding-left: 8px;
+	padding-right: 76px;
+	line-height: 20px;
+	font-size: 14px;
+}
+.approvalApply .table.table-sales > tbody > tr > td {
+	height: 43px;
+}
+.content-approvalApply .btn {
+	position: absolute;
+	right: 5px;
+	top: calc(50% - 13px);
+	padding: 2px 20px;
+}
+.content-shopScheduling {
+	margin-top: 10px;
+	border-top: 5px solid #dddee3;
+}
+.content-shopScheduling .table-sales {
+	font-size: 14px;
+}
+.content-shopScheduling .special-select {
+	width: 60%;
+	margin: 0 auto;
+}

@@ -1,0 +1,137 @@
+.fc table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.fc-event-chuan {
+	color: #dc5569;
+}
+.fc-event-ban {
+	color: #2980d9;
+}
+.fc-event-jia {
+	color: #865fc1;
+}
+.fc-event-xiu {
+	color: #c1c3ce;
+}
+/* Header
+------------------------------------------------------------------------*/
+.fc-header {
+	width: 100%;
+	padding: 0 12px;
+	margin-bottom: 8px;
+}
+.fc-header td {
+	white-space: nowrap;
+}
+.fc-header-left {
+	width: 60%;
+	padding-left: 12px;
+}
+.fc-header-left .fc-button, .fc-header-left .fc-header-title {
+	vertical-align: middle;
+	height: 46px;
+	overflow: hidden;
+}
+.fc-header-left .fc-button {
+	display: inline-block;
+	position: relative;
+}
+.fc-header-left .fa {
+	font-size: 28px;
+	padding-top: 8px;
+	color: #2980d9;
+}
+.fc-header-left .disabled .fa {
+	color: #c1c3ce;
+}
+.fc-header-right {
+	width: 40%;
+	text-align: right;
+}
+.fc-header-title {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0 10px;
+	font-size: 20px;
+	line-height: 46px;
+	color: #2980d9;
+	white-space: nowrap;
+}
+/* Content
+------------------------------------------------------------------------*/
+  
+.fc-content {
+	clear: both;
+}
+.fc-grid {
+	width: 100%; /* needed for view switching (when view is absolute) */
+	overflow: hidden;
+}
+/* Cell Styles
+------------------------------------------------------------------------*/
+.fc-widget-header, .fc-widget-content {
+	position: relative;
+	border-width: 0 0 1px;
+	border-color: #ececec;
+	border-style: solid;
+	color: #32374f;
+	text-align: center;
+}
+.fc-widget-content-inner {
+	min-height: 42px;
+}
+.fc-state-highlight .fc-widget-content-inner::after {
+	content: '';
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 4px;
+	background-color: #eb4986;
+}
+.fc-state-highlight .fc-day-number {
+	color: #eb4986;
+}
+.fc-cell-overlay {
+	background: #9cf;
+	opacity: .2;
+	filter: alpha(opacity=20); /* for IE */
+}
+/* Reusable Separate-border Table
+------------------------------------------------------------*/
+
+table.fc-border-separate {
+	border-collapse: separate;
+}
+.fc-border-separate tr.fc-last td {
+	border: 0;
+}
+/* Month View, Basic Week View, Basic Day View
+------------------------------------------------------------------------*/
+
+.fc-grid th {
+	text-align: center;
+	width: 14.2857%;
+	height: 22px;
+	line-height: 22px;
+	border-color: #a3a3a3;
+}
+.fc-grid td {
+	vertical-align: bottom;
+}
+.fc-grid .fc-day-number {
+	padding: 0 2px;
+}
+.fc-grid .fc-other-month .fc-day-number {
+	opacity: 0.3;
+	filter: alpha(opacity=30); 
+}
+.fc-grid .fc-day-content {
+	height: 18px;
+	font-size: 12px;
+}
+.fc-grid .fc-day-content span {
+	margin: 0 2px;
+}
