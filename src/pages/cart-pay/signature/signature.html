@@ -1,31 +1,29 @@
 <div class="body-autograph">
   <!-- main content start-->
   <div class="main-content" >
-    <ion-content class="main-content">
-        <div class="modal-backdrop fade in"></div>
-      <!--body wrapper start-->
-      <div class="wrapper">
-        <div class="modal fade in" style="display: block;">
-          <div class="modal-dialog autograph">
-            <div class="panel panel-default panel-cart">
-              <div class="panel-heading">
-                <h3 class="panel-title">用户签名</h3>
+    <div class="modal-backdrop fade in"></div>
+    <!--body wrapper start-->
+    <div class="wrapper">
+      <div class="modal fade in" style="display: block; z-index:99999">
+        <div class="modal-dialog autograph">
+          <div class="panel panel-default panel-cart">
+            <div class="panel-heading">
+              <h3 class="panel-title">用户签名</h3>
+            </div>
+            <div class="panel-body">
+              <div class="autograph-area" id="canvasRoot">
+                <canvas #canvas id="canvas"></canvas>
               </div>
-              <div class="panel-body">
-                <div class="autograph-area" id="canvasRoot">
-                  <canvas #canvas id="canvas"></canvas>
-                </div>
-                <div class="autograph-operation">
-                  <a (click)="onBtnBackClicked()" class="btn">返回</a>
-                  <a (click)="onBtnResetClicked()" class="btn">更正</a>
-                  <a (click)="onBtnSureClicked()" class="btn">确认</a>
-                </div>
+              <div class="autograph-operation">
+                <a (click)="onBtnBackClicked()" class="btn">返回</a>
+                <a (click)="onBtnResetClicked()" class="btn">更正</a>
+                <a (click)="onBtnSureClicked()" class="btn">确认</a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!--body wrapper end-->
-    </ion-content>
+    </div>
+    <!--body wrapper end-->
   </div>
 </div>

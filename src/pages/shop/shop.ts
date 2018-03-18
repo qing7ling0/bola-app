@@ -18,7 +18,7 @@ const NAVS = [
   // { id:'personal', icon:'icon-personal', label:'个人管理', url:'/personal' },
   { id:'vip', icon:'icon-user', label:'会员管理', url:'/vip' },
   { id:'allot', icon:'icon-allot', label:'样品调拨', url:'/allot' },
-  { id:'analyse', icon:'icon-allot', label:'系统分析', url:'/analyse' }
+  // { id:'analyse', icon:'icon-allot', label:'系统分析', url:'/analyse' }
 ]
 @Component({
   selector: 'page-shop',

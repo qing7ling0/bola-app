@@ -4222,7 +4222,8 @@ ol.comment-list {
 .body-autograph .modal-dialog.autograph {
   /* margin: 140px 0 0; */
   top:50%;
-  transform: translateY(-50%);
+	transform: translateY(-50%);
+	z-index: 8888;
 }
 .autograph-area {
 	height: 248px;
@@ -4237,7 +4238,7 @@ ol.comment-list {
 	height: 48px;
 	padding: 0;
 	line-height: 48px;
-	margin: 0 16px;
+	margin: 0 12px;
 }
 /*订单追踪*/
 .order-box {

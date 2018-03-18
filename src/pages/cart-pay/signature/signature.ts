@@ -18,7 +18,7 @@ import { AllotProvider, CommonProvider } from '../../../providers'
 import { Utils } from '../../../utils/utils';
 import * as graphqlTypes from '../../../api/graphqlTypes'
 import * as constants from '../../../constants/constants'
-// import * as SignaturePad from '../../../js/signature_pad';
+// import * as SignaturePad from 'signature_pad';
 
 declare var SignaturePad;
 
@@ -105,7 +105,7 @@ export class SignaturePage implements OnInit {
   }
 
   onBtnSureClicked = () => {
-    let data = this.signaturePad.toDataUrl("image/jpeg");
+    let data = this.signaturePad.toDataURL();
     this.viewCtrl.dismiss(data);
   }
 }

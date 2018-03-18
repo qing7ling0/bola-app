@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { PhotoLibrary, LibraryItem } from '@ionic-native/photo-library';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { CodePush } from '@ionic-native/code-push';
 import { File } from '@ionic-native/file';
@@ -62,7 +63,8 @@ import { AllotModule } from '../pages/allot/allot.module';
     File,
     FileTransfer,
     ImagePicker,
-    CodePush
+    CodePush,
+    PhotoLibrary
   ]
 })
 export class AppModule {}

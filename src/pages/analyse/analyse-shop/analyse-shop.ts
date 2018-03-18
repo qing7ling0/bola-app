@@ -22,11 +22,11 @@ const FORM_OPTIONS = (data)=> [
 
 
 @Component({
-  selector: 'page-analyse-list',
-  templateUrl: 'analyse-list.html'
+  selector: 'page-analyse-shop',
+  templateUrl: 'analyse-shop.html'
 })
 export class AnalyseShopPage implements OnInit {
-  headerData: HeaderData = {title:'数据分析', menuEnable:false, type:'analyse-list'};
+  headerData: HeaderData = {title:'数据分析', menuEnable:false, type:'analyse-shop'};
 
   formOptions: Array<any>;
   formGroup: FormGroup;

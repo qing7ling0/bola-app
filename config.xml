@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.hafala.taotu.ar" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.hafala.taotu.ar" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>app</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
@@ -86,7 +86,6 @@
     <allow-navigation href="http://localhost:8100" />
     <allow-navigation href="http://192.168.0.105:8100" />
     <allow-navigation href="http://192.168.0.107:8100" />
-    <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="com.synconset.imagepicker" spec="~2.1.8">
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="使用相册" />
@@ -99,8 +98,10 @@
     <allow-intent href="http://*/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="*" />
+    <allow-navigation href="http://192.168.0.102:8100" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-photo-library" spec="^2.1.0">
-        <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="To choose photos" />
+        <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value=" " />
     </plugin>
     <engine name="android" spec="~7.0.0" />
     <engine name="ios" spec="~4.5.4" />

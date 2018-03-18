@@ -33,6 +33,7 @@ export class CartPayPage {
   guideId: string = '';
   payTypeList: Array<any> = constants.PAY_TYPE;
   signaturePic: string = '';
+  signatureImage: any = null;
 
   constructor(
     public navCtrl: NavController,
@@ -150,7 +151,8 @@ export class CartPayPage {
         {
           text: '确定',
           handler: data => {
-            this.onPay();
+            // this.onPay();
+            this.onPaySignature();
           }
         }
       ]
@@ -218,21 +220,30 @@ export class CartPayPage {
     let profileModal = this.modalCtrl.create(SignaturePage, {});
     profileModal.onDidDismiss(data => {
       if (data) {
+        this.signatureImage =  data;
         this.photoLibrary.requestAuthorization().then(() => {
           this.photoLibrary.saveImage(data, `${this.customer.name}-${moment().format("YYYY-MM-DD HH:mm:ss")}.jpg`).then((saveImageResult:LibraryItem)=>{
-
-          const fileTransfer: FileTransferObject = this.transfer.create();
-          let header = {
-            'auth':API.auth
-          }
-          // Upload a file:
-          fileTransfer.upload(saveImageResult.photoURL, constants.API_UPLOAD_SERVER_ADDRESS, {mimeType:'image/*', fileKey:'order', headers:header}).then((result: any)=>{
-            console.log(result);
-            if (result.response) {
-              let data = JSON.parse(result.response);
-              if (data.data.files && data.data.files.length > 0) {
-                this.signaturePic = data.data.files[0];
-                this.onPay();
+            
+            const fileTransfer: FileTransferObject = this.transfer.create();
+            let header = {
+              'auth':API.auth
+            }
+            console.log('onPaySignature=' + JSON.stringify(saveImageResult));
+            // Upload a file:
+            fileTransfer.upload(this.signatureImage, constants.API_UPLOAD_SERVER_ADDRESS, {mimeType:'image/*', fileKey:'order', headers:header}).then((result: any)=>{
+              console.log(result);
+              if (result.response) {
+                let data = JSON.parse(result.response);
+                if (data.data.files && data.data.files.length > 0) {
+                  this.signaturePic = data.data.files[0];
+                  this.onPay();
+                } else {
+                  this.toastCtrl.create({
+                    message:'签名文件上传失败!',
+                    duration:1500,
+                    position:'middle'
+                  }).present();
+                }
               } else {
                 this.toastCtrl.create({
                   message:'签名文件上传失败!',
@@ -240,19 +251,13 @@ export class CartPayPage {
                   position:'middle'
                 }).present();
               }
-            } else {
-              this.toastCtrl.create({
-                message:'签名文件上传失败!',
-                duration:1500,
-                position:'middle'
-              }).present();
-            }
-          }).catch((error) => {
-            console.log(error);
-          });
+            }).catch((error) => {
+              console.log(error);
+            });
           });
         })
         .catch(err => {
+          console.log('onPaySignature error=' + JSON.stringify(err))
           this.toastCtrl.create({
             message:'没有权限访问相册!',
             duration:1500,

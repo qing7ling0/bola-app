@@ -18,7 +18,7 @@
                 <img src="{{FILE_URL+goods.icon}}" class="img-responsive">
               </div>
               <div *ngIf="!goods.icon" class="item-img pull-left ">
-                <div class="blank">暂无图片</div>
+                <div class="blank">暂无图片<img src="{{signatureImage}}" /></div>
               </div>
               <div class="item-info pull-left">
                 <div class="pay-price">金额：{{getGoodsPayPrice(goods)}} 元</div>
