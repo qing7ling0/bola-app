@@ -23,6 +23,7 @@ import { CartPayModule } from '../pages/cart-pay/cart-pay.module';
 import { CartListModule } from '../pages/cart-list/cart-list.module';
 import { OrderTrackModule } from '../pages/order-track/order-track.module';
 import { CustomerModule } from '../pages/customer/customer.module';
+import { AnalyseModule } from '../pages/analyse/analyse.module';
 import { AllotModule } from '../pages/allot/allot.module';
 
 @NgModule({

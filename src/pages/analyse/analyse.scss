@@ -1,0 +1,33 @@
+.allot-item-right {
+  position: relative;
+  width:96px;
+}
+.allotList > .item-block:last-child, .allotList > .item-wrapper:last-child .item-block {
+  border-bottom: 0px;
+}
+.allotList .item-block .item-inner {
+  border-bottom: 0px;
+  padding:0px;
+}
+.allotList .label, .allotList .label-ios, .allotList .item-ios {
+  padding: 0px;
+  margin: 0px;
+}
+
+.tabs-ios .tabbar {
+  background: #323232;
+}
+.tabs-ios .tab-button {
+  color: #fff;
+  text-decoration: none;
+}
+
+.tabs-ios .tab-button:hover:not(.disable-hover), .tabs-ios .tab-button[aria-selected=true] {
+  color: #fff;
+  text-decoration: none;
+  background-color: black;
+}
+
+.allot .list-none {
+  margin: 0 auto;
+}

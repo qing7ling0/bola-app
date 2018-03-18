@@ -1,0 +1,32 @@
+
+  <ion-content class="main-content">
+    <!--body wrapper start-->
+    <div class="wrapper">
+      <div class="allot">
+        <ion-list class="allotList">
+          <div *ngFor="let item of allotList; let itemIndex = index">
+            <div style="margin:0 8px;">
+              <ion-item-sliding class="allot-listInfo">
+                <ion-item>
+                  <div class="clearfix">
+                    <p class="item-img pull-left" *ngIf="getSampleIcon(item)"><img src="getSampleIcon(item)" class="img-responsive"></p>
+                    <p class="item-img pull-left" *ngIf="!getSampleIcon(item)">暂无图片</p>
+                    <p class="item-info pull-left"> <span class="title">货号：{{item.sample.NID}}</span> <span class="position">位置：{{item.sample.shop.name}}</span> </p>
+                    <p class="allot-img left pull-right"></p>
+                  </div>
+                </ion-item>
+                <ion-item-options side="right" *ngIf="getSampleRightBtnLabel(item)">
+                  <div class="allot-item-right">
+                    <div class="allotBtns-apply show" ><a class="btn btn-block" (click)="onItemRightClicked(item)">{{getSampleRightBtnLabel(item)}}</a></div>
+                  </div>
+                </ion-item-options>
+              </ion-item-sliding>
+            </div>
+          </div>
+          <span class="list-none" *ngIf="!allotList || allotList.length === 0">暂无数据</span>
+        </ion-list>
+      </div>
+    </div>
+    <!--body wrapper end-->
+
+  </ion-content>
