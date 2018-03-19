@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController, AlertController, Events, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, AlertController, Events, ModalController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { PhotoLibrary, LibraryItem } from '@ionic-native/photo-library';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
@@ -47,6 +47,7 @@ export class CartPayPage {
     private events: Events,
     private transfer: FileTransfer,
     private file: File,
+    public loadingCtrl: LoadingController,
     private photoLibrary: PhotoLibrary
   ) {
     this.goodsList = navParams.get('goodsList');
@@ -222,16 +223,29 @@ export class CartPayPage {
       if (data) {
         this.signatureImage =  data;
         this.photoLibrary.requestAuthorization().then(() => {
-          this.photoLibrary.saveImage(data, `${this.customer.name}-${moment().format("YYYY-MM-DD HH:mm:ss")}.jpg`).then((saveImageResult:LibraryItem)=>{
-            
+          this.photoLibrary.getAlbums().then(items=>{
+            console.log('onPaySignature requestAuthorization ok')
+            this.photoLibrary.saveImage(data, "bola")
+            .then((saveImageResult:LibraryItem)=>{
+            })
+            .catch(err=>{
+              console.log('onPaySignature saveImage error=' + JSON.stringify(err))
+            });
+
+          let loader = this.loadingCtrl.create({
+            content: "Please wait...",
+            duration: 1000 * 60
+          });
+          loader.present();
             const fileTransfer: FileTransferObject = this.transfer.create();
             let header = {
               'auth':API.auth
             }
-            console.log('onPaySignature=' + JSON.stringify(saveImageResult));
+            // console.log('onPaySignature=' + JSON.stringify(saveImageResult));
             // Upload a file:
             fileTransfer.upload(this.signatureImage, constants.API_UPLOAD_SERVER_ADDRESS, {mimeType:'image/*', fileKey:'order', headers:header}).then((result: any)=>{
               console.log(result);
+              loader.dismiss();
               if (result.response) {
                 let data = JSON.parse(result.response);
                 if (data.data.files && data.data.files.length > 0) {
@@ -254,7 +268,7 @@ export class CartPayPage {
             }).catch((error) => {
               console.log(error);
             });
-          });
+          })
         })
         .catch(err => {
           console.log('onPaySignature error=' + JSON.stringify(err))

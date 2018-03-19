@@ -44,7 +44,8 @@ import { AllotModule } from '../pages/allot/allot.module';
     CartListModule,
     OrderTrackModule,
     CustomerModule,
-    AllotModule
+    AllotModule,
+    AnalyseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
