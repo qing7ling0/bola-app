@@ -37,6 +37,7 @@ export class AnalyseProvider {
     let query = `
       query Query {
         analyseShopList(date_type:${dateType})${analyseTypes.analysePriceType}
+        analyseLast5Week
       }
     `;
     return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
@@ -51,6 +52,8 @@ export class AnalyseProvider {
     let query = `
       query Query {
         analyseShopList(date_type:${dateType})${analyseTypes.analysePriceType}
+        analyseLast12Month
+        analyseLast2Year12Month{year,yesteryear}
       }
     `;
     return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
@@ -65,6 +68,8 @@ export class AnalyseProvider {
     let query = `
       query Query {
         analyseShopList(date_type:${dateType})${analyseTypes.analysePriceType}
+        analyseLast5Year
+        analyse4Quarter
       }
     `;
     return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{

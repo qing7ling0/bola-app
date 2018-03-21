@@ -20,11 +20,12 @@
                 <h3 class="panel-title">总销售额</h3>
               </div>
               <div class="panel-body analyse-chart-shop-day-amount" #analyseDayAmount></div>
-              <div class="panel-body analyse-chart-shop-day-each" #analyseDayEach></div>
-              <div class="panel-body analyse-chart-shop-week-sales" #analyseWeekSales></div>
-              <div class="panel-body analyse-chart-shop-week-sales" #analyseMonthSales></div>
-              <div class="panel-body analyse-chart-shop-week-sales" #analyseMonthSalesCompare></div>
-              <div class="panel-body analyse-chart-shop-week-sales" #analyseQuarterAmount></div>
+              <div *ngIf="currentDateType===1" class="panel-body analyse-chart-shop-day-each" #analyseDayEach></div>
+              <div *ngIf="currentDateType===2" class="panel-body analyse-chart-shop-week-sales" #analyseWeekSales></div>
+              <div *ngIf="currentDateType===3" class="panel-body analyse-chart-shop-Month" #analyseMonthSales></div>
+              <div *ngIf="currentDateType===3" class="panel-body analyse-chart-shop-Month" #analyseMonthSalesCompare></div>
+              <div *ngIf="currentDateType===4" class="panel-body analyse-chart-shop-week-sales" #analyse5YearSales></div>
+              <div *ngIf="currentDateType===4" class="panel-body analyse-chart-shop-year" #analyseQuarterAmount></div>
             </div>
             <div class="panel panel-info">
               <div class="panel-heading"> <span class="info-square"></span>
