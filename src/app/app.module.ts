@@ -14,7 +14,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { API } from '../api/api';
-import { CustomerProvider, UserProvider, CommonProvider, CartProvider, AllotProvider } from '../providers';
+import { CustomerProvider, UserProvider, CommonProvider, CartProvider, AllotProvider, AnalyseProvider } from '../providers';
 
 import { MyApp } from './app.component';
 import { ShopPageModule } from '../pages/shop/shop.module';
@@ -61,6 +61,7 @@ import { AllotModule } from '../pages/allot/allot.module';
     CommonProvider,
     CartProvider,
     AllotProvider,
+    AnalyseProvider,
     File,
     FileTransfer,
     ImagePicker,

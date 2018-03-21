@@ -6,6 +6,7 @@ import { CartListPage } from '../cart-list/cart-list'
 import { OrderCreatePage } from '../order-create/order-create'
 import { OrderTrackPage } from '../order-track/order-track'
 import { AllotPage } from '../allot/allot'
+import { AnalyseShopPage } from '../analyse/analyse-shop/analyse-shop'
 import { CustomerReportPage } from '../customer/customer-report/customer-report'
 import { CustomerShopReportPage } from '../customer/customer-shop-report/customer-shop-report'
 import {HeaderData} from '../../interface/header-data';
@@ -18,7 +19,7 @@ const NAVS = [
   // { id:'personal', icon:'icon-personal', label:'个人管理', url:'/personal' },
   { id:'vip', icon:'icon-user', label:'会员管理', url:'/vip' },
   { id:'allot', icon:'icon-allot', label:'样品调拨', url:'/allot' },
-  // { id:'analyse', icon:'icon-allot', label:'系统分析', url:'/analyse' }
+  { id:'analyse', icon:'icon-allot', label:'系统分析', url:'/analyse' }
 ]
 @Component({
   selector: 'page-shop',
@@ -77,6 +78,9 @@ export class ShopPage {
           position:'middle'
         }).present();
       }
+      break;
+      case 'analyse':
+      this.navCtrl.push(AnalyseShopPage);
       break;
     }
   }

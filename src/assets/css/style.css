@@ -4659,6 +4659,9 @@ ol.comment-list {
 .salesSummary-cont .special-select .fa {
 	color: #c1c3ce;
 }
+.analysis-tab {
+  height: 100%;
+}
 .analysis-tab .nav-tabs {
 	padding: 5px 15px;
 	background: #eff0f4 !important;

@@ -1,32 +1,320 @@
-
-  <ion-content class="main-content">
-    <!--body wrapper start-->
-    <div class="wrapper">
-      <div class="allot">
-        <ion-list class="allotList">
-          <div *ngFor="let item of allotList; let itemIndex = index">
-            <div style="margin:0 8px;">
-              <ion-item-sliding class="allot-listInfo">
-                <ion-item>
-                  <div class="clearfix">
-                    <p class="item-img pull-left" *ngIf="getSampleIcon(item)"><img src="getSampleIcon(item)" class="img-responsive"></p>
-                    <p class="item-img pull-left" *ngIf="!getSampleIcon(item)">暂无图片</p>
-                    <p class="item-info pull-left"> <span class="title">货号：{{item.sample.NID}}</span> <span class="position">位置：{{item.sample.shop.name}}</span> </p>
-                    <p class="allot-img left pull-right"></p>
-                  </div>
-                </ion-item>
-                <ion-item-options side="right" *ngIf="getSampleRightBtnLabel(item)">
-                  <div class="allot-item-right">
-                    <div class="allotBtns-apply show" ><a class="btn btn-block" (click)="onItemRightClicked(item)">{{getSampleRightBtnLabel(item)}}</a></div>
-                  </div>
-                </ion-item-options>
-              </ion-item-sliding>
+<div class="sticky-header">
+  <header [headerData]="headerData"></header>
+  <!-- main content start-->
+  <div class="wrapper" style="height:100%">
+    <div class="salesSummary-cont clearfix">
+      <div class="special-select pull-right"><span class="select-current">店铺销售汇总</span><span class="fa fa-angle-right"></span></div>
+    </div>
+    <section class="analysis-tab">
+      <ul class="nav nav-tabs">
+        <li class="{{currentDateType===1?'active':''}}"> <a (click)="onBtnDayClicked()" data-toggle="tab">今日</a> </li>
+        <li class="{{currentDateType===2?'active':''}}"> <a (click)="onBtnWeekClicked()" data-toggle="tab">周</a> </li>
+        <li class="{{currentDateType===3?'active':''}}"> <a (click)="onBtnMonthClicked()" data-toggle="tab">月</a> </li>
+        <li class="{{currentDateType===4?'active':''}}"> <a (click)="onBtnYearClicked()" data-toggle="tab">年</a> </li>
+      </ul>
+      <ion-content>
+        <div class="tab-content">
+          <div class="tab-pane active" id="today">
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">总销售额</h3>
+              </div>
+              <div class="panel-body analyse-chart-shop-day-amount" #analyseDayAmount></div>
+              <div class="panel-body analyse-chart-shop-day-each" #analyseDayEach></div>
+              <div class="panel-body analyse-chart-shop-week-sales" #analyseWeekSales></div>
+              <div class="panel-body analyse-chart-shop-week-sales" #analyseMonthSales></div>
+              <div class="panel-body analyse-chart-shop-week-sales" #analyseMonthSalesCompare></div>
+              <div class="panel-body analyse-chart-shop-week-sales" #analyseQuarterAmount></div>
+            </div>
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">店铺排名</h3>
+              </div>
+              <div class="panel-body ranking-list">
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">1</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">2</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">3</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="show-more text-right"><a href="#" class="btn">点击显示更多</a></div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">997</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">998</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">999</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
-          <span class="list-none" *ngIf="!allotList || allotList.length === 0">暂无数据</span>
-        </ion-list>
-      </div>
-    </div>
-    <!--body wrapper end-->
-
-  </ion-content>
+          <div class="tab-pane" id="week">
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">周销量趋势</h3>
+              </div>
+              <div class="panel-body">
+                <img src="images/07-shop-week-01.jpg" class="img-responsive">
+              </div>
+            </div>
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">店铺排名</h3>
+              </div>
+              <div class="panel-body ranking-list">
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">1</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">2</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">3</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="show-more text-right"><a href="#" class="btn">点击显示更多</a></div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">997</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">998</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">999</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="month">
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">月销量趋势</h3>
+              </div>
+              <div class="panel-body">
+                <img src="images/07-shop-month-01.jpg" class="img-responsive">
+              </div>
+            </div>
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">对比柱状图</h3>
+              </div>
+              <div class="panel-body">
+                <img src="images/07-shop-month-02.jpg" class="img-responsive">
+              </div>
+            </div>
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">店铺排名</h3>
+              </div>
+              <div class="panel-body ranking-list">
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">1</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">2</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">3</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="show-more text-right"><a href="#" class="btn">点击显示更多</a></div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">997</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">998</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">999</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="year">
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">季度总销售额</h3>
+              </div>
+              <div class="panel-body">
+                <img src="images/07-shop-year-01.jpg" class="img-responsive">
+              </div>
+            </div>
+            <div class="panel panel-info">
+              <div class="panel-heading"> <span class="info-square"></span>
+                <h3 class="panel-title">店铺排名</h3>
+              </div>
+              <div class="panel-body ranking-list">
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">1</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">2</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li class="first"><span class="value">3</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="show-more text-right"><a href="#" class="btn">点击显示更多</a></div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">997</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">998</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+                <div class="ranking-item">
+                  <span class="sign">No.</span>
+                  <ul class="clearfix">
+                    <li><span class="value">999</span></li>
+                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-content>
+    </section>
+  </div>
+</div>

@@ -95,7 +95,8 @@ export const customerType = `{
 export const rechargeType = `{_id, mount, reward}`
 export const vipLevelType = `{_id, level, exp, discount}`
 
-export const regionType = `{_id, name, editor_name, editor_time}`
+export const customerAnalyseType = `{_id, analyse_id, color_css, editor_name, editor_time}`
+export const regionType = `{_id, name, color_css, editor_name, editor_time}`
 export const materialType = `{_id, name, NID, color{_id,name}, count}`
 export const salesBaseType = `{_id, name, NID, editor_name, editor_time}`
 export const colorType = `{_id, name, NID, editor_name, editor_time}`

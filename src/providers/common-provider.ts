@@ -43,12 +43,12 @@ export class CommonProvider {
         rechargeList:commonList(page:${pageIndex}, pageSize:${pageSize}, conditions: "${encodeURIComponent(JSON.stringify({type:constants.E_COMMON_DATA_TYPES.RECHARGE_REWARD}))}")${graphqlTypes.pageListType(graphqlTypes.rechargeType)}
         vipLevelList:commonList(page:${pageIndex}, pageSize:${pageSize}, conditions: "${encodeURIComponent(JSON.stringify({type:constants.E_COMMON_DATA_TYPES.VIP}))}")${graphqlTypes.pageListType(graphqlTypes.vipLevelType)}
       }
-  `, false).then((result)=>{
-    if(result.code === 0) {
-      return result.data;
-    }
-    return null;
-  });
+    `, false).then((result)=>{
+      if(result.code === 0) {
+        return result.data;
+      }
+      return null;
+    });
   }
 
   getCommonDataList(tag: string, type:string, graphqlType: string): Promise<any> {
