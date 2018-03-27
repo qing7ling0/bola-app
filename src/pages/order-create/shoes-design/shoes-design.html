@@ -102,15 +102,6 @@
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
-                  <label class="control-label">规 &nbsp;&nbsp; 格</label>
-                  <bola-input-select *ngIf="isEditing()" formControlName="s_gui_ge" class="form-text" placeholder="请选择规格" [source]="baseDatas.guiGeList||[]" [onChanged]="onPropertyChange"></bola-input-select>
-                  <bola-form-text *ngIf="!isEditing()" formControlName="s_gui_ge" class="form-text" placeholder="请选择规格" ></bola-form-text>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
                   <label class="control-label">楦 &nbsp;&nbsp; 号</label>
                   <bola-input-select *ngIf="isEditing()" formControlName="s_xuan_hao" class="form-text" placeholder="请选择楦号" [source]="baseDatas.xuanHaoList||[]" [onChanged]="onPropertyChange"></bola-input-select>
                   <bola-form-text *ngIf="!isEditing()" formControlName="s_xuan_hao" class="form-text" placeholder="请选择楦号" ></bola-form-text>
@@ -123,40 +114,6 @@
                   <bola-form-text *ngIf="!isEditing()" formControlName="s_material" class="form-text" placeholder="请选择材质"></bola-form-text>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">颜 &nbsp;&nbsp; 色</label>
-                  <bola-input-select *ngIf="isEditing()" formControlName="s_out_color" class="form-text" placeholder="请选择颜色" [source]="baseDatas.outColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
-                  <bola-form-text *ngIf="!isEditing()" formControlName="s_out_color" class="form-text" placeholder="请选择颜色"></bola-form-text>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">内里色</label>
-                  <bola-input-select *ngIf="isEditing()" formControlName="s_in_color" class="form-text" placeholder="请选择内里色" [source]="baseDatas.inColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
-                  <bola-form-text *ngIf="!isEditing()" formControlName="s_in_color" class="form-text" placeholder="请选择内里色"></bola-form-text>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">底侧色</label>
-                  <bola-input-select *ngIf="isEditing()" formControlName="s_bottom_side_color" class="form-text" placeholder="请选择底侧色" [source]="baseDatas.bottomSideColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
-                  <bola-form-text *ngIf="!isEditing()" formControlName="s_bottom_side_color" class="form-text" placeholder="请选择底侧色"></bola-form-text>
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">底板色</label>
-                  <bola-input-select *ngIf="isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" [source]="baseDatas.bottomColorList||[]" [onChanged]="onPropertyChange"></bola-input-select>
-                  <bola-form-text *ngIf="!isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" ></bola-form-text>
-                </div>
-              </div>
-            </div>
-            <div class="row">
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">贴 &nbsp;&nbsp; 底</label>
@@ -166,18 +123,69 @@
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
-                  <label class="control-label">价 &nbsp;&nbsp; 格</label>
-                  <ion-input type="number" *ngIf="isEditing()" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
-                  <bola-form-text type="number" *ngIf="!isEditing()" formControlName="price" class="form-text" placeholder="请输入价格"></bola-form-text>
+                  <label class="control-label">规 &nbsp;&nbsp; 格</label>
+                  <bola-input *ngIf="isEditing()" formControlName="s_gui_ge" class="form-text" placeholder="输入规格" [onChanged]="onPropertyChange"></bola-input>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_gui_ge" class="form-text" placeholder="输入规格"></bola-form-text>
                 </div>
               </div>
             </div>
-            <div *ngIf="isFemale()" class="row">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">配 &nbsp;&nbsp; 色</label>
+                  <bola-select *ngIf="isEditing()" formControlName="s_color_palette" class="form-text" placeholder="请选择配色" [source]="baseDatas.colorPaletteList||[]" [onChanged]="onColorPaletteChange"></bola-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_color_palette" class="form-text" placeholder="请选择配色"></bola-form-text>
+                </div>
+              </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
+                  <label class="control-label">皮胚色</label>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_out_color" class="form-text" placeholder="请选择皮胚色" [source]="baseDatas.outColorList||[]" [onChanged]="onColorChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_out_color" class="form-text" placeholder="请选择皮胚色"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">内里色</label>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_in_color" class="form-text" placeholder="请选择内里色" [source]="baseDatas.inColorList||[]" [onChanged]="onColorChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_in_color" class="form-text" placeholder="请选择内里色"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">底侧色</label>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_bottom_side_color" class="form-text" placeholder="请选择底侧色" [source]="baseDatas.bottomSideColorList||[]" [onChanged]="onColorChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_bottom_side_color" class="form-text" placeholder="请选择底侧色"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">底板色</label>
+                  <bola-input-select *ngIf="isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" [source]="baseDatas.bottomColorList||[]" [onChanged]="onColorChange"></bola-input-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" ></bola-form-text>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">性 &nbsp;&nbsp; 别</label>
+                  <bola-select *ngIf="isEditing()" formControlName="sex" class="form-text" className="test" placeholder="请选择性别" [source]="sexDataList" [onChanged]="onPropertyChange"></bola-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="sex" class="form-text" className="test" placeholder="请选择性别"></bola-form-text>
+                </div>
+              </div>
+              <div *ngIf="isFemale()"  class="col-xs-12 col-sm-6">
+                <div class="form-group">
                   <label class="control-label">根 &nbsp;&nbsp; 高</label>
-                  <bola-input-select *ngIf="isEditing()" formControlName="s_gen_gao" class="form-text" placeholder="请选择跟高" [source]="baseDatas.genGaoList||[]" [onChanged]="onPropertyChange"></bola-input-select>
+                  <bola-select *ngIf="isEditing()" formControlName="s_gen_gao" class="form-text" placeholder="请选择跟高" [source]="baseDatas.genGaoList||[]" [onChanged]="onPropertyChange"></bola-select>
                   <bola-form-text *ngIf="!isEditing()" formControlName="s_gen_gao" class="form-text" placeholder="请选择跟高"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">价 &nbsp;&nbsp; 格</label>
+                  <ion-input *ngIf="isEditing()" type="number" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="price" class="form-text" placeholder="请输入价格"></bola-form-text>
                 </div>
               </div>
             </div>

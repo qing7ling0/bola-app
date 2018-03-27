@@ -36,6 +36,7 @@ export class CartListPage {
   currentIndex: number = -1;
   loginUserId: string = '';
   loginUserShopId: string = '';
+  FILE_URL: string = constants.API_FILE_SERVER_ADDRESS + '/';
 
   constructor(
     public navCtrl: NavController,

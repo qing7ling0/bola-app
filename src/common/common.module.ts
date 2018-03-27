@@ -5,13 +5,15 @@ import { HeaderComponent } from './components/header.component';
 import { SelectComponent } from './components/select.component';
 import { InputSelectComponent } from './components/input-select.component';
 import { FormTextComponent } from './components/form-text.component';
+import { FormInputComponent } from './components/form-input.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     SelectComponent,
     InputSelectComponent,
-    FormTextComponent
+    FormTextComponent,
+    FormInputComponent,
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { FormTextComponent } from './components/form-text.component';
     HeaderComponent,
     SelectComponent,
     InputSelectComponent,
-    FormTextComponent
+    FormTextComponent,
+    FormInputComponent,
   ]
 })
 export class BoalCommonModule {}

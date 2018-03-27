@@ -35,6 +35,12 @@
               </div>
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
+                  <label class="control-label">性 &nbsp;&nbsp; 别</label>
+                  <bola-select formControlName="sex" class="form-text" className="test" placeholder="请选择性别" [source]="sexDataList" [onChanged]="onPropertyChange"></bola-select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
                   <label class="control-label">价 &nbsp;&nbsp; 格</label>
                   <ion-input type="number" formControlName="price" class="form-text" placeholder="请输入价格"></ion-input>
                 </div>

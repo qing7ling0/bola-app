@@ -25,9 +25,11 @@ const FEMALE_OPTIONS = [
 const FORM_OPTIONS = (data)=> {
   let ret = [
     {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
+    {key:'sex', label:'性别', validators:[{key:'required', validator:Validators.required}]},
     {key:'s_gui_ge', label:'规格', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_xuan_hao', label:'楦号', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_material', label:'材质', validators:[{key:'required', validator:Validators.required},]},
+    {key:'s_color_palette', label:'配色', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_out_color', label:'颜色', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_in_color', label:'内里色', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_bottom_color', label:'底板色', validators:[{key:'required', validator:Validators.required},]},
@@ -49,7 +51,7 @@ const FORM_FOOTER_OPTIONS = (data)=> [
 ]
 
 const SHOES_PROPERTY_KEYS = [
-  's_gui_ge', 's_xuan_hao', 's_material', 's_out_color',
+  's_xuan_hao', 's_material', 's_out_color',
   's_in_color', 's_bottom_color', 's_bottom_side_color', 's_tie_di',
   's_gen_gao']
 
@@ -82,6 +84,8 @@ export class OrderShoesDesignPage implements OnInit {
   goods:any = null;
   cartInfo:any = {cart:false}
   viewProfile: boolean = false;
+  sexDataList: Array<any> = [{label:'男', value:'男'}, {label:'女', value:'女'}];
+  goodsIcon: string = '';
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -236,6 +240,9 @@ export class OrderShoesDesignPage implements OnInit {
           }
         }
       })
+      if (!this.orderGroup.value.sex) {
+        this.orderGroup.controls.sex.setValue(data.sex);
+      }
     }
   }
 
@@ -265,6 +272,9 @@ export class OrderShoesDesignPage implements OnInit {
     values.s_material = '';
     values.s_xuan_hao = '';
     values.s_gui_ge = '';
+    values.s_tie_di = '';
+    values.sex = '男';
+    values.s_color_palette = '';
     values.s_out_color = '';
     values.s_in_color = '';
     values.s_bottom_color = '';
@@ -276,16 +286,90 @@ export class OrderShoesDesignPage implements OnInit {
       if (goods.NID === NID) {
         values.s_material = goods.s_material.name;
         values.s_xuan_hao = goods.s_xuan_hao.name;
-        values.s_gui_ge = goods.s_gui_ge.name;
+        values.sex = goods.sex;
+        values.s_gui_ge = goods.s_gui_ge;
+        values.s_tie_di = goods.s_tie_di&&goods.s_tie_di.name||'';
+        values.s_gen_gao = goods.s_gen_gao && goods.s_gen_gao.name || '0';
+        values.s_color_palette = goods.s_color_palette._id;
         values.s_out_color = goods.s_out_color.name;
         values.s_in_color = goods.s_in_color.name;
         values.s_bottom_color = goods.s_bottom_color.name;
         values.s_bottom_side_color = goods.s_bottom_side_color.name;
-        values.s_gen_gao = goods.s_gen_gao && goods.s_gen_gao.name || '0';
         values.price = goods.price;
+        this.goodsIcon = goods.pics&&goods.pics.length>0&&goods.pics[0];
         break;;
       }
     }
+    this.orderGroup.setValue(values);
+  }
+
+  onColorChange = (): void => {
+    let palette = null;
+
+    let shoesInfo = {...this.orderGroup.value};
+    let _palette = null;
+    let paletteList = this.baseDatas.colorPaletteList || [];
+    for(let palette of paletteList) {
+      if (palette.out_color && palette.in_color && palette.bottom_color && palette.bottom_side_color &&
+        shoesInfo.s_out_color && shoesInfo.s_in_color && shoesInfo.s_bottom_color && shoesInfo.s_bottom_side_color
+      ) {
+        if (palette.out_color.name === shoesInfo.s_out_color &&
+          palette.in_color.name === shoesInfo.s_in_color &&
+          palette.bottom_color.name === shoesInfo.s_bottom_color &&
+          palette.bottom_side_color.name === shoesInfo.s_bottom_side_color
+        ) {
+          _palette = palette;
+          break;
+        }
+      }
+    }
+
+    if (_palette) {
+      this.orderGroup.controls.s_color_palette.setValue(_palette._id);
+    } else {
+      this.orderGroup.controls.s_color_palette.setValue(null);
+    }
+
+    this.onPropertyChange();
+  }
+
+  onColorPaletteChange = (): void => {
+    let values: any = {...this.orderGroup.value};
+    let list = this.baseDatas.colorPaletteList || [];
+    for(let palette of list) {
+      if (palette._id === values.s_color_palette) {
+        this.orderGroup.controls.s_out_color.setValue(palette.out_color.name);
+        this.orderGroup.controls.s_in_color.setValue(palette.in_color.name);
+        this.orderGroup.controls.s_bottom_color.setValue(palette.bottom_color.name);
+        this.orderGroup.controls.s_bottom_side_color.setValue(palette.bottom_side_color.name);
+        break;
+      }
+    }
+
+    this.onPropertyChange();
+  }
+
+  getGoodsByCurrentInput = (goodsInputInfo) => {
+    if (goodsInputInfo.s_material && goodsInputInfo.sex && goodsInputInfo.s_gui_ge && goodsInputInfo.s_xuan_hao && goodsInputInfo.s_color_palette && goodsInputInfo.s_tie_di) {
+      for(let goods of this.goodsList) {
+        if (goods.s_material && goods.s_gui_ge && goods.s_xuan_hao && goods.sex && goods.s_color_palette && goods.s_tie_di) {
+          if (goods.s_material.name === goodsInputInfo.s_material.name
+            && goods.s_xuan_hao.name === goodsInputInfo.s_xuan_hao.name
+            && goods.s_color_palette._id === goodsInputInfo.s_color_palette
+            && goods.s_tie_di.name === goodsInputInfo.s_tie_di.name
+            && goods.sex === goodsInputInfo.sex
+            && goods.s_gui_ge === goodsInputInfo.s_gui_ge
+          ) {
+            if ((goods.sex === constants.SEX_FEMALE && goods.s_gen_gao && goodsInputInfo.s_gen_gao && goodsInputInfo.s_gen_gao.name === goods.s_gen_gao.name) ||
+            goods.sex !== constants.SEX_FEMALE
+            ) {
+              return goods;
+            }
+          }
+        }
+      }
+    }
+    return null;
   }
 
   onPropertyChange = (): void => {
@@ -294,18 +378,16 @@ export class OrderShoesDesignPage implements OnInit {
 
     let shoesInfo = this.getShoesInfo();
 
-    let nid = commonUtils.createGoodsNID(constants.GOODS_SHOES, shoesInfo, customer.sex);
-    if (nid !== constants.NULL_NID) {
-      let shoes = this.getValueFromListById(this.goodsList, '', (item)=>item.NID === nid);
-      if (shoes) {
-        this.orderGroup.controls.price.setValue(shoes.price);
-      } else {
-        this.orderGroup.controls.price.setValue(null);
-      }
+    let goods = this.getGoodsByCurrentInput(shoesInfo);
+    if (goods) {
+      this.goodsIcon = goods.pics&&goods.pics.length>0&&goods.pics[0];
+      this.orderGroup.controls.NID.setValue(goods.NID);
+      this.orderGroup.controls.price.setValue(goods.price);
     } else {
+      this.orderGroup.controls.NID.setValue(constants.NULL_NID);
       this.orderGroup.controls.price.setValue(null);
+      this.goodsIcon = '';
     }
-    this.orderGroup.controls.NID.setValue(nid);
   }
 
   isEditing = () => {
@@ -375,13 +457,19 @@ export class OrderShoesDesignPage implements OnInit {
 
     shoesInfo.s_material = this.getValueFromListByName(this.baseDatas.materialList, shoesInfo.s_material);
     shoesInfo.s_xuan_hao = this.getValueFromListByName(this.baseDatas.xuanHaoList, shoesInfo.s_xuan_hao);
-    shoesInfo.s_gui_ge = this.getValueFromListByName(this.baseDatas.guiGeList, shoesInfo.s_gui_ge);
-    shoesInfo.s_out_color = this.getValueFromListByName(this.baseDatas.outColorList, shoesInfo.s_out_color);
-    shoesInfo.s_in_color = this.getValueFromListByName(this.baseDatas.inColorList, shoesInfo.s_in_color);
-    shoesInfo.s_bottom_color = this.getValueFromListByName(this.baseDatas.bottomColorList, shoesInfo.s_bottom_color);
-    shoesInfo.s_bottom_side_color = this.getValueFromListByName(this.baseDatas.bottomSideColorList, shoesInfo.s_bottom_side_color);
     shoesInfo.s_tie_di = this.getValueFromListByName(this.baseDatas.shoesTieBianList, shoesInfo.s_tie_di);
     shoesInfo.s_gen_gao = this.getValueFromListByName(this.baseDatas.genGaoList, shoesInfo.s_gen_gao);
+
+    let list = this.baseDatas.colorPaletteList || [];
+    for(let palette of list) {
+      if (palette._id === shoesInfo.s_color_palette) {
+        shoesInfo.s_out_color = this.filterEditorProperty(palette.out_color);
+        shoesInfo.s_in_color = this.filterEditorProperty(palette.in_color);
+        shoesInfo.s_bottom_color = this.filterEditorProperty(palette.bottom_color);
+        shoesInfo.s_bottom_side_color = this.filterEditorProperty(palette.bottom_side_color);
+        break;
+      }
+    }
     return shoesInfo;
   }
 
@@ -417,6 +505,7 @@ export class OrderShoesDesignPage implements OnInit {
 
       shoesInfo.type = this.orderType;
       shoesInfo.remark = this.order_remark;
+      shoesInfo.icon = this.goodsIcon;
 
       return { customer:customer, goods: shoesInfo };
     } else {

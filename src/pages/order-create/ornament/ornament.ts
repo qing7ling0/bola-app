@@ -20,7 +20,8 @@ import { API_FILE_SERVER_ADDRESS, SEX_FEMALE } from '../../../constants/constant
 const FORM_OPTIONS = (data)=> {
   let ret = [
     {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
-    {key:'o_name', label:'护理项目', validators:[{key:'required', validator:Validators.required},]},
+    {key:'o_name', label:'名称', validators:[{key:'required', validator:Validators.required},]},
+    {key:'sex', label:'性别', validators:[{key:'required', validator:Validators.required}]},
     {key:'price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
 ];
   return ret;
@@ -30,7 +31,7 @@ const FORM_OPTIONS = (data)=> {
   templateUrl: 'ornament.html'
 })
 export class OrderOrnamentPage implements OnInit {
-  headerData: HeaderData = {title:'护理订单', menuEnable:false, type:'cart-list'};
+  headerData: HeaderData = {title:'配饰订单', menuEnable:false, type:'cart-list'};
   baseDatas: any = {};
   orderGroup: FormGroup;
   formOptions: Array<any>;
@@ -44,6 +45,7 @@ export class OrderOrnamentPage implements OnInit {
   goodsOrnamentList:Array<any>=[];
   cartInfo:any = {cart:false};
   goods:any = null;
+  goodsIcon: string = '';
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -149,9 +151,12 @@ export class OrderOrnamentPage implements OnInit {
     if (goods) {
       this.orderGroup.controls.o_name.setValue(goods.name);
       this.orderGroup.controls.price.setValue(goods.price);
+      this.orderGroup.controls.sex.setValue(goods.sex);
+      this.goodsIcon = goods.pics&&goods.pics.length>0&&goods.pics[0];
     } else {
       this.orderGroup.controls.o_name.setValue('');
       this.orderGroup.controls.price.setValue('');
+      this.goodsIcon = "";
     }
   }
 
@@ -227,6 +232,7 @@ export class OrderOrnamentPage implements OnInit {
 
       goodsInfo.type = this.orderType;
       goodsInfo.remark = this.order_remark;
+      goodsInfo.icon = this.goodsIcon;
 
       return { customer:customer, goods: goodsInfo };
     } else {

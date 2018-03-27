@@ -26,6 +26,7 @@ const FORM_OPTIONS = (data)=> {
     {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
     {key:'ws_material', label:'材质', validators:[{key:'required', validator:Validators.required},]},
     {key:'ws_style', label:'款式', validators:[{key:'required', validator:Validators.required},]},
+    {key:'sex', label:'性别', validators:[{key:'required', validator:Validators.required}]},
     {key:'price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
   ];
   return ret;
@@ -62,6 +63,8 @@ export class OrderWatchStrapPage implements OnInit {
   goodsList: Array<any> = [];
   goods:any = null;
   cartInfo:any = {cart:false}
+  sexDataList: Array<any> = [{label:'男', value:'男'}, {label:'女', value:'女'}];
+  goodsIcon: string = '';
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -177,6 +180,9 @@ export class OrderWatchStrapPage implements OnInit {
           }
         }
       })
+      if (!this.orderGroup.value.sex) {
+        this.orderGroup.controls.sex.setValue(data.sex);
+      }
     }
   }
 
@@ -195,10 +201,29 @@ export class OrderWatchStrapPage implements OnInit {
         values.ws_material = goods.ws_material._id;
         values.ws_style = goods.ws_style._id;
         values.price = goods.price;
+        values.sex = goods.sex;
+        this.goodsIcon = goods.pics&&goods.pics.length>0&&goods.pics[0];
         break;
       }
     }
     this.orderGroup.setValue(values);
+  }
+
+  getGoodsByCurrentInput = (goodsInputInfo) => {
+    if (goodsInputInfo.ws_material && goodsInputInfo.sex && goodsInputInfo.ws_color && goodsInputInfo.ws_style) {
+      for(let goods of this.goodsList) {
+        if (goods.ws_material && goods.ws_color && goods.sex && goods.ws_style) {
+          if (goods.ws_material._id === goodsInputInfo.ws_material._id
+            && goods.ws_color._id === goodsInputInfo.ws_color._id
+            && goods.ws_style._id === goodsInputInfo.ws_style._id
+            && goods.sex === goodsInputInfo.sex
+          ) {
+            return goods;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   onPropertyChange = (): void => {
@@ -206,19 +231,31 @@ export class OrderWatchStrapPage implements OnInit {
     if (!customer) return;
 
     let goodsInfo = this.getGoodsInfo();
-
-    let nid = commonUtils.createGoodsNID(this.orderType, goodsInfo, customer.sex);
-    if (nid !== constants.NULL_NID) {
-      let goods = this.getValueFromListById(this.baseDatas.goodsWatchStrapList, '', (item)=>item.NID === nid);
-      if (goods) {
-        this.orderGroup.controls.price.setValue(goods.price);
-      } else {
-        this.orderGroup.controls.price.setValue(null);
-      }
+    let goods = this.getGoodsByCurrentInput(goodsInfo);
+    if (goods) {
+      this.goodsIcon = goods.pics&&goods.pics.length>0&&goods.pics[0];
+      this.orderGroup.controls.NID.setValue(goods.NID);
+      this.orderGroup.controls.price.setValue(goods.price);
     } else {
+      this.orderGroup.controls.NID.setValue(constants.NULL_NID);
       this.orderGroup.controls.price.setValue(null);
+      this.goodsIcon = '';
     }
-    this.orderGroup.controls.NID.setValue(nid);
+
+  //   let goodsInfo = this.getGoodsInfo();
+
+  //   let nid = commonUtils.createGoodsNID(this.orderType, goodsInfo, customer.sex);
+  //   if (nid !== constants.NULL_NID) {
+  //     let goods = this.getValueFromListById(this.baseDatas.goodsWatchStrapList, '', (item)=>item.NID === nid);
+  //     if (goods) {
+  //       this.orderGroup.controls.price.setValue(goods.price);
+  //     } else {
+  //       this.orderGroup.controls.price.setValue(null);
+  //     }
+  //   } else {
+  //     this.orderGroup.controls.price.setValue(null);
+  //   }
+  //   this.orderGroup.controls.NID.setValue(nid);
   }
 
   btnPicAddClicked(): void {
@@ -301,6 +338,7 @@ export class OrderWatchStrapPage implements OnInit {
 
       goodsInfo.type = this.orderType;
       goodsInfo.remark = this.order_remark;
+      goodsInfo.icon = this.goodsIcon;
 
       return { customer:customer, goods: goodsInfo };
     } else {

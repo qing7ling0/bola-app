@@ -42,6 +42,7 @@ export class CommonProvider {
         materialList(page:${pageIndex}, pageSize:${pageSize})${graphqlTypes.pageListType(graphqlTypes.materialType)}
         rechargeList:commonList(page:${pageIndex}, pageSize:${pageSize}, conditions: "${encodeURIComponent(JSON.stringify({type:constants.E_COMMON_DATA_TYPES.RECHARGE_REWARD}))}")${graphqlTypes.pageListType(graphqlTypes.rechargeType)}
         vipLevelList:commonList(page:${pageIndex}, pageSize:${pageSize}, conditions: "${encodeURIComponent(JSON.stringify({type:constants.E_COMMON_DATA_TYPES.VIP}))}")${graphqlTypes.pageListType(graphqlTypes.vipLevelType)}
+        colorPaletteList(page:${pageIndex}, pageSize:${pageSize})${graphqlTypes.pageListType(graphqlTypes.colorPaletteType)}
       }
     `, false).then((result)=>{
       if(result.code === 0) {

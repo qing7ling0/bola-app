@@ -25,6 +25,7 @@ const FORM_OPTIONS = (data)=> {
     {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
     {key:'b_material', label:'材质', validators:[{key:'required', validator:Validators.required},]},
     {key:'b_color', label:'颜色', validators:[{key:'required', validator:Validators.required},]},
+    {key:'sex', label:'性别', validators:[{key:'required', validator:Validators.required}]},
     {key:'price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
   ];
   return ret;
@@ -59,6 +60,8 @@ export class OrderBeltPage implements OnInit {
   cartInfo:any = {cart:false};
   goods:any = null;
   viewProfile: boolean = false;
+  sexDataList: Array<any> = [{label:'男', value:'男'}, {label:'女', value:'女'}];
+  goodsIcon: string = '';
 
   UPLOAD_URL = constants.API_UPLOAD_SERVER_ADDRESS;
   FILE_URL = constants.API_FILE_SERVER_ADDRESS;
@@ -190,6 +193,9 @@ export class OrderBeltPage implements OnInit {
           }
         }
       })
+      if (!this.orderGroup.value.sex) {
+        this.orderGroup.controls.sex.setValue(data.sex);
+      }
     }
   }
 
@@ -207,10 +213,28 @@ export class OrderBeltPage implements OnInit {
         values.b_material = goods.b_material._id;
         values.b_color = goods.b_color._id;
         values.price = goods.price;
+        values.sex = goods.sex;
+        this.goodsIcon = goods.pics&&goods.pics.length>0&&goods.pics[0];
         break;
       }
     }
     this.orderGroup.setValue(values);
+  }
+
+  getGoodsByCurrentInput = (goodsInputInfo) => {
+    if (goodsInputInfo.b_material && goodsInputInfo.sex && goodsInputInfo.b_color) {
+      for(let goods of this.goodsList) {
+        if (goods.b_material && goods.b_color && goods.sex) {
+          if (goods.b_material._id === goodsInputInfo.b_material._id
+            && goods.b_color._id === goodsInputInfo.b_color._id
+            && goods.sex === goodsInputInfo.sex
+          ) {
+            return goods;
+          }
+        }
+      }
+    }
+    return null;
   }
 
   onPropertyChange = (): void => {
@@ -218,19 +242,16 @@ export class OrderBeltPage implements OnInit {
     if (!customer) return;
 
     let goodsInfo = this.getGoodsInfo();
-
-    let nid = commonUtils.createGoodsNID(this.orderType, goodsInfo, customer.sex);
-    if (nid !== constants.NULL_NID) {
-      let goods = this.getValueFromListById(this.baseDatas.goodsBeltList, '', (item)=>item.NID === nid);
-      if (goods) {
-        this.orderGroup.controls.price.setValue(goods.price);
-      } else {
-        this.orderGroup.controls.price.setValue(null);
-      }
+    let goods = this.getGoodsByCurrentInput(goodsInfo);
+    if (goods) {
+      this.goodsIcon = goods.pics&&goods.pics.length>0&&goods.pics[0];
+      this.orderGroup.controls.NID.setValue(goods.NID);
+      this.orderGroup.controls.price.setValue(goods.price);
     } else {
+      this.orderGroup.controls.NID.setValue(constants.NULL_NID);
       this.orderGroup.controls.price.setValue(null);
+      this.goodsIcon = '';
     }
-    this.orderGroup.controls.NID.setValue(nid);
   }
 
   btnPicAddClicked(): void {
@@ -315,6 +336,7 @@ export class OrderBeltPage implements OnInit {
 
       goodsInfo.type = this.orderType;
       goodsInfo.remark = this.order_remark;
+      goodsInfo.icon = this.goodsIcon;
 
       return { customer:customer, goods: goodsInfo };
     } else {
