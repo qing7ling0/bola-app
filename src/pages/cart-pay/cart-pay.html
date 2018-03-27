@@ -46,13 +46,10 @@
                   </div>
                 </dt>
                 <dd *ngIf="isHasNeiGua">
-                  <div class="in-app clearfix">
-                    <div class="col-xs-12">
-                      <div class="form-group">
-                        <label class="control-label">内挂人员</label>
-                        <bola-select class="form-text" [(ngModel)]="neiguaId" [ngModelOptions]="{standalone: true}" placeholder="请选择内挂人员" [source]="neiGuaList||[]" [onChanged]="onNeiGuaChange"></bola-select>
-                      </div>
-                    </div>
+                  <div class="stored-card clearfix bola-label bola-item-inner">
+                    <ion-item>
+                      <ion-textarea class="cart-nei-gua-mark" placeholder="填写备注" [ngModelOptions]="{standalone: true}" [(ngModel)]="neiGuaMark" >{{neiGuaMark}}</ion-textarea>
+                    </ion-item>
                   </div>
                 </dd>
               </dl>

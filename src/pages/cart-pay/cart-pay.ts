@@ -33,6 +33,7 @@ export class CartPayPage {
   guideId: string = '';
   payTypeList: Array<any> = constants.PAY_TYPE;
   signaturePic: string = '';
+  neiGuaMark: string = '';
   signatureImage: any = null;
 
   constructor(

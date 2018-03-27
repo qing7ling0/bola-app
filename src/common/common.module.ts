@@ -13,7 +13,7 @@ import { FormInputComponent } from './components/form-input.component';
     SelectComponent,
     InputSelectComponent,
     FormTextComponent,
-    FormInputComponent,
+    FormInputComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +26,7 @@ import { FormInputComponent } from './components/form-input.component';
     SelectComponent,
     InputSelectComponent,
     FormTextComponent,
-    FormInputComponent,
+    FormInputComponent
   ]
 })
 export class BoalCommonModule {}
