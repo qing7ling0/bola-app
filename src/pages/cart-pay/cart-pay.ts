@@ -181,6 +181,8 @@ export class CartPayPage {
     order.store_card_selected = this.isUseStoreCard;
     order.cash_ticket_NID = ''; // 代金券
     order.signature_pic = this.signaturePic;
+    order.is_neigua = this.isHasNeiGua;
+    order.neigua_mark = this.isHasNeiGua?this.neiGuaMark:'';
 
     let subOrders = [];
     for(let good of this.goodsList) {
