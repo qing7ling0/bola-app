@@ -2,9 +2,9 @@
   <header [headerData]="headerData"></header>
   <!-- main content start-->
   <div class="wrapper" style="height:100%">
-    <div class="salesSummary-cont clearfix">
+    <!-- <div class="salesSummary-cont clearfix">
       <div class="special-select pull-right"><span class="select-current">店铺销售汇总</span><span class="fa fa-angle-right"></span></div>
-    </div>
+    </div> -->
     <section class="analysis-tab">
       <ul class="nav nav-tabs">
         <li class="{{currentDateType===1?'active':''}}"> <a (click)="onBtnDayClicked()" data-toggle="tab">今日</a> </li>
@@ -32,59 +32,13 @@
                 <h3 class="panel-title">店铺排名</h3>
               </div>
               <div class="panel-body ranking-list">
-                <div class="ranking-item">
+                <div *ngFor="let shop of shopList;let shopIndex = index" class="ranking-item">
                   <span class="sign">No.</span>
                   <ul class="clearfix">
-                    <li class="first"><span class="value">1</span></li>
-                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
-                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
-                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
-                  </ul>
-                </div>
-                <div class="ranking-item">
-                  <span class="sign">No.</span>
-                  <ul class="clearfix">
-                    <li class="first"><span class="value">2</span></li>
-                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
-                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
-                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
-                  </ul>
-                </div>
-                <div class="ranking-item">
-                  <span class="sign">No.</span>
-                  <ul class="clearfix">
-                    <li class="first"><span class="value">3</span></li>
-                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
-                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
-                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
-                  </ul>
-                </div>
-                <div class="show-more text-right"><a href="#" class="btn">点击显示更多</a></div>
-                <div class="ranking-item">
-                  <span class="sign">No.</span>
-                  <ul class="clearfix">
-                    <li><span class="value">997</span></li>
-                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
-                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
-                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
-                  </ul>
-                </div>
-                <div class="ranking-item">
-                  <span class="sign">No.</span>
-                  <ul class="clearfix">
-                    <li><span class="value">998</span></li>
-                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
-                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
-                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
-                  </ul>
-                </div>
-                <div class="ranking-item">
-                  <span class="sign">No.</span>
-                  <ul class="clearfix">
-                    <li><span class="value">999</span></li>
-                    <li><span class="name">上海黄金成道</span><span class="cont">￥12345678.00</span></li>
-                    <li><span class="name">销售笔数</span><span class="cont">9999</span></li>
-                    <li><span class="name">销售数量</span><span class="cont">8888</span></li>
+                    <li class="first"><span class="value">{{shopIndex}}</span></li>
+                    <li><span class="name">{{shop.shop&&shop.shop.name}}</span><span class="cont">￥{{priceFormat(shop.amount,2)}}</span></li>
+                    <li><span class="name">销售笔数</span><span class="cont">{{shop.count}}</span></li>
+                    <li><span class="name">销售数量</span><span class="cont">{{shop.sub_count}}</span></li>
                   </ul>
                 </div>
               </div>

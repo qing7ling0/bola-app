@@ -55,7 +55,7 @@ export class AnalyseShopPage implements OnInit {
   last5WeekList: Array<any> = [];
   last12MonthList: Array<any> = [];
   last2Year12MonthList: any = {};
-  
+
   last5YearList: Array<any> = [];
   last4QuarterList: Array<any> = [];
 
