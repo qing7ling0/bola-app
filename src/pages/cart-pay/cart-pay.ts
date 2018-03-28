@@ -190,6 +190,7 @@ export class CartPayPage {
       sub.shop = this.shopId;
       sub.guide = this.guideId;
       sub.customer = commonUtils.copyProperty(this.customer,['phone', 'name', 'sex', 'birthday', 'weixin', 'country', 'city', 'address', 'zipcode']);
+      delete sub.icon;
       subOrders.push(sub);
     }
     order.sub_orders = subOrders;
