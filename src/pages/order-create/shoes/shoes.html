@@ -161,8 +161,8 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">底板色</label>
-                  <!-- <bola-select *ngIf="isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" [source]="baseDatas.bottomColorList||[]" [onChanged]="onPropertyChange"></bola-select> -->
-                  <bola-form-text formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色"></bola-form-text>
+                  <bola-select *ngIf="isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色" [source]="baseDatas.bottomColorList||[]" [onChanged]="onColorChange"></bola-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="s_bottom_color" class="form-text" placeholder="请选择底板色"></bola-form-text>
                 </div>
               </div>
             </div>

@@ -125,8 +125,9 @@ export class CartPayPage {
     let discount = 1;
     if (!this.isUseStoreCard) {
       let list = this.vipLevelList || [];
+      let vipLevel = this.customer.vip_level || 1;
       for(let lv of list) {
-        if (lv.level === this.customer.vip_level) {
+        if (lv.level === vipLevel) {
           discount = lv.discount/10;
           break;
         }
@@ -153,8 +154,8 @@ export class CartPayPage {
         {
           text: '确定',
           handler: data => {
-            // this.onPay();
-            this.onPaySignature();
+            this.onPay();
+            // this.onPaySignature();
           }
         }
       ]

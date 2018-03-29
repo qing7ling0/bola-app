@@ -26,7 +26,7 @@ const FORM_OPTIONS = (data)=> {
   let ret = [
     {key:'NID', label:'货号', validators:[{key:'required', validator:Validators.required}]},
     {key:'sex', label:'性别', validators:[{key:'required', validator:Validators.required}]},
-    {key:'s_color_palette', label:'配色', validators:[{key:'required', validator:Validators.required},]},
+    {key:'s_color_palette', label:'配色', validators:[]},
     {key:'s_gui_ge', label:'规格', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_xuan_hao', label:'楦号', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_material', label:'材质', validators:[{key:'required', validator:Validators.required},]},
@@ -34,7 +34,7 @@ const FORM_OPTIONS = (data)=> {
     {key:'s_in_color', label:'内里色', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_bottom_color', label:'底板色', validators:[{key:'required', validator:Validators.required},]},
     {key:'s_bottom_side_color', label:'底侧色', validators:[{key:'required', validator:Validators.required}]},
-    {key:'s_tie_di', label:'贴底', validators:[{key:'required', validator:Validators.required}]},
+    {key:'s_tie_di', label:'贴底', validators:[]},
     {key:'price', label:'价格', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
     {key:'s_gen_gao', label:'跟高', defaultValue:'0', validators:[{key:'required', validator:Validators.required}]}
   ];
@@ -119,6 +119,10 @@ export class OrderShoesPage implements OnInit {
           this.baseDatas[key] = data[key].list&&data[key].list.map((item)=>{
             return {value:item._id, label:item.name, ...item};
           });
+        }
+
+        if (this.baseDatas.colorPaletteList) {
+          this.baseDatas.colorPaletteList = [{value:'', label:'自定义'}].concat(this.baseDatas.colorPaletteList);
         }
 
         if (data.customList) {
@@ -283,11 +287,11 @@ export class OrderShoesPage implements OnInit {
         values.s_gui_ge = goods.s_gui_ge;
         values.s_tie_di = goods.s_tie_di&&goods.s_tie_di._id||'';
         values.s_gen_gao = goods.s_gen_gao && goods.s_gen_gao._id || '0';
-        values.s_color_palette = goods.s_color_palette._id;
-        values.s_out_color = goods.s_out_color.name;
-        values.s_in_color = goods.s_in_color.name;
-        values.s_bottom_color = goods.s_bottom_color.name;
-        values.s_bottom_side_color = goods.s_bottom_side_color.name;
+        values.s_color_palette = goods.s_color_palette&&goods.s_color_palette._id||'';
+        values.s_out_color = goods.s_out_color&&goods.s_out_color.name||'';
+        values.s_in_color = goods.s_in_color&&goods.s_in_color.name||'';
+        values.s_bottom_color = goods.s_bottom_color&&goods.s_bottom_color._id||'';
+        values.s_bottom_side_color = goods.s_bottom_side_color&&goods.s_bottom_side_color.name||'';
         values.price = goods.price;
         this.goodsIcon = goods.pics&&goods.pics.length>0&&goods.pics[0];
         break;;
@@ -303,7 +307,7 @@ export class OrderShoesPage implements OnInit {
       if (palette._id === values.s_color_palette) {
         this.orderGroup.controls.s_out_color.setValue(palette.out_color.name);
         this.orderGroup.controls.s_in_color.setValue(palette.in_color.name);
-        this.orderGroup.controls.s_bottom_color.setValue(palette.bottom_color.name);
+        this.orderGroup.controls.s_bottom_color.setValue(palette.bottom_color._id);
         this.orderGroup.controls.s_bottom_side_color.setValue(palette.bottom_side_color.name);
         break;
       }
@@ -333,6 +337,36 @@ export class OrderShoesPage implements OnInit {
       }
     }
     return null;
+  }
+
+  onColorChange = (): void => {
+    let palette = null;
+
+    let shoesInfo = {...this.orderGroup.value};
+    let _palette = null;
+    let paletteList = this.baseDatas.colorPaletteList || [];
+    for(let palette of paletteList) {
+      if (palette.out_color && palette.in_color && palette.bottom_color && palette.bottom_side_color &&
+        shoesInfo.s_out_color && shoesInfo.s_in_color && shoesInfo.s_bottom_color && shoesInfo.s_bottom_side_color
+      ) {
+        if (palette.out_color.name === shoesInfo.s_out_color &&
+          palette.in_color.name === shoesInfo.s_in_color &&
+          palette.bottom_color._id === shoesInfo.s_bottom_color &&
+          palette.bottom_side_color.name === shoesInfo.s_bottom_side_color
+        ) {
+          _palette = palette;
+          break;
+        }
+      }
+    }
+
+    if (_palette) {
+      this.orderGroup.controls.s_color_palette.setValue(_palette._id);
+    } else {
+      this.orderGroup.controls.s_color_palette.setValue("");
+    }
+
+    this.onPropertyChange();
   }
 
   onPropertyChange = (): void => {
@@ -426,14 +460,22 @@ export class OrderShoesPage implements OnInit {
     shoesInfo.s_gen_gao = this.getValueFromListById(this.baseDatas.genGaoList, shoesInfo.s_gen_gao);
 
     let list = this.baseDatas.colorPaletteList || [];
+    let _palette = null;
     for(let palette of list) {
       if (palette._id === shoesInfo.s_color_palette) {
-        shoesInfo.s_out_color = this.filterEditorProperty(palette.out_color);
-        shoesInfo.s_in_color = this.filterEditorProperty(palette.in_color);
-        shoesInfo.s_bottom_color = this.filterEditorProperty(palette.bottom_color);
-        shoesInfo.s_bottom_side_color = this.filterEditorProperty(palette.bottom_side_color);
+        _palette = palette;
         break;
       }
+    }
+    shoesInfo.s_bottom_color = this.getValueFromListById(this.baseDatas.bottomColorList, shoesInfo.s_bottom_color);
+    if (_palette) {
+      shoesInfo.s_out_color = this.filterEditorProperty(_palette.out_color);
+      shoesInfo.s_in_color = this.filterEditorProperty(_palette.in_color);
+      shoesInfo.s_bottom_side_color = this.filterEditorProperty(_palette.bottom_side_color);
+    } else {
+      shoesInfo.s_out_color = this.getValueFromListByName(this.baseDatas.outColorList, shoesInfo.s_out_color);
+      shoesInfo.s_in_color = this.getValueFromListByName(this.baseDatas.inColorList, shoesInfo.s_in_color);
+      shoesInfo.s_bottom_side_color = this.getValueFromListByName(this.baseDatas.bottomSideColorList, shoesInfo.s_bottom_side_color);
     }
     return shoesInfo;
   }
