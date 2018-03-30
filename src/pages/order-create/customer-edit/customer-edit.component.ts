@@ -53,9 +53,16 @@ export class OrderCustomerEditComponent implements OnInit {
     this.customerGroup.valueChanges.subscribe(data => {
       this.onChange && this.onChange(this.filterCustomerProperty(Object.assign({}, this.customerProfile||{}, data, {})));
     });
+    this.commonProvider.getVipLevelList().then((data:Array<any>) => {
+      if (data) {
+        this.vipLevelList = data;
+      }
+    })
   }
 
   ionViewDidLoad(): void {
+    let x =0;
+    x = 2;
     this.commonProvider.getVipLevelList().then((data:Array<any>) => {
       if (data) {
         this.vipLevelList = data;
@@ -131,10 +138,11 @@ export class OrderCustomerEditComponent implements OnInit {
     return !this.viewProfile;
   }
 
-  getCurrentDiscount() {
+  getCurrentDiscount = () => {
     if (this.customerProfile) {
+      let vipLevel = this.customerProfile.vip_level || 1;
       for(let lv of this.vipLevelList) {
-        if (lv.level === this.customerProfile.vip_level) {
+        if (lv.level === vipLevel) {
           return lv.discount+'折';
         }
       }

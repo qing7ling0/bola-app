@@ -154,8 +154,8 @@ export class CartPayPage {
         {
           text: '确定',
           handler: data => {
-            this.onPay();
-            // this.onPaySignature();
+            // this.onPay();
+            this.onPaySignature();
           }
         }
       ]

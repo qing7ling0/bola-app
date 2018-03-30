@@ -1,0 +1,4 @@
+{
+    "release": "code-push release-cordova bola-ios Staging --targetBinaryVersion 0.0.3",
+    "history":"code-push deployment history bola-ios Staging"
+}
