@@ -354,15 +354,13 @@ export class OrderShoesDesignPage implements OnInit {
   }
 
   getGoodsByCurrentInput = (goodsInputInfo) => {
-    if (goodsInputInfo.s_material && goodsInputInfo.sex && goodsInputInfo.s_gui_ge && goodsInputInfo.s_xuan_hao && goodsInputInfo.s_color_palette && goodsInputInfo.s_tie_di) {
+    if (goodsInputInfo.s_material && goodsInputInfo.sex && goodsInputInfo.s_xuan_hao && goodsInputInfo.s_color_palette) {
       for(let goods of this.goodsList) {
-        if (goods.s_material && goods.s_gui_ge && goods.s_xuan_hao && goods.sex && goods.s_color_palette && goods.s_tie_di) {
+        if (goods.s_material  && goods.s_xuan_hao && goods.sex && goods.s_color_palette) {
           if (goods.s_material.name === goodsInputInfo.s_material.name
             && goods.s_xuan_hao.name === goodsInputInfo.s_xuan_hao.name
             && goods.s_color_palette._id === goodsInputInfo.s_color_palette
-            && goods.s_tie_di.name === goodsInputInfo.s_tie_di.name
             && goods.sex === goodsInputInfo.sex
-            && goods.s_gui_ge === goodsInputInfo.s_gui_ge
           ) {
             if ((goods.sex === constants.SEX_FEMALE && goods.s_gen_gao && goodsInputInfo.s_gen_gao && goodsInputInfo.s_gen_gao.name === goods.s_gen_gao.name) ||
             goods.sex !== constants.SEX_FEMALE
