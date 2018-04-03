@@ -6,7 +6,7 @@ import { CartListPage } from '../cart-list/cart-list'
 import { OrderCreatePage } from '../order-create/order-create'
 import { OrderTrackPage } from '../order-track/order-track'
 import { AllotPage } from '../allot/allot'
-import { AnalyseShopPage } from '../analyse/analyse-shop/analyse-shop'
+import { AnalysePage } from '../analyse/analyse'
 import { CustomerReportPage } from '../customer/customer-report/customer-report'
 import { CustomerShopReportPage } from '../customer/customer-shop-report/customer-shop-report'
 import {HeaderData} from '../../interface/header-data';
@@ -80,7 +80,7 @@ export class ShopPage {
       }
       break;
       case 'analyse':
-      this.navCtrl.push(AnalyseShopPage);
+      this.navCtrl.push(AnalysePage);
       break;
     }
   }

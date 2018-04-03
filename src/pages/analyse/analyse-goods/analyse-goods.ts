@@ -2,7 +2,7 @@
  * 店铺排名
  */
 
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NavController, ToastController, NavParams, ModalController, Events, } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Storage } from '@ionic/storage';
@@ -26,11 +26,11 @@ const E_DATE_TYPES = {
 }
 
 @Component({
-  selector: 'page-analyse-shop',
-  templateUrl: 'analyse-shop.html'
+  selector: 'page-analyse-goods',
+  templateUrl: 'analyse-goods.html'
 })
-export class AnalyseShopPage implements OnInit {
-  headerData: HeaderData = {title:'数据分析', menuEnable:false, type:'analyse-shop'};
+export class AnalyseGoodsPage implements OnInit {
+  headerData: HeaderData = {title:'数据分析', menuEnable:false, type:'analyse-goods'};
 
   @ViewChild('analyseDayAmount') dayAmountElement: ElementRef;
   @ViewChild('analyseDayEach') dayEachElement: ElementRef;
@@ -65,8 +65,6 @@ export class AnalyseShopPage implements OnInit {
     count:[]
   }; // 客单价/客单件
 
-  @Input() onLoadSuccess: Function;
-
   constructor(
     public navCtrl: NavController,
     private formBuilder: FormBuilder,
@@ -90,25 +88,13 @@ export class AnalyseShopPage implements OnInit {
   ngOnInit(): void {
     // this.formOptions = FORM_OPTIONS(null);
     // this.formGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
-    this.commonProvider.getCommonDataList('shopRegionList', constants.E_COMMON_DATA_TYPES.SHOP_REGION, graphqlTypes.regionType).then((result)=>{
-      if (result) {
-        this.regionList = result;
-        // this.onReqList();
-        if (this.onLoadSuccess) {
-          this.onLoadSuccess();
-        }
-      }
-    });
   }
 
   ionViewDidEnter(): void {
     this.commonProvider.getCommonDataList('shopRegionList', constants.E_COMMON_DATA_TYPES.SHOP_REGION, graphqlTypes.regionType).then((result)=>{
       if (result) {
         this.regionList = result;
-        // this.onReqList();
-        if (this.onLoadSuccess) {
-          this.onLoadSuccess();
-        }
+        this.onReqList();
       }
     });
     // this.initChartsDayAmount();
@@ -123,6 +109,9 @@ export class AnalyseShopPage implements OnInit {
     let ctx = this.dayAmountElement.nativeElement;
     this.chart = echarts.init(ctx);
     this.chart.setOption({
+      tooltip : {
+        trigger: 'item'
+      },
       legend: {
         type: 'plain',
         orient: 'horizontal',
@@ -135,7 +124,7 @@ export class AnalyseShopPage implements OnInit {
       },
       series : [
         {
-          name:'总销售额',
+          name:'直接访问',
           type:'pie',
           radius : ['30%', '55%'],
           center: ['50%', '35%'],
@@ -474,6 +463,9 @@ export class AnalyseShopPage implements OnInit {
     let ctx = this.quarterAmountElement.nativeElement;
     this.chart = echarts.init(ctx);
     this.chart.setOption({
+      tooltip : {
+        trigger: 'item'
+      },
       legend: {
         type: 'plain',
         orient: 'horizontal',
@@ -502,8 +494,7 @@ export class AnalyseShopPage implements OnInit {
     });
   }
 
-  reqRefresh(dateType:number) {
-    this.currentDateType = dateType;
+  reqRefresh() {
     this.onReqList();
   }
 
@@ -664,6 +655,26 @@ export class AnalyseShopPage implements OnInit {
       })
       break;
     }
+  }
+
+  onBtnDayClicked = () => {
+    this.currentDateType = E_DATE_TYPES.DAY;
+    this.reqRefresh();
+  }
+
+  onBtnWeekClicked = () => {
+    this.currentDateType = E_DATE_TYPES.WEEK;
+    this.reqRefresh();
+  }
+
+  onBtnMonthClicked = () => {
+    this.currentDateType = E_DATE_TYPES.MONTH;
+    this.reqRefresh();
+  }
+
+  onBtnYearClicked = () => {
+    this.currentDateType = E_DATE_TYPES.YEAR;
+    this.reqRefresh();
   }
 
   subscribeEvents() {
