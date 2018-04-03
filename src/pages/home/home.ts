@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, Events, ToastController, ModalController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CodePush, InstallMode } from '@ionic-native/code-push';
+import { CodePush, InstallMode, SyncStatus, DownloadProgress } from '@ionic-native/code-push';
 
 // import * as rasterizeHTML from 'rasterizehtml';
 // import rasterizeHTML from '../../../node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js';
@@ -19,6 +19,13 @@ import * as constants from '../../constants/constants'
 export class HomePage implements OnInit {
   account = {account:'', password:''}
   accountGroup: FormGroup;
+  syncStatus: any = 0;
+  testStatus: Array<any> = [];
+  updateFinish: boolean = false;
+  installing:boolean = false;
+  downloadProgress: number = 0;
+  version: number = 2;
+  statusText: string = '';
 
   constructor(
     public events: Events,
@@ -40,7 +47,7 @@ export class HomePage implements OnInit {
     console.log('ngOnInit');
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.userProvider.getLastLoginAccount().then((data: any)=>{
       if (data) {
         this.accountGroup.controls.account.setValue(data.account);
@@ -48,12 +55,71 @@ export class HomePage implements OnInit {
       }
     });
 
+    this.sync();
+  }
+
+  sync() {
+
     try {
-      this.codePush.sync({installMode:InstallMode.IMMEDIATE, updateDialog:{updateTitle:'有新的更新'}}).subscribe((syncStatus) => console.log(syncStatus));
+      this.testStatus.push("开始" + this.version);
+      this.statusText = this.getStatusText();
+      this.codePush.sync(
+        {
+          installMode:InstallMode.IMMEDIATE, mandatoryInstallMode:InstallMode.IMMEDIATE,
+          updateDialog:{
+            updateTitle:'有新的更新', 
+            optionalInstallButtonLabel:'更新', 
+            optionalIgnoreButtonLabel:'忽略', 
+            mandatoryContinueButtonLabel:'更新',
+            mandatoryUpdateMessage:'有新的版本啦，请更新！',
+            optionalUpdateMessage:'有新的版本啦，请更新！'
+          }
+        },
+        (progress:DownloadProgress)=>{
+          if (progress.totalBytes === 0) {
+            this.downloadProgress = 1;
+          } else {
+            this.downloadProgress = progress.receivedBytes/progress.totalBytes;
+          }
+        }
+      )
+      .subscribe((syncStatus) => {
+        this.syncStatus = syncStatus;
+        this.testStatus.push(syncStatus);
+        this.statusText = this.getStatusText();
+        switch(syncStatus) {
+          case SyncStatus.CHECKING_FOR_UPDATE:
+          case SyncStatus.IN_PROGRESS:
+            this.updateFinish = false;
+            this.installing = false;
+          break;
+          case SyncStatus.DOWNLOADING_PACKAGE:
+          case SyncStatus.INSTALLING_UPDATE:
+            this.installing = true;
+          break;
+          case SyncStatus.UP_TO_DATE:
+          case SyncStatus.UPDATE_IGNORED:
+          case SyncStatus.UPDATE_INSTALLED:
+          case SyncStatus.ERROR:
+            this.installing = false;
+            this.updateFinish = true;
+          break;
+        }
+      });
 
     } catch (error) {
-
+      this.testStatus.push(error.message);
+      this.statusText = this.getStatusText();
+      this.updateFinish = true;
     }
+  }
+
+  getUpdateText = ()=> {
+    return this.installing ? `正在安装中${new Number(this.downloadProgress*100).toFixed(2)}%` : '检查更新中';
+  }
+
+  getStatusText = () => {
+    return this.testStatus.join(";");
   }
 
   rasterTest() {

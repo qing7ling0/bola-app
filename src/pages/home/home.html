@@ -6,6 +6,10 @@
         <input type="text" class="form-control" formControlName="account" placeholder="账号" >
         <input type="password" class="form-control" formControlName="password"  placeholder="密码" >
         <button class="btn btn-login btn-block" type="submit" (click)="login(accountGroup)">进 入</button>
+        <!-- <button *ngIf="!updateFinish" class="btn btn-login btn-block" type="submit">{{getUpdateText()}}</button>
+        <div>状态:{{getStatusText()}}</div>
+        <bola-form-text class="form-text" [(ngModel)]="statusText" [ngModelOptions]="{standalone: true}"></bola-form-text> -->
+
       </div>
     </form>
   </div>
