@@ -589,6 +589,7 @@ hr {
 .special-select {
 	border: 1px solid #818181;
 	height: 28px;
+	line-height: 28px;
 	padding: 0 5px;
 }
 .special-select .fa {

@@ -3,7 +3,11 @@
   <!-- main content start-->
   <div class="wrapper" style="height:100%">
     <div class="salesSummary-cont clearfix">
-      <div class="special-select pull-right"><span class="select-current">店铺销售汇总</span><span class="fa fa-angle-right"></span></div>
+      <!-- <div class="special-select pull-right"><span class="select-current">店铺销售汇总</span><span class="fa fa-angle-right"></span></div> -->
+      <!-- <bola-select class="special-select pull-right" [(ngModel)]="currentAnalyseType" [ngModelOptions]="{standalone: true}" (ngModelChange)="onAnalyseTypeChange()" [source]="analyseTypeList||[]"></bola-select> -->
+      <ion-select class="special-select pull-right" [(ngModel)]="currentAnalyseType" (ngModelChange)="onAnalyseTypeChange()" okText="确定" cancelText="取消">
+        <ion-option *ngFor="let data of analyseTypeList" value="{{data.value}}">{{data.label}}</ion-option>
+      </ion-select>
     </div>
     <section class="analysis-tab">
       <ul class="nav nav-tabs">
@@ -13,7 +17,8 @@
         <li class="{{currentDateType===4?'active':''}}"> <a (click)="onBtnYearClicked()" data-toggle="tab">年</a> </li>
       </ul>
       <ion-content>
-        <page-analyse-shop #analyseShopPage [onLoadSuccess]="onLoadSuccess"></page-analyse-shop>
+        <page-analyse-shop *ngIf="isShopType()" #analyseShopPage [onLoadSuccess]="onLoadSuccess"></page-analyse-shop>
+        <page-analyse-goods *ngIf="isGoodsType()" #analyseGoodsPage [onLoadSuccess]="onLoadSuccess"></page-analyse-goods>
       </ion-content>
     </section>
   </div>

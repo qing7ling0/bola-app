@@ -7,6 +7,7 @@ import * as constants from '../../constants/constants'
 import {HeaderData} from '../../interface/header-data';
 import {E_ORDER_TYPE, ORDER_TYPES} from '../../constants/constants'
 import { AnalyseShopPage } from './analyse-shop/analyse-shop'
+import { AnalyseGoodsPage } from './analyse-goods/analyse-goods'
 import { CartProvider, CommonProvider } from '../../providers';
 
 
@@ -18,15 +19,15 @@ const E_DATE_TYPES = {
 }
 
 const E_ANALYSE_TYPES = {
-  SHOP:1,
-  GOODS:2,
-  VIP:3
+  SHOP:"1",
+  GOODS:"2",
+  VIP:"3"
 }
 
 const E_ANALYSE_DATAS = [
-  {id:E_ANALYSE_TYPES.SHOP, label:'店铺销售汇总'},
-  {id:E_ANALYSE_TYPES.SHOP, label:'商品销售汇总'},
-  {id:E_ANALYSE_TYPES.SHOP, label:'会员销售汇总'}
+  {value:E_ANALYSE_TYPES.SHOP, label:'店铺销售汇总'},
+  {value:E_ANALYSE_TYPES.GOODS, label:'商品销售汇总'},
+  {value:E_ANALYSE_TYPES.VIP, label:'会员销售汇总'}
 ]
 
 @Component({
@@ -38,9 +39,11 @@ export class AnalysePage implements OnInit {
   pages: Array<any> =[AnalyseShopPage]
   user:any = null;
   currentDateType: number = E_DATE_TYPES.DAY;
-  currentAnalyseType: number = E_ANALYSE_TYPES.SHOP;
+  currentAnalyseType: string = E_ANALYSE_TYPES.SHOP;
+  analyseTypeList: Array<any> = E_ANALYSE_DATAS;
 
   @ViewChild(AnalyseShopPage) analyseShopPage: AnalyseShopPage
+  @ViewChild(AnalyseGoodsPage) analyseGoodsPage: AnalyseGoodsPage
 
   constructor(
     public events: Events,
@@ -74,6 +77,22 @@ export class AnalysePage implements OnInit {
       case E_ANALYSE_TYPES.VIP:
       break;
     }
+  }
+
+  isShopType = () => {
+    return this.currentAnalyseType === E_ANALYSE_TYPES.SHOP;
+  }
+
+  isGoodsType = () => {
+    return this.currentAnalyseType === E_ANALYSE_TYPES.GOODS;
+  }
+
+  isVipType = () => {
+    return this.currentAnalyseType === E_ANALYSE_TYPES.VIP;
+  }
+
+  onAnalyseTypeChange = () => {
+    
   }
 
   onBtnDayClicked = () => {

@@ -2,7 +2,7 @@
  * 店铺排名
  */
 
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { NavController, ToastController, NavParams, ModalController, Events, } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Storage } from '@ionic/storage';
@@ -30,9 +30,9 @@ const E_DATE_TYPES = {
   templateUrl: 'analyse-goods.html'
 })
 export class AnalyseGoodsPage implements OnInit {
-  headerData: HeaderData = {title:'数据分析', menuEnable:false, type:'analyse-goods'};
-
-  @ViewChild('analyseDayAmount') dayAmountElement: ElementRef;
+  @ViewChild('analyseGoodsTop10') goodsTop10Element: ElementRef;
+  @ViewChild('analyseGoodsMatrial') goodsMatrialElement: ElementRef;
+  @ViewChild('analyseGoodsSex') goodsSexElement: ElementRef;
   @ViewChild('analyseDayEach') dayEachElement: ElementRef;
   @ViewChild('analyseWeekSales') weekSalesElement: ElementRef;
   @ViewChild('analyseMonthSales') monthSalesElement: ElementRef;
@@ -52,18 +52,24 @@ export class AnalyseGoodsPage implements OnInit {
   currentDateType: Number = E_DATE_TYPES.DAY;
   regionList: Array<any>;
   shopList: Array<any> = [];
-  last5WeekList: Array<any> = [];
   last12MonthList: Array<any> = [];
   last2Year12MonthList: any = {};
-
+  
   last5YearList: Array<any> = [];
   last4QuarterList: Array<any> = [];
-
+  
   chartAmountList: Array<any> = []; // 总销售额
   chartEachList: any = {
     price:[],
     count:[]
   }; // 客单价/客单件
+  
+  materialList: Array<any> = []; // 销量材质
+  salesSexList: Array<any> = []; // 销量男女
+  top10AmountPer:string = '0%';
+  top10CountPer:string = '0%';
+
+  @Input() onLoadSuccess: Function;
 
   constructor(
     public navCtrl: NavController,
@@ -86,32 +92,99 @@ export class AnalyseGoodsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.formOptions = FORM_OPTIONS(null);
-    // this.formGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
-  }
-
-  ionViewDidEnter(): void {
     this.commonProvider.getCommonDataList('shopRegionList', constants.E_COMMON_DATA_TYPES.SHOP_REGION, graphqlTypes.regionType).then((result)=>{
       if (result) {
         this.regionList = result;
         this.onReqList();
       }
     });
-    // this.initChartsDayAmount();
-    // this.initChartsDayEach();
-    // this.initChartsWeekSales();
-    // this.initChartsMonthSales();
-    // this.initChartsMonthSalesCompare();
-    // this.initChartsQuarterAmount();
+    // this.initChartsTop10();
   }
 
-  initChartsDayAmount(): void {
-    let ctx = this.dayAmountElement.nativeElement;
+  ionViewDidEnter(): void {
+  }
+
+  initChartsTop10(): void {
+    let ctx = this.goodsTop10Element.nativeElement;
+    this.chart = echarts.init(ctx);
+    let top10PerDatas = [100, 15, 200, 44]
+
+    let top10List = [0.5,0.5];
+    let otherList = [0.5,0.5];
+    if (top10PerDatas[2]) {
+      top10List[0] = top10PerDatas[0] / top10PerDatas[2];
+      otherList[0] = 1 - top10List[0];
+    }
+    if (top10PerDatas[3]) {
+      top10List[1] = top10PerDatas[1] / top10PerDatas[3];
+      otherList[1] = 1 - top10List[1];
+    }
+
+    this.top10AmountPer = new Number(top10List[0]*100).toFixed(2);
+    this.top10CountPer = new Number(top10List[1]*100).toFixed(2);
+
+    this.chart.setOption({
+      legend: {
+        data: ['畅销','其他']
+      },
+      xAxis:  {
+        type: 'value',
+        show: false
+      },
+      yAxis: {
+        type: 'category',
+        data: ['销售','销量']
+      },
+      series : [
+        {
+          name:'畅销',
+          type:'bar',
+          stack: '总量',
+          data:top10List,
+          label: {
+            show:true,
+            color:"#4D4736",
+            formatter:(params)=>{
+              return top10PerDatas[params.dataIndex]
+            }
+          }
+        },
+        {
+          name:'其他',
+          type:'bar',
+          stack: '总量',
+          data:otherList,
+          label: {
+            show:true,
+            color:"#ffffff",
+            formatter:(params)=>{
+              return top10PerDatas[params.dataIndex+2]-top10PerDatas[params.dataIndex]
+            }
+          }
+        }
+      ],
+      color:["#C0A64F", "#323232"]
+    });
+  }
+
+  initChartsMaterial(): void {
+    let ctx = this.goodsMatrialElement.nativeElement;
+    this.materialList = [
+      {
+        NID:'',
+        name:'材质一',
+        color:'#ff0000',
+        value:100,
+      },
+      {
+        NID:'',
+        name:'材质2',
+        color:'#ff00ff',
+        value:200
+      },
+    ];
     this.chart = echarts.init(ctx);
     this.chart.setOption({
-      tooltip : {
-        trigger: 'item'
-      },
       legend: {
         type: 'plain',
         orient: 'horizontal',
@@ -119,110 +192,63 @@ export class AnalyseGoodsPage implements OnInit {
         right: 10,
         left: 10,
         bottom: 20,
-        data: this.chartAmountList.map(item=>item.name),
+        data: this.materialList.map(item=>item.name),
         selectedMode:false
       },
       series : [
         {
-          name:'直接访问',
+          name:'材质分布图',
           type:'pie',
-          radius : ['30%', '55%'],
+          radius :'55%',
           center: ['50%', '35%'],
-          data:this.chartAmountList,
+          data:this.materialList,
           label: {
-            show:true,
-            formatter:item=>this.priceFormat(item.value)
+            show:true
           }
         }
       ],
-      color:this.chartAmountList.map(item=>item.color)
+      color:this.materialList.map(item=>item.color)
     });
   }
-
-  initChartsDayEach(): void {
-    let ctx = this.dayEachElement.nativeElement;
+  initChartsSex(): void {
+    let ctx = this.goodsSexElement.nativeElement;
+    this.salesSexList = [
+      {
+        name:'男',
+        color:'#2980D9',
+        value:100,
+      },
+      {
+        name:'女',
+        color:'#EB4986',
+        value:200
+      },
+    ];
     this.chart = echarts.init(ctx);
     this.chart.setOption({
-      xAxis: [
-        {
-          type: 'category',
-          data: this.chartEachList.price.map(item=>item.name),
-          splitLine: {
-            lineStyle: {
-              color: '#84878c'
-            }
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#84878c'
-            }
-          }
-        }
-      ],
-      yAxis: [
-        {
-          type: 'value',
-          name: '客单件',
-          min: 0,
-          max:(value)=>value.max+1,
-          axisLabel: {
-            margin:5,
-            formatter: '{value}',
-            color: '#84878c'
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#84878c'
-            }
-          }
-        },
-        {
-          type: 'value',
-          name: '客单价',
-          min: 0,
-          max:(value)=>Math.floor(value.max / 1000 + 1)*1000,
-          axisLabel: {
-            margin:5,
-            formatter:value=>this.priceFormat(value, 0),
-            color: '#84878c'
-          },
-          splitLine: {
-            show: false
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#84878c'
-            }
-          }
-        }
-      ],
       legend: {
         type: 'plain',
         orient: 'horizontal',
-        show: true,
-        bottom: 10,
-        data:['客单件','客单价'],
+        show:true,
+        right: 10,
+        left: 10,
+        bottom: 20,
+        data: this.salesSexList.map(item=>item.name),
         selectedMode:false
       },
       series : [
         {
-          name:'客单件',
-          type:'bar',
-          data:this.chartEachList.count.map(item=>item.value),
-          itemStyle:{
-            color: '#dc5569'
-          }
-        },
-        {
-          name:'客单价',
-          type:'line',
-          yAxisIndex: 1,
-          data:this.chartEachList.price.map(item=>item.value),
-          itemStyle:{
-            color: '#323232'
+          name:'男女分布图',
+          type:'pie',
+          radius :'55%',
+          center: ['50%', '35%'],
+          data:this.salesSexList,
+          label: {
+            show:true
           }
         }
-      ]
+      ],
+      color:this.salesSexList.map(item=>item.color)
     });
   }
 
@@ -517,66 +543,66 @@ export class AnalyseGoodsPage implements OnInit {
     this.chartAmountList = [];
     this.chartEachList = [];
     let regionShops = {};
-    for(let re of this.regionList) {
-      regionShops[re._id] = [];
-    }
-    this.shopList.forEach((item)=>{
-      if (item.shop && item.shop.region_id) {
-        if (regionShops[item.shop.region_id]){
-          regionShops[item.shop.region_id].push(item);
-        }
-      }
-    })
+    // for(let re of this.regionList) {
+    //   regionShops[re._id] = [];
+    // }
+    // this.shopList.forEach((item)=>{
+    //   if (item.shop && item.shop.region_id) {
+    //     if (regionShops[item.shop.region_id]){
+    //       regionShops[item.shop.region_id].push(item);
+    //     }
+    //   }
+    // })
 
-    let regions = [];
-    let analyseMaxCount = 9;
-    for(let reId in regionShops) {
-      let region = this.findRegion(reId);
-      let shop = regionShops[reId];
-      if (region) {
-        let item = {
-          name:region.name,
-          color:this.int2CssColor(region.color_css),
-          amount:shop.reduce((pre,cur,index,arr)=>{
-            return {amount:pre.amount+cur.amount}
-          }, {amount:0}).amount,
-          count:shop.reduce((pre,cur,index,arr)=>{
-            return {count:pre.count+cur.count}
-          }, {count:0}).count,
-          sub_count:shop.reduce((pre,cur,index,arr)=>{
-            return {sub_count:pre.sub_count+cur.sub_count}
-          }, {sub_count:0}).sub_count,
-        };
-        regions.push(item)
-        // if (regions.length > analyseMaxCount) {
-        //   regions[analyseMaxCount].amount += item.amount;
-        //   regions[analyseMaxCount].count += item.amount;
-        //   regions[analyseMaxCount].sub_count += item.sub_count;
-        // } else {
-        //   if (regions.length === analyseMaxCount) {
-        //     item.name = '其他';
-        //   }
-        //   regions.push(item)
-        // }
-      }
-    }
-    regions.sort((a,b)=>a.amount>b.amount?-1:1);
+    // let regions = [];
+    // let analyseMaxCount = 9;
+    // for(let reId in regionShops) {
+    //   let region = this.findRegion(reId);
+    //   let shop = regionShops[reId];
+    //   if (region) {
+    //     let item = {
+    //       name:region.name,
+    //       color:this.int2CssColor(region.color_css),
+    //       amount:shop.reduce((pre,cur,index,arr)=>{
+    //         return {amount:pre.amount+cur.amount}
+    //       }, {amount:0}).amount,
+    //       count:shop.reduce((pre,cur,index,arr)=>{
+    //         return {count:pre.count+cur.count}
+    //       }, {count:0}).count,
+    //       sub_count:shop.reduce((pre,cur,index,arr)=>{
+    //         return {sub_count:pre.sub_count+cur.sub_count}
+    //       }, {sub_count:0}).sub_count,
+    //     };
+    //     regions.push(item)
+    //     // if (regions.length > analyseMaxCount) {
+    //     //   regions[analyseMaxCount].amount += item.amount;
+    //     //   regions[analyseMaxCount].count += item.amount;
+    //     //   regions[analyseMaxCount].sub_count += item.sub_count;
+    //     // } else {
+    //     //   if (regions.length === analyseMaxCount) {
+    //     //     item.name = '其他';
+    //     //   }
+    //     //   regions.push(item)
+    //     // }
+    //   }
+    // }
+    // regions.sort((a,b)=>a.amount>b.amount?-1:1);
 
-    this.chartEachList.price = [];
-    this.chartEachList.count = [];
-    for(let i=0; i<regions.length; i++) {
-      let region = regions[i];
-      if (i > analyseMaxCount) {
-        this.chartAmountList[analyseMaxCount].value += region.amount;
-      } else {
-        this.chartAmountList.push({name:i===analyseMaxCount?'其他':region.name, color:region.color, value:region.amount});
-      }
+    // this.chartEachList.price = [];
+    // this.chartEachList.count = [];
+    // for(let i=0; i<regions.length; i++) {
+    //   let region = regions[i];
+    //   if (i > analyseMaxCount) {
+    //     this.chartAmountList[analyseMaxCount].value += region.amount;
+    //   } else {
+    //     this.chartAmountList.push({name:i===analyseMaxCount?'其他':region.name, color:region.color, value:region.amount});
+    //   }
 
-      if (i < analyseMaxCount) {
-        this.chartEachList.price.push({name:region.name, color:region.color, value:Math.floor(region.count===0?0:(region.amount/region.count))})
-        this.chartEachList.count.push({name:region.name, color:region.color, value:Math.floor(region.count===0?0:(region.sub_count*10/region.count))/10})
-      }
-    }
+    //   if (i < analyseMaxCount) {
+    //     this.chartEachList.price.push({name:region.name, color:region.color, value:Math.floor(region.count===0?0:(region.amount/region.count))})
+    //     this.chartEachList.count.push({name:region.name, color:region.color, value:Math.floor(region.count===0?0:(region.sub_count*10/region.count))/10})
+    //   }
+    // }
 
     // this.chartAmountList = this.chartAmountList.map(item=>{
     //   item.value = item.value);
@@ -585,26 +611,28 @@ export class AnalyseGoodsPage implements OnInit {
 
     console.log("analyse-shop onRefresh" + JSON.stringify(this.chartAmountList));
     // this.chartAmountList.sort((a,b)=>a.amount>b.amount?-1:1);
-    this.initChartsDayAmount();
-    switch(this.currentDateType) {
-      case E_DATE_TYPES.DAY:
-      this.initChartsDayEach();
-      break;
-      case E_DATE_TYPES.WEEK:
+    this.initChartsTop10();
+    this.initChartsMaterial();
+    this.initChartsSex();
+    // switch(this.currentDateType) {
+    //   case E_DATE_TYPES.DAY:
+    //   this.initChartsDayEach();
+    //   break;
+    //   case E_DATE_TYPES.WEEK:
 
-      this.initChartsWeekSales();
-      break;
-      case E_DATE_TYPES.MONTH:
-        this.initChartsMonthSales();
-        this.initChartsMonthSalesCompare();
-      break;
-      case E_DATE_TYPES.YEAR:
-        this.initChartsYear5Sales();
-        this.initChartsQuarterAmount();
-      break;
-      default:
-      break;
-    }
+    //   this.initChartsWeekSales();
+    //   break;
+    //   case E_DATE_TYPES.MONTH:
+    //     this.initChartsMonthSales();
+    //     this.initChartsMonthSalesCompare();
+    //   break;
+    //   case E_DATE_TYPES.YEAR:
+    //     this.initChartsYear5Sales();
+    //     this.initChartsQuarterAmount();
+    //   break;
+    //   default:
+    //   break;
+    // }
   }
 
   onReqList() {

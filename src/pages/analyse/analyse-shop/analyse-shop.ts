@@ -88,8 +88,6 @@ export class AnalyseShopPage implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.formOptions = FORM_OPTIONS(null);
-    // this.formGroup = this.formBuilder.group(FormValidator.getFormBuildGroupOptions(this.formOptions));
     this.commonProvider.getCommonDataList('shopRegionList', constants.E_COMMON_DATA_TYPES.SHOP_REGION, graphqlTypes.regionType).then((result)=>{
       if (result) {
         this.regionList = result;
@@ -99,24 +97,6 @@ export class AnalyseShopPage implements OnInit {
         }
       }
     });
-  }
-
-  ionViewDidEnter(): void {
-    this.commonProvider.getCommonDataList('shopRegionList', constants.E_COMMON_DATA_TYPES.SHOP_REGION, graphqlTypes.regionType).then((result)=>{
-      if (result) {
-        this.regionList = result;
-        // this.onReqList();
-        if (this.onLoadSuccess) {
-          this.onLoadSuccess();
-        }
-      }
-    });
-    // this.initChartsDayAmount();
-    // this.initChartsDayEach();
-    // this.initChartsWeekSales();
-    // this.initChartsMonthSales();
-    // this.initChartsMonthSalesCompare();
-    // this.initChartsQuarterAmount();
   }
 
   initChartsDayAmount(): void {
