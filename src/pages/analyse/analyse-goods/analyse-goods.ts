@@ -33,7 +33,8 @@ export class AnalyseGoodsPage implements OnInit {
   @ViewChild('analyseGoodsTop10') goodsTop10Element: ElementRef;
   @ViewChild('analyseGoodsMatrial') goodsMatrialElement: ElementRef;
   @ViewChild('analyseGoodsSex') goodsSexElement: ElementRef;
-  @ViewChild('analyseDayEach') dayEachElement: ElementRef;
+  @ViewChild('analyseGoodsPrice') goodsPriceElement: ElementRef;
+
   @ViewChild('analyseWeekSales') weekSalesElement: ElementRef;
   @ViewChild('analyseMonthSales') monthSalesElement: ElementRef;
   @ViewChild('analyseMonthSalesCompare') monthSalesCompareElement: ElementRef;
@@ -54,18 +55,18 @@ export class AnalyseGoodsPage implements OnInit {
   shopList: Array<any> = [];
   last12MonthList: Array<any> = [];
   last2Year12MonthList: any = {};
-  
-  last5YearList: Array<any> = [];
+
   last4QuarterList: Array<any> = [];
-  
+
   chartAmountList: Array<any> = []; // 总销售额
   chartEachList: any = {
     price:[],
     count:[]
   }; // 客单价/客单件
-  
+
   materialList: Array<any> = []; // 销量材质
   salesSexList: Array<any> = []; // 销量男女
+  priceList: Array<any> = []; // 价格分段
   top10AmountPer:string = '0%';
   top10CountPer:string = '0%';
 
@@ -210,6 +211,7 @@ export class AnalyseGoodsPage implements OnInit {
       color:this.materialList.map(item=>item.color)
     });
   }
+
   initChartsSex(): void {
     let ctx = this.goodsSexElement.nativeElement;
     this.salesSexList = [
@@ -252,49 +254,22 @@ export class AnalyseGoodsPage implements OnInit {
     });
   }
 
-  initChartsWeekSales(): void {
-    let names = ['第一周','第二周','第三周','第四周','第五周'];
-    let ctx = this.weekSalesElement.nativeElement;
+  initChartsPrices(): void {
+    let names = this.priceList.map(item => item.price);
+    let ctx = this.goodsPriceElement.nativeElement;
     this.chart = echarts.init(ctx);
     this.chart.setOption({
-      xAxis:
-      {
+      xAxis: {
         type: 'category',
-        data: names,
-        axisTick: {
-          show: false
-        }
+        data: this.priceList.map(item => item.price)
       },
-      yAxis: {
-        type: 'value',
-        axisLine: {
-          show: false
-        },
-        splitLine: {
-          show: false
-        },
-        axisLabel: {
-          show: false
-        },
-        axisTick: {
-          show: false
+      series: [{
+        data: this.priceList.map(item => item.value),
+        type: 'bar',
+        itemStyle: {
+          color:'#dc5569'
         }
-      },
-      series : [
-        {
-          name:'周销量',
-          type:'line',
-          data:this.last5WeekList||[],
-          label: {
-            show: true,
-            color: '#84878c',
-            formatter:item=>this.priceFormat(item.value)
-          },
-          itemStyle: {
-            color:'#dc5569'
-          }
-        }
-      ]
+      }]
     });
   }
 
@@ -614,25 +589,19 @@ export class AnalyseGoodsPage implements OnInit {
     this.initChartsTop10();
     this.initChartsMaterial();
     this.initChartsSex();
-    // switch(this.currentDateType) {
-    //   case E_DATE_TYPES.DAY:
-    //   this.initChartsDayEach();
-    //   break;
-    //   case E_DATE_TYPES.WEEK:
-
-    //   this.initChartsWeekSales();
-    //   break;
-    //   case E_DATE_TYPES.MONTH:
-    //     this.initChartsMonthSales();
-    //     this.initChartsMonthSalesCompare();
-    //   break;
-    //   case E_DATE_TYPES.YEAR:
-    //     this.initChartsYear5Sales();
-    //     this.initChartsQuarterAmount();
-    //   break;
-    //   default:
-    //   break;
-    // }
+    switch(this.currentDateType) {
+      case E_DATE_TYPES.DAY:
+      break;
+      case E_DATE_TYPES.WEEK:
+      break;
+      case E_DATE_TYPES.MONTH:
+      this.initChartsPrices();
+      break;
+      case E_DATE_TYPES.YEAR:
+      break;
+      default:
+      break;
+    }
   }
 
   onReqList() {
@@ -649,7 +618,7 @@ export class AnalyseGoodsPage implements OnInit {
         this.analyseProvider.getShopAnalyseWeekList(this.currentDateType).then((result)=>{
           if (result) {
             this.shopList = result.analyseShopList;
-            this.last5WeekList = result.analyseLast5Week.reverse();
+            // this.last5WeekList = result.analyseLast5Week.reverse();
             this.onRefresh();
           }
         })
@@ -668,7 +637,7 @@ export class AnalyseGoodsPage implements OnInit {
         this.analyseProvider.getShopAnalyseYearList(this.currentDateType).then((result)=>{
           if (result) {
             this.shopList = result.analyseShopList;
-            this.last5YearList = result.analyseLast5Year;
+            // this.last5YearList = result.analyseLast5Year;
             this.last4QuarterList = result.analyse4Quarter;
             this.onRefresh();
           }
