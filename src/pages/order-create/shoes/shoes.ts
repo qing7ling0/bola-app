@@ -317,12 +317,11 @@ export class OrderShoesPage implements OnInit {
   }
 
   getGoodsByCurrentInput = (goodsInputInfo) => {
-    if (goodsInputInfo.s_material && goodsInputInfo.sex && goodsInputInfo.s_gui_ge && goodsInputInfo.s_xuan_hao && goodsInputInfo.s_color_palette && goodsInputInfo.s_tie_di) {
+    if (goodsInputInfo.s_material && goodsInputInfo.sex && goodsInputInfo.s_xuan_hao) {
       for(let goods of this.goodsList) {
-        if (goods.s_material && goods.s_xuan_hao && goods.sex && goods.s_color_palette) {
+        if (goods.s_material && goods.s_xuan_hao && goods.sex) {
           if (goods.s_material._id === goodsInputInfo.s_material._id
             && goods.s_xuan_hao._id === goodsInputInfo.s_xuan_hao._id
-            && goods.s_color_palette._id === goodsInputInfo.s_color_palette
             && goods.sex === goodsInputInfo.sex
           ) {
             if ((goods.sex === constants.SEX_FEMALE && goods.s_gen_gao && goodsInputInfo.s_gen_gao && goodsInputInfo.s_gen_gao._id === goods.s_gen_gao._id) ||

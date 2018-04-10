@@ -434,7 +434,7 @@ export class AnalyseGoodsPage implements OnInit {
         {
           name:'最近5年销量',
           type:'line',
-          data:this.last5YearList||[],
+          data:[],
           label: {
             show: true,
             color: '#84878c',

@@ -4,7 +4,7 @@
     <ion-content class="main-content">
 
     <!--body wrapper start-->
-    <div class="wrapper">
+    <div class="wrapper" style="padding-bottom:104px;">
       <div *ngFor="let arr of cartList; let customerIndex = index" class="panel panel-default panel-cart">
         <div class="panel-heading">
           <h3 class="panel-title">{{(arr.customer&&arr.customer.name||'')+'-'+(arr.customer&&arr.customer.phone||'')}}</h3>
