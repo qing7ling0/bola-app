@@ -73,6 +73,7 @@ export class AnalysePage implements OnInit {
       this.analyseShopPage.reqRefresh(this.currentDateType);
       break;
       case E_ANALYSE_TYPES.GOODS:
+      this.analyseGoodsPage.reqRefresh(this.currentDateType);
       break;
       case E_ANALYSE_TYPES.VIP:
       break;
@@ -92,7 +93,7 @@ export class AnalysePage implements OnInit {
   }
 
   onAnalyseTypeChange = () => {
-    
+
   }
 
   onBtnDayClicked = () => {
