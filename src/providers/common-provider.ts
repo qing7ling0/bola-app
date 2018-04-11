@@ -52,6 +52,15 @@ export class CommonProvider {
     });
   }
 
+  getMaterialList(): Promise<any> {
+    return this.api.getDefaultList(`materialList`, graphqlTypes.materialType).then((result)=>{
+      if(result.code === 0) {
+        return result.data["materialList"].list;
+      }
+      return null;
+    });
+  };
+
   getCommonDataList(tag: string, type:string, graphqlType: string): Promise<any> {
     return this.api.getDefaultList(`${tag}:commonList`, graphqlType, {type:type}).then((result)=>{
       if(result.code === 0) {
