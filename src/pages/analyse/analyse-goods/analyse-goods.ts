@@ -49,6 +49,8 @@ export class AnalyseGoodsPage implements OnInit {
   chart: any = null;
   currentDateType: Number = E_DATE_TYPES.DAY;
 
+  materialSourceMap: Map<string, any> = new Map(); // 材质库
+
   top10List: Array<any> = []; // 销量Top10
   top10SalesPerList:Array<any> = []; // 销量top10占比
   materialList: Array<any> = []; // 销量材质
@@ -83,12 +85,15 @@ export class AnalyseGoodsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.commonProvider.getCommonDataList('shopRegionList', constants.E_COMMON_DATA_TYPES.SHOP_REGION, graphqlTypes.regionType).then((result)=>{
+    this.commonProvider.getMaterialList().then((result)=>{
       if (result) {
+        this.materialSourceMap = new Map();
+        result.forEach(element => {
+          this.materialSourceMap.set(element._id, element);
+        });
         this.onReqList();
       }
     });
-    // this.initChartsTop10();
   }
 
   ionViewDidEnter(): void {
@@ -97,7 +102,8 @@ export class AnalyseGoodsPage implements OnInit {
   initChartsTop10(): void {
     let ctx = this.goodsTop10Element.nativeElement;
     this.chart = echarts.init(ctx);
-    let top10PerDatas = [100, 15, 200, 44]
+    let top10PerDatas = this.top10SalesPerList;
+    if (!top10PerDatas || top10PerDatas.length === 0) return;
 
     let top10List = [0.5,0.5];
     let otherList = [0.5,0.5];
@@ -159,27 +165,27 @@ export class AnalyseGoodsPage implements OnInit {
 
   initChartsMaterial(): void {
     let ctx = this.goodsMatrialElement.nativeElement;
-    this.materialList = [
-      {
-        NID:'',
-        name:'材质一',
-        color:'#ff0000',
-        value:100,
-      },
-      {
-        NID:'',
-        name:'材质2',
-        color:'#ff00ff',
-        value:200
-      },
-    ];
-    for(let i=0; i<20; i++) {
-      this.materialList.push({
-        name:'材质'+(i+1),
-        value:i*100+100,
-        color:'#ff00ff'
-      })
-    }
+    // this.materialList = [
+    //   {
+    //     NID:'',
+    //     name:'材质一',
+    //     color:'#ff0000',
+    //     value:100,
+    //   },
+    //   {
+    //     NID:'',
+    //     name:'材质2',
+    //     color:'#ff00ff',
+    //     value:200
+    //   },
+    // ];
+    // for(let i=0; i<20; i++) {
+    //   this.materialList.push({
+    //     name:'材质'+(i+1),
+    //     value:i*100+100,
+    //     color:'#ff00ff'
+    //   })
+    // }
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
@@ -266,18 +272,18 @@ export class AnalyseGoodsPage implements OnInit {
 
   initChartsSex(): void {
     let ctx = this.goodsSexElement.nativeElement;
-    this.salesSexList = [
-      {
-        name:'男',
-        color:'#2980D9',
-        value:100,
-      },
-      {
-        name:'女',
-        color:'#EB4986',
-        value:200
-      },
-    ];
+    // this.salesSexList = [
+    //   {
+    //     name:'男',
+    //     color:'#2980D9',
+    //     value:100,
+    //   },
+    //   {
+    //     name:'女',
+    //     color:'#EB4986',
+    //     value:200
+    //   },
+    // ];
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
