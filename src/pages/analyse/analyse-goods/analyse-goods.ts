@@ -83,11 +83,11 @@ export class AnalyseGoodsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.commonProvider.getCommonDataList('shopRegionList', constants.E_COMMON_DATA_TYPES.SHOP_REGION, graphqlTypes.regionType).then((result)=>{
-    //   if (result) {
-    //     this.onReqList();
-    //   }
-    // });
+    this.commonProvider.getCommonDataList('shopRegionList', constants.E_COMMON_DATA_TYPES.SHOP_REGION, graphqlTypes.regionType).then((result)=>{
+      if (result) {
+        this.onReqList();
+      }
+    });
     // this.initChartsTop10();
   }
 
