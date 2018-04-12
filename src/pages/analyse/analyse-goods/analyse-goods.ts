@@ -25,6 +25,8 @@ const E_DATE_TYPES = {
   YEAR:4
 }
 
+const QUARTER_NAMES = ['季度一','季度二','季度三','季度四']
+
 @Component({
   selector: 'page-analyse-goods',
   templateUrl: 'analyse-goods.html'
@@ -56,8 +58,10 @@ export class AnalyseGoodsPage implements OnInit {
   materialList: Array<any> = []; // 销量材质
   salesSexList: Array<any> = []; // 销量男女
   priceList: Array<any> = []; // 价格分段
+  quarterMaterialSourceList: Array<any> = []; // 季度材质分布
   quarterMaterialList: Array<any> = []; // 季度材质分布
   quarterSexList: Array<any> = []; // 季度男女分布
+  quarterPriceSource: any = {list:[], types:[]}; // 季度价格分段分布
   quarterPriceList: Array<any> = []; // 季度价格分段分布
   top10AmountPer:string = '0%';
   top10CountPer:string = '0%';
@@ -141,7 +145,7 @@ export class AnalyseGoodsPage implements OnInit {
             show:true,
             color:"#4D4736",
             formatter:(params)=>{
-              return top10PerDatas[params.dataIndex]
+              return this.priceFormat(top10PerDatas[params.dataIndex], 2)
             }
           }
         },
@@ -154,7 +158,7 @@ export class AnalyseGoodsPage implements OnInit {
             show:true,
             color:"#ffffff",
             formatter:(params)=>{
-              return top10PerDatas[params.dataIndex+2]-top10PerDatas[params.dataIndex]
+              return this.priceFormat(top10PerDatas[params.dataIndex+2]-top10PerDatas[params.dataIndex],2)
             }
           }
         }
@@ -165,27 +169,6 @@ export class AnalyseGoodsPage implements OnInit {
 
   initChartsMaterial(): void {
     let ctx = this.goodsMatrialElement.nativeElement;
-    // this.materialList = [
-    //   {
-    //     NID:'',
-    //     name:'材质一',
-    //     color:'#ff0000',
-    //     value:100,
-    //   },
-    //   {
-    //     NID:'',
-    //     name:'材质2',
-    //     color:'#ff00ff',
-    //     value:200
-    //   },
-    // ];
-    // for(let i=0; i<20; i++) {
-    //   this.materialList.push({
-    //     name:'材质'+(i+1),
-    //     value:i*100+100,
-    //     color:'#ff00ff'
-    //   })
-    // }
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
@@ -206,30 +189,17 @@ export class AnalyseGoodsPage implements OnInit {
           center: ['50%', '35%'],
           data:this.materialList,
           label: {
-            show:true
+            show:true,
+            formatter:item=>this.priceFormat(item.value, 0)
           }
         }
       ],
-      color:this.materialList.map(item=>item.color)
+      // color:this.materialList.map(item=>item.color)
     });
   }
 
   initChartsQuarterMaterial(): void {
     let ctx = this.goodsQuarterMatrialElement.nativeElement;
-    this.quarterMaterialList = [
-      {
-        NID:'',
-        name:'材质一',
-        color:'#ff0000',
-        value:[100, 200, 239, 490],
-      },
-      {
-        NID:'',
-        name:'材质2',
-        color:'#ff00ff',
-        value:[130, 100, 139, 590],
-      },
-    ];
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
@@ -250,11 +220,11 @@ export class AnalyseGoodsPage implements OnInit {
       },
       xAxis:  {
         type: 'category',
-        data: ['第一季度','第二季度','第三季度','第四季度']
+        data: QUARTER_NAMES
       },
       yAxis: {
         type: 'value',
-        show:false,
+        show:true,
       },
       series : this.quarterMaterialList.map((item)=>{
         return {
@@ -263,7 +233,7 @@ export class AnalyseGoodsPage implements OnInit {
           stack: '总量',
           data:item.value,
           label: {
-            show:true
+            show:false
           }
         }
       }),
@@ -304,7 +274,8 @@ export class AnalyseGoodsPage implements OnInit {
           center: ['50%', '35%'],
           data:this.salesSexList,
           label: {
-            show:true
+            show:true,
+            formatter:item=>this.priceFormat(item.value, 0)
           }
         }
       ],
@@ -314,20 +285,20 @@ export class AnalyseGoodsPage implements OnInit {
 
   initChartsQuarterSex(): void {
     let ctx = this.goodsQuarterSexElement.nativeElement;
-    this.quarterSexList = [
-      {
-        NID:'',
-        name:'男',
-        color:'#ff0000',
-        value:[100, 200, 239, 490],
-      },
-      {
-        NID:'',
-        name:'女',
-        color:'#ff00ff',
-        value:[130, 100, 139, 590],
-      },
-    ];
+    // this.quarterSexList = [
+    //   {
+    //     NID:'',
+    //     name:'男',
+    //     color:'#ff0000',
+    //     value:[100, 200, 239, 490],
+    //   },
+    //   {
+    //     NID:'',
+    //     name:'女',
+    //     color:'#ff00ff',
+    //     value:[130, 100, 139, 590],
+    //   },
+    // ];
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
@@ -348,11 +319,11 @@ export class AnalyseGoodsPage implements OnInit {
       },
       xAxis:  {
         type: 'category',
-        data: ['第一季度','第二季度','第三季度','第四季度']
+        data: QUARTER_NAMES
       },
       yAxis: {
         type: 'value',
-        show:false,
+        show:true,
       },
       series : this.quarterSexList.map((item)=>{
         return {
@@ -365,24 +336,11 @@ export class AnalyseGoodsPage implements OnInit {
           }
         }
       }),
+      color: this.quarterSexList.map(item=>item.color),
     });
   }
 
   initChartsPrices(): void {
-    this.priceList = [
-      {
-        price:1999,
-        value:100
-      },
-      {
-        price:2999,
-        value:200
-      },
-      {
-        price:3999,
-        value:500
-      },
-    ]
     let names = this.priceList.map(item => item.price);
     let ctx = this.goodsPriceElement.nativeElement;
     this.chart = echarts.init(ctx);
@@ -401,6 +359,10 @@ export class AnalyseGoodsPage implements OnInit {
           type: 'bar',
           itemStyle: {
             color:'#dc5569'
+          },
+          label: {
+            show:true,
+            position: 'top'
           }
         }
       ]
@@ -409,33 +371,14 @@ export class AnalyseGoodsPage implements OnInit {
 
   initChartsQuarterPrice(): void {
     let ctx = this.goodsQuarterPriceElement.nativeElement;
-    this.quarterPriceList = [
-      {
-        price:1000,
-        color:'#ff0000',
-        value:[100, 200, 239, 490],
-      },
-      {
-        price:2000,
-        color:'#ff00ff',
-        value:[130, 100, 139, 590],
-      },
-      {
-        price:3000,
-        color:'#0000ff',
-        value:[130, 100, 139, 590],
-      },
-    ];
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
         type: 'plain',
         orient: 'horizontal',
-        show:false,
-        right: 10,
-        left: 10,
-        bottom: 20,
-        data: this.quarterPriceList.map(item=>item.name),
+        show:true,
+        top:10,
+        data: QUARTER_NAMES,
         selectedMode:false
       },
       grid: {
@@ -446,15 +389,15 @@ export class AnalyseGoodsPage implements OnInit {
       },
       xAxis:  {
         type: 'category',
-        data: this.quarterPriceList.map(item=>item.price)
+        data: this.quarterPriceSource.types
       },
       yAxis: {
         type: 'value',
-        show:false,
+        show:true,
       },
-      series : this.quarterPriceList.map((item)=>{
+      series : this.quarterPriceList.map((item, index)=>{
         return {
-          name:item.name,
+          name:QUARTER_NAMES[index],
           type: 'bar',
           stack: '总量',
           data:item.value,
@@ -478,74 +421,61 @@ export class AnalyseGoodsPage implements OnInit {
   }
 
   onRefresh() {
-    // for(let re of this.regionList) {
-    //   regionShops[re._id] = [];
-    // }
-    // this.shopList.forEach((item)=>{
-    //   if (item.shop && item.shop.region_id) {
-    //     if (regionShops[item.shop.region_id]){
-    //       regionShops[item.shop.region_id].push(item);
-    //     }
-    //   }
-    // })
+    if (this.top10List) {
+      for(let item of this.top10List) {
+        if (this.materialSourceMap.has(item.material)) {
+          let mat = this.materialSourceMap.get(item.material);
+          item.material_name = mat && mat.name || "";
+        } else {
+          item.material_name = "";
+        }
+      }
+    }
 
-    // let regions = [];
-    // let analyseMaxCount = 9;
-    // for(let reId in regionShops) {
-    //   let region = this.findRegion(reId);
-    //   let shop = regionShops[reId];
-    //   if (region) {
-    //     let item = {
-    //       name:region.name,
-    //       color:this.int2CssColor(region.color_css),
-    //       amount:shop.reduce((pre,cur,index,arr)=>{
-    //         return {amount:pre.amount+cur.amount}
-    //       }, {amount:0}).amount,
-    //       count:shop.reduce((pre,cur,index,arr)=>{
-    //         return {count:pre.count+cur.count}
-    //       }, {count:0}).count,
-    //       sub_count:shop.reduce((pre,cur,index,arr)=>{
-    //         return {sub_count:pre.sub_count+cur.sub_count}
-    //       }, {sub_count:0}).sub_count,
-    //     };
-    //     regions.push(item)
-    //     // if (regions.length > analyseMaxCount) {
-    //     //   regions[analyseMaxCount].amount += item.amount;
-    //     //   regions[analyseMaxCount].count += item.amount;
-    //     //   regions[analyseMaxCount].sub_count += item.sub_count;
-    //     // } else {
-    //     //   if (regions.length === analyseMaxCount) {
-    //     //     item.name = '其他';
-    //     //   }
-    //     //   regions.push(item)
-    //     // }
-    //   }
-    // }
-    // regions.sort((a,b)=>a.amount>b.amount?-1:1);
+    if (this.materialList) {
+      for(let item of this.materialList) {
+        if (this.materialSourceMap.has(item._id)) {
+          let mat = this.materialSourceMap.get(item._id);
+          item.name = mat.name;
+          item.color = this.int2CssColor(mat.color_css);
+        } else {
+          item.name = "";
+          item.color = "#ff0000";
+        }
+      }
+    }
 
-    // this.chartEachList.price = [];
-    // this.chartEachList.count = [];
-    // for(let i=0; i<regions.length; i++) {
-    //   let region = regions[i];
-    //   if (i > analyseMaxCount) {
-    //     this.chartAmountList[analyseMaxCount].value += region.amount;
-    //   } else {
-    //     this.chartAmountList.push({name:i===analyseMaxCount?'其他':region.name, color:region.color, value:region.amount});
-    //   }
+    if (this.quarterMaterialSourceList) {
+      this.quarterMaterialList = [];
+      let materialMap = {};
+      this.materialSourceMap.forEach(item=>{
+        this.quarterMaterialList.push({
+          _id:item._id,
+          name:item.name,
+          color:this.int2CssColor(item.color_css),
+          value:new Array(this.quarterMaterialSourceList.length)
+        })
+        materialMap[item._id] = new Array(this.quarterMaterialSourceList.length);
+      })
+      this.quarterMaterialSourceList.forEach((item,index) => {
+        item.forEach(element => {
+          let mat = materialMap[element.material];
+          if (mat) {
+            mat[index] = element.value;
+          }
+        });
+      })
+      for(let item of this.quarterMaterialList) {
+        let mat = materialMap[item._id];
+        if (mat) {
+          item.value = mat;
+        }
+      }
+    }
+    if (this.quarterPriceSource) {
+      this.quarterPriceList = this.quarterPriceSource.list || [];
+    }
 
-    //   if (i < analyseMaxCount) {
-    //     this.chartEachList.price.push({name:region.name, color:region.color, value:Math.floor(region.count===0?0:(region.amount/region.count))})
-    //     this.chartEachList.count.push({name:region.name, color:region.color, value:Math.floor(region.count===0?0:(region.sub_count*10/region.count))/10})
-    //   }
-    // }
-
-    // this.chartAmountList = this.chartAmountList.map(item=>{
-    //   item.value = item.value);
-    //   return item;
-    // })
-
-    // console.log("analyse-shop onRefresh" + JSON.stringify(this.chartAmountList));
-    // this.chartAmountList.sort((a,b)=>a.amount>b.amount?-1:1);
     this.initChartsTop10();
     this.initChartsMaterial();
     this.initChartsSex();
@@ -560,6 +490,7 @@ export class AnalyseGoodsPage implements OnInit {
       case E_DATE_TYPES.YEAR:
       this.initChartsQuarterMaterial();
       this.initChartsQuarterSex();
+      this.initChartsPrices();
       this.initChartsQuarterPrice();
       break;
       default:
@@ -570,7 +501,7 @@ export class AnalyseGoodsPage implements OnInit {
   onReqList() {
     switch(this.currentDateType) {
       case E_DATE_TYPES.DAY:
-        this.analyseProvider.getShopAnalyseDayList(this.currentDateType).then((result)=>{
+        this.analyseProvider.getGoodsAnalyseDayList(this.currentDateType).then((result)=>{
           if (result) {
             this.top10List = result.analyseGoodsTop10;
             this.top10SalesPerList = result.analyseGoodsSalesPer;
@@ -581,7 +512,7 @@ export class AnalyseGoodsPage implements OnInit {
         })
       break;
       case E_DATE_TYPES.WEEK:
-        this.analyseProvider.getShopAnalyseWeekList(this.currentDateType).then((result)=>{
+        this.analyseProvider.getGoodsAnalyseWeekList(this.currentDateType).then((result)=>{
           if (result) {
             this.top10List = result.analyseGoodsTop10;
             this.top10SalesPerList = result.analyseGoodsSalesPer;
@@ -592,7 +523,7 @@ export class AnalyseGoodsPage implements OnInit {
         })
       break;
       case E_DATE_TYPES.MONTH:
-        this.analyseProvider.getShopAnalyseMonthList(this.currentDateType).then((result)=>{
+        this.analyseProvider.getGoodsAnalyseMonthList(this.currentDateType).then((result)=>{
           if (result) {
             this.top10List = result.analyseGoodsTop10;
             this.top10SalesPerList = result.analyseGoodsSalesPer;
@@ -604,15 +535,16 @@ export class AnalyseGoodsPage implements OnInit {
         })
       break;
       case E_DATE_TYPES.YEAR:
-        this.analyseProvider.getShopAnalyseYearList(this.currentDateType).then((result)=>{
+        this.analyseProvider.getGoodsAnalyseYearList(this.currentDateType).then((result)=>{
           if (result) {
             this.top10List = result.analyseGoodsTop10;
             this.top10SalesPerList = result.analyseGoodsSalesPer;
             this.materialList = result.analyseGoodsMaterial;
             this.salesSexList = result.analyseGoodsSex;
-            this.quarterMaterialList = result.analyseGoodsMaterialList4Quarter;
+            this.priceList = result.analyseGoodsPrice;
+            this.quarterMaterialSourceList = result.analyseGoodsMaterialList4Quarter;
             this.quarterSexList = result.analyseGoodsSexList4Quarter;
-            this.quarterPriceList = result.analyseGoodsPriceList4Quarter;
+            this.quarterPriceSource = result.analyseGoodsPriceList4Quarter;
             this.onRefresh();
           }
         })

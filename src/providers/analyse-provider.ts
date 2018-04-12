@@ -98,34 +98,38 @@ export class AnalyseProvider {
       })
     }
     if (data.analyseGoodsMaterialList4Quarter) {
-      let list = data.analyseGoodsMaterialList4Quarter.map(item=>{
-        let material = "";
-        if (item.s_material) {
-          material = item.s_material;
-        } else if (item.b_material) {
-          material = item.b_material;
-        } else if (item.ws_material) {
-          material = item.ws_material;
-        }
-        item.material = material;
-        return item;
-      })
+      let fnMergeList = (list) => {
+        if (!list) return [];
+        list = list.map(item=>{
+          let material = "";
+          if (item.s_material) {
+            material = item.s_material;
+          } else if (item.b_material) {
+            material = item.b_material;
+          } else if (item.ws_material) {
+            material = item.ws_material;
+          }
+          item.material = material;
+          return item;
+        })
 
-      let tempInfo = {};
-      list.array.forEach((item, index) => {
-        let data = null;
-        if (tempInfo[item.material]) {
-          data = tempInfo[item.material];
-        } else {
-          tempInfo[item.material] = {material:item.material, count:0};
+        let tempInfo = {};
+        list.forEach((item, index) => {
+          if (!tempInfo[item.material]) {
+            tempInfo[item.material] = {material:item.material, value:0};
+          }
+          tempInfo[item.material].value += item.count;
+        });
+        let newList = [];
+        for(let key in tempInfo) {
+          newList.push(tempInfo[key]);
         }
-        data.count += item.count;
-      });
-      data.analyseGoodsMaterialList4Quarter = [];
-      for(let key in tempInfo) {
-        data.analyseGoodsMaterialList4Quarter.push(tempInfo[key]);
+
+        return newList;
       }
-      data.analyseGoodsMaterialList4Quarter.sort((a,b)=>a.count>b.count?1:-1);
+      data.analyseGoodsMaterialList4Quarter = data.analyseGoodsMaterialList4Quarter.map(item=>{
+        return fnMergeList(item);
+      })
     }
 
     return data;
@@ -134,9 +138,9 @@ export class AnalyseProvider {
   getBaseGoodsAnalyQuery(dateType) {
     return `
       analyseGoodsTop10(date_type:${dateType})${analyseTypes.analyseGoodsType}
-      analyseGoodsSalesPer
-      analyseGoodsMaterial${analyseTypes.analyseGoodsMaterialType}
-      analyseGoodsSex${analyseTypes.analyseGoodsSexType}
+      analyseGoodsSalesPer(date_type:${dateType})
+      analyseGoodsMaterial(date_type:${dateType})${analyseTypes.analyseGoodsMaterialType}
+      analyseGoodsSex(date_type:${dateType})${analyseTypes.analyseGoodsSexType}
     `
   }
 
@@ -174,7 +178,7 @@ export class AnalyseProvider {
     let query = `
       query Query {
         ${this.getBaseGoodsAnalyQuery(dateType)}
-        analyseGoodsPrice${analyseTypes.analyseGoodsPriceType}
+        analyseGoodsPrice(date_type:${dateType})${analyseTypes.analyseGoodsPriceType}
       }
     `;
     return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
@@ -190,10 +194,13 @@ export class AnalyseProvider {
     let query = `
       query Query {
         ${this.getBaseGoodsAnalyQuery(dateType)}
-        analyseGoodsPrice${analyseTypes.analyseGoodsPriceType}
-        analyseGoodsMaterialList4Quarter${analyseTypes.analyseGoodsQuarterMaterialType}
-        analyseGoodsSexList4Quarter${analyseTypes.analyseGoodsSexType}
-        analyseGoodsPriceList4Quarter${analyseTypes.analyseGoodsPriceType}
+        analyseGoodsPrice(date_type:${dateType})${analyseTypes.analyseGoodsPriceType}
+        analyseGoodsMaterialList4Quarter(date_type:${dateType})${analyseTypes.analyseGoodsQuarterMaterialType}
+        analyseGoodsSexList4Quarter(date_type:${dateType})${analyseTypes.analyseGoodsSexType}
+        analyseGoodsPriceList4Quarter(date_type:${dateType}){
+          list ${analyseTypes.analyseGoodsPriceType}
+          types
+        }
       }
     `;
     return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
