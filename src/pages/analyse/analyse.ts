@@ -8,6 +8,7 @@ import {HeaderData} from '../../interface/header-data';
 import {E_ORDER_TYPE, ORDER_TYPES} from '../../constants/constants'
 import { AnalyseShopPage } from './analyse-shop/analyse-shop'
 import { AnalyseGoodsPage } from './analyse-goods/analyse-goods'
+import { AnalyseVipPage } from './analyse-vip/analyse-vip'
 import { CartProvider, CommonProvider } from '../../providers';
 
 
@@ -44,6 +45,7 @@ export class AnalysePage implements OnInit {
 
   @ViewChild(AnalyseShopPage) analyseShopPage: AnalyseShopPage
   @ViewChild(AnalyseGoodsPage) analyseGoodsPage: AnalyseGoodsPage
+  @ViewChild(AnalyseVipPage) analyseVipPage: AnalyseVipPage
 
   constructor(
     public events: Events,
@@ -76,6 +78,7 @@ export class AnalysePage implements OnInit {
       this.analyseGoodsPage.reqRefresh(this.currentDateType);
       break;
       case E_ANALYSE_TYPES.VIP:
+      this.analyseVipPage.reqRefresh(this.currentDateType);
       break;
     }
   }

@@ -1,0 +1,48 @@
+<div class="tab-content analyse-container">
+  <div class="tab-pane active" id="today">
+    <div class="panel panel-info">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">新增会员排名</h3>
+      </div>
+      <div class="panel-body"> <img src="images/07-member-today-01.png" class="img-responsive"> </div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">新老会员销售占比</h3>
+      </div>
+      <!-- <div class="panel-body"> <img src="images/07-member-today-02.jpg" class="img-responsive"> </div> -->
+    </div>
+    <div class="panel panel-info analyse-top10">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">畅销占比</h3>
+      </div>
+      <div class="panel-body analyse-chart-vip-top10" #analyseGoodsTop10>
+      </div>
+      <div class="panel-body analyse-vip-top10">
+        <div>销售占比{{top10AmountPer}}%</div>
+        <div>销量占比{{top10CountPer}}%</div>
+      </div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">销量材质分布图</h3>
+      </div>
+      <div class="panel-body analyse-chart-vip" #analyseGoodsMatrial></div>
+      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-vip" #analyseGoodsQuarterMatrial></div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">销量男女分布图</h3>
+      </div>
+      <div class="panel-body analyse-chart-vip" #analyseGoodsSex></div>
+      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-vip" #analyseGoodsQuarterSex></div>
+    </div>
+    <div *ngIf="currentDateType===3||currentDateType===4" class="panel panel-info">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">销售价格段分布图</h3>
+      </div>
+      <div class="panel-body analyse-chart-vip" #analyseGoodsPrice></div>
+      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-vip" #analyseGoodsQuarterPrice></div>
+    </div>
+  </div>
+</div>

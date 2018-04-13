@@ -211,4 +211,69 @@ export class AnalyseProvider {
       return null;
     });
   }
+
+
+  getVipAnalyseDayList(dateType:Number, dateOffset:Number=0): Promise<any> {
+    let query = `
+      query Query {
+        analyseVipShopTop(date_type:${dateType}, date_offset:${dateOffset})${analyseTypes.analyseVipShopType}
+        analyseVipDay(date_type:${dateType}, date_offset:${dateOffset})${analyseTypes.analyseVipDayType}
+      }
+    `;
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
+      if(result.code === 0) {
+        // result.data = this.formatAnalyGoodsList(result.data);
+        return result.data;
+      }
+      return null;
+    });
+  }
+
+  getVipAnalyseWeekList(dateType:Number, dateOffset:Number=0): Promise<any> {
+    let query = `
+      query Query {
+        analyseVipShopTop(date_type:${dateType}, date_offset:${dateOffset})${analyseTypes.analyseVipShopType}
+        analyseVipWeek(date_type:${dateType}, date_offset:${dateOffset})${analyseTypes.analyseVipWeekType}
+      }
+    `;
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
+      if(result.code === 0) {
+        // result.data = this.formatAnalyGoodsList(result.data);
+        return result.data;
+      }
+      return null;
+    });
+  }
+
+  getVipAnalyseMonthList(dateType:Number, dateOffset:Number=0): Promise<any> {
+    let query = `
+      query Query {
+        analyseVipShopTop(date_type:${dateType}, date_offset:${dateOffset})${analyseTypes.analyseVipShopType}
+        analyseVipMonth(date_type:${dateType}, date_offset:${dateOffset})${analyseTypes.analyseVipMonthType}
+      }
+    `;
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
+      if(result.code === 0) {
+        // result.data = this.formatAnalyGoodsList(result.data);
+        return result.data;
+      }
+      return null;
+    });
+  }
+
+  getVipAnalyseYearList(dateType:Number, dateOffset:Number=0): Promise<any> {
+    let query = `
+      query Query {
+        analyseVipShopTop(date_type:${dateType}, date_offset:${dateOffset})${analyseTypes.analyseVipShopType}
+        analyseVipYear(date_type:${dateType}, date_offset:${dateOffset})${analyseTypes.analyseVipYearType}
+      }
+    `;
+    return this.api.graphqlJson(constants.API_SERVER_ADDRESS, query, true).then((result)=>{
+      if(result.code === 0) {
+        // result.data = this.formatAnalyGoodsList(result.data);
+        return result.data;
+      }
+      return null;
+    });
+  }
 }
