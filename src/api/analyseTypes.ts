@@ -14,8 +14,8 @@ const vaildVipType = `{all_count, vaild_count}`
 const baseAnalyseType = `{name, value}`
 
 export const analyseVipShopType = `{ shop{_id,name}, count, total_count }`
-export const analyseVipDayType = `{ countAndAmount, countAndAmountPer }`
-export const analyseVipWeekType = `{ countAndAmount, countAndAmountPer, repeatBuyPer${repeatBuyPerType} }`
-export const analyseVipMonthType = `{ countAndAmount, countAndAmountPer, repeatBuyPer${repeatBuyPerType}, vaildVip${vaildVipType}, monthBuyCountList }`
-export const analyseVipYearType = `{ countAndAmount, countAndAmountPer, repeatBuyPer${repeatBuyPerType}, repeatBuyCount${repeatBuyCountType}, vaildVip${vaildVipType}, buyCount${baseAnalyseType}, quarterBuyCountList }`
+export const analyseVipDayType = `{ newAndOldAmount, countAndAmountPer }`
+export const analyseVipWeekType = `{ newAndOldAmount, countAndAmountPer, repeatBuyPer${repeatBuyPerType} }`
+export const analyseVipMonthType = `{ newAndOldAmount, countAndAmountPer, repeatBuyPer${repeatBuyPerType}, vaildVip${vaildVipType}, monthBuyCountList }`
+export const analyseVipYearType = `{ newAndOldAmount, countAndAmountPer, repeatBuyPer${repeatBuyPerType}, repeatBuyCount${repeatBuyCountType}, vaildVip${vaildVipType}, buyCount${baseAnalyseType}, quarterBuyCountList }`
 

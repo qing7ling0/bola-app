@@ -126,11 +126,13 @@ export const ORDER_UPLOAD_PIC_MAX_COUNT = 10;
 
 export const SEX_MAN = '男';
 export const SEX_FEMALE = '女';
+export const SEX_ALL = '通用';
 
 /** 性别数据 */
 export const SEX_DATA = [
-  {id:0, value:SEX_MAN, label:'男', etc:'BM'},
-  {id:1, value:SEX_FEMALE, label:'女', etc:'BF'}
+  {id:0, value:SEX_MAN, label:'男', etc:'BM', color:"#2980D9"},
+  {id:1, value:SEX_FEMALE, label:'女', etc:'BF', color:"#EB4986"},
+  {id:2, value:SEX_ALL, label:'通用', etc:'BT', color:"#76EEC6"}
 ]
 
 /** 商品属性，左脚，右脚，一双，一个 */
