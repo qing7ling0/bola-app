@@ -15,6 +15,7 @@ import { OrderOrnamentPage } from './ornament/ornament'
 import { OrderRechargePage } from './recharge/recharge'
 import { CartPayPage } from '../cart-pay/cart-pay'
 import { CartProvider, CommonProvider } from '../../providers';
+import * as commonUtils from '../../utils/common-utils'
 
 @Component({
   selector: 'page-order-create',
@@ -113,7 +114,7 @@ export class OrderCreatePage implements OnInit {
       let sub:any = {};
       sub.shop = this.loginUserShopId;
       sub.guide = this.loginUserId;
-      sub.customer = customer;
+      sub.customer = commonUtils.copyProperty(customer,['phone', 'name', 'sex', 'birthday', 'weixin', 'country', 'city', 'address', 'zipcode']);;
       sub.r_amount = goods.r_amount;
       sub.price = goods.r_amount;
       sub.type = constants.E_ORDER_TYPE.RECHARGE;
