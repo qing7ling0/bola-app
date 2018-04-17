@@ -4,45 +4,146 @@
       <div class="panel-heading"> <span class="info-square"></span>
         <h3 class="panel-title">新增会员排名</h3>
       </div>
-      <div class="panel-body"> <img src="images/07-member-today-01.png" class="img-responsive"> </div>
+      <div class="panel-body analysis-vip-list">
+        <div class="item" *ngFor="let item of top3List;let _index = index">
+          <div class="clearfix">
+            <div class="con-left">
+              <div class="name">{{item.shop&&item.shop.name || ""}}</div>
+              <div class="count">{{item.count}}</div>
+            </div>
+            <div class="con-right">
+              <div class="bar-box progress-bar-striped ">
+                <div class="bar" [ngStyle]="getBarStyle(item)">{{item.perString}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="panel panel-info">
       <div class="panel-heading"> <span class="info-square"></span>
         <h3 class="panel-title">新老会员销售占比</h3>
       </div>
-      <!-- <div class="panel-body"> <img src="images/07-member-today-02.jpg" class="img-responsive"> </div> -->
-    </div>
-    <div class="panel panel-info analyse-top10">
-      <div class="panel-heading"> <span class="info-square"></span>
-        <h3 class="panel-title">畅销占比</h3>
-      </div>
-      <div class="panel-body analyse-chart-vip-top10" #analyseGoodsTop10>
-      </div>
-      <div class="panel-body analyse-vip-top10">
-        <div>销售占比{{top10AmountPer}}%</div>
-        <div>销量占比{{top10CountPer}}%</div>
-      </div>
+      <div class="panel-body analyse-chart-vip" #analyseVipNewAndOld></div>
     </div>
     <div class="panel panel-info">
       <div class="panel-heading"> <span class="info-square"></span>
-        <h3 class="panel-title">销量材质分布图</h3>
+        <h3 class="panel-title">客单件及客单价</h3>
       </div>
-      <div class="panel-body analyse-chart-vip" #analyseGoodsMatrial></div>
-      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-vip" #analyseGoodsQuarterMatrial></div>
+      <div class="panel-body analyse-chart-vip">
+        <div class="countAndAmount" #analyseVipCountPer></div>
+        <div class="countAndAmount" #analyseVipAmountPer></div>
+      </div>
     </div>
-    <div class="panel panel-info">
+    <div class="panel panel-info" *ngIf="currentDateType>1">
       <div class="panel-heading"> <span class="info-square"></span>
-        <h3 class="panel-title">销量男女分布图</h3>
+        <h3 class="panel-title">本{{getCurrentDateString()}}复购率</h3>
       </div>
-      <div class="panel-body analyse-chart-vip" #analyseGoodsSex></div>
-      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-vip" #analyseGoodsQuarterSex></div>
+      <div class="panel-body">
+        <div class="table-selling table-member">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>总VIP人数</th>
+                <th width="28%">老会员消费人数</th>
+                <th width="25%">本{{getCurrentDateString()}}复购率</th>
+                <th width="22%">上{{getCurrentDateString()}}复购率</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{repeatBuyPer.all_count}}</td>
+                <td>{{repeatBuyPer.old_count}}</td>
+                <td *ngIf="repeatBuyPer.trend===1" class="text-success">
+                  {{priceFormat(repeatBuyPer.current_count_per)}}%
+                  <span class="fa fa-sort-asc"></span>
+                </td>
+                <td *ngIf="repeatBuyPer.trend===-1" class="text-danger">
+                  {{priceFormat(repeatBuyPer.current_count_per)}}%
+                  <span class="fa fa-sort-desc"></span>
+                </td>
+                <td *ngIf="repeatBuyPer.trend===0">
+                  {{priceFormat(repeatBuyPer.current_count_per)}}%
+                </td>
+                <td>{{priceFormat(repeatBuyPer.last_count_per)}}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div *ngIf="currentDateType===3||currentDateType===4" class="panel panel-info">
+    <div class="panel panel-info" *ngIf="currentDateType>2">
       <div class="panel-heading"> <span class="info-square"></span>
-        <h3 class="panel-title">销售价格段分布图</h3>
+        <h3 class="panel-title">老会员销售分布</h3>
       </div>
-      <div class="panel-body analyse-chart-vip" #analyseGoodsPrice></div>
-      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-vip" #analyseGoodsQuarterPrice></div>
+      <div *ngIf="currentDateType===3" class="panel-body analyse-chart-vip" #analyseVipMonthSalesCount></div>
+      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-vip" #analyseVipQuarterSalesCount></div>
+    </div>
+    <div class="panel panel-info" *ngIf="currentDateType===4">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">本{{getCurrentDateString()}}人均复购次数</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-selling table-member">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>本{{getCurrentDateString()}}复购次数</th>
+                <th width="35%">上{{getCurrentDateString()}}复购次数</th>
+                <th width="35%">最高消费次数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td *ngIf="repeatBuyCount.trend===1" class="text-success">
+                  {{priceFormat(repeatBuyCount.current_per)}}
+                  <span class="fa fa-sort-asc"></span>
+                </td>
+                <td *ngIf="repeatBuyCount.trend===-1" class="text-danger">
+                  {{priceFormat(repeatBuyCount.current_per)}}
+                  <span class="fa fa-sort-desc"></span>
+                </td>
+                <td *ngIf="repeatBuyCount.trend===0">
+                  {{priceFormat(repeatBuyCount.current_per)}}
+                </td>
+                <td>{{priceFormat(repeatBuyCount.last_per)}}</td>
+                <td>{{repeatBuyCount.highest}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-info" *ngIf="currentDateType===4">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">复购次数分布</h3>
+      </div>
+      <div class="panel-body analyse-chart-vip" #analyseVipBuyCount></div>
+    </div>
+    <div class="panel panel-info" *ngIf="currentDateType>2">
+      <div class="panel-heading"> <span class="info-square"></span>
+        <h3 class="panel-title">新增有效会员数</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-selling table-member">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>总VIP人数</th>
+                <th width="35%">本{{getCurrentDateString()}}流失会员人数</th>
+                <th width="35%">本{{getCurrentDateString()}}有效会员总数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{vaildVip.all_count}}</td>
+                <td>{{vaildVip.other_count}}</td>
+                <td>{{vaildVip.vaild_count}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>

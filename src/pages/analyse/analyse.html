@@ -19,7 +19,7 @@
       <ion-content>
         <page-analyse-shop *ngIf="isShopType()" #analyseShopPage [onLoadSuccess]="onLoadSuccess"></page-analyse-shop>
         <page-analyse-goods *ngIf="isGoodsType()" #analyseGoodsPage [onLoadSuccess]="onLoadSuccess"></page-analyse-goods>
-        <page-analyse-goods *ngIf="isVipType()" #analyseVipPage [onLoadSuccess]="onLoadSuccess"></page-analyse-goods>
+        <page-analyse-vip *ngIf="isVipType()" #analyseVipPage [onLoadSuccess]="onLoadSuccess"></page-analyse-vip>
       </ion-content>
     </section>
   </div>

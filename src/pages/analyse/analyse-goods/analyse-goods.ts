@@ -52,6 +52,7 @@ export class AnalyseGoodsPage implements OnInit {
   currentDateType: Number = E_DATE_TYPES.DAY;
 
   materialSourceMap: Map<string, any> = new Map(); // 材质库
+  materialSourceList:  Array<any> = []; // 材质库
 
   top10List: Array<any> = []; // 销量Top10
   top10SalesPerList:Array<any> = []; // 销量top10占比
@@ -92,7 +93,8 @@ export class AnalyseGoodsPage implements OnInit {
     this.commonProvider.getMaterialList().then((result)=>{
       if (result) {
         this.materialSourceMap = new Map();
-        result.forEach(element => {
+        this.materialSourceList = result || [];
+        this.materialSourceList.forEach(element => {
           this.materialSourceMap.set(element._id, element);
         });
         this.onReqList();
@@ -431,8 +433,15 @@ export class AnalyseGoodsPage implements OnInit {
         }
       }
     }
-
+    
     if (this.materialList) {
+      this.materialSourceList.forEach(item=>{
+        let findIndex = this.materialList.findIndex(mat=>mat._id === item._id)
+        if (findIndex === -1) {
+          this.materialList.push({_id:item._id, value:0});
+        }
+      })
+
       for(let item of this.materialList) {
         if (this.materialSourceMap.has(item._id)) {
           let mat = this.materialSourceMap.get(item._id);
@@ -443,6 +452,15 @@ export class AnalyseGoodsPage implements OnInit {
           item.color = "#ff0000";
         }
       }
+    }
+
+    if (this.salesSexList) {
+      constants.SEX_DATA.forEach(item => {
+        let findIndex = this.salesSexList.findIndex(sex=>sex.name === item.value);
+        if (findIndex === -1) {
+          this.salesSexList.push({name:item.value, value:0, color:item.color})
+        }
+      })
     }
 
     if (this.quarterMaterialSourceList) {

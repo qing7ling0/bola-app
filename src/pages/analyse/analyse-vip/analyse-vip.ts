@@ -26,19 +26,19 @@ const E_DATE_TYPES = {
 }
 
 const QUARTER_NAMES = ['季度一','季度二','季度三','季度四']
+const VIP_NAMES = [{name:"新会员", color:"#93c24e"}, {name:"老会员", color:"#fb8800"}]
 
 @Component({
   selector: 'page-analyse-vip',
   templateUrl: 'analyse-vip.html'
 })
 export class AnalyseVipPage implements OnInit {
-  @ViewChild('analyseVipTop10') vipTop10Element: ElementRef;
-  @ViewChild('analyseVipMatrial') vipMatrialElement: ElementRef;
-  @ViewChild('analyseVipQuarterMatrial') vipQuarterMatrialElement: ElementRef;
-  @ViewChild('analyseVipSex') vipSexElement: ElementRef;
-  @ViewChild('analyseVipQuarterSex') vipQuarterSexElement: ElementRef;
-  @ViewChild('analyseVipPrice') vipPriceElement: ElementRef;
-  @ViewChild('analyseVipQuarterPrice') vipQuarterPriceElement: ElementRef;
+  @ViewChild('analyseVipNewAndOld') vipNewAndOldElement: ElementRef;
+  @ViewChild('analyseVipCountPer') vipCountPerElement: ElementRef;
+  @ViewChild('analyseVipAmountPer') vipAmountPerElement: ElementRef;
+  @ViewChild('analyseVipMonthSalesCount') vipMonthSalesCountElement: ElementRef;
+  @ViewChild('analyseVipQuarterSalesCount') vipQuarterSalesCountElement: ElementRef;
+  @ViewChild('analyseVipBuyCount') vipBuyCountElement: ElementRef;
 
   formOptions: Array<any>;
   formGroup: FormGroup;
@@ -65,6 +65,39 @@ export class AnalyseVipPage implements OnInit {
   quarterPriceList: Array<any> = []; // 季度价格分段分布
   top10AmountPer:string = '0%';
   top10CountPer:string = '0%';
+
+  top3List: Array<any> = []; // 新增会员TOP3
+  vipNewAndOldAmountList:  Array<any> = []; // 新老会员销售额
+  countAndAmountPerList: Array<any> = []; // 客单价、客单件
+  repeatBuyPer: any = {
+    all_count:0,
+    old_count:0,
+    current_count:0,
+    last_count:0,
+    last_all_count:0,
+    current_count_per:0,
+    last_count_per:0,
+    trend:0, // 趋势，-1下降，0不变，1上升
+  } // 复购率
+
+  repeatBuyCount:any = {
+    current_all_count:0,
+    current:0, // 本年
+    current_per:0,
+    last_all_count:0,
+    last:0, // 上一年
+    last_per:0,
+    highest:0 // 最高消费次数
+  }; // 人均复购次数
+
+  buyCount: Array<any> = []; // 消费次数分布
+  quarterBuyCountList: Array<any> = []; // 季度消费次数
+  monthBuyCountList: Array<any> = []; // 月度周消费次数
+  vaildVip: any = {
+    all_count:0, // 总会员数
+    vaild_count:0,// 有效会员数
+    other_count:0,
+  };
 
   @Input() onLoadSuccess: Function;
 
@@ -103,103 +136,58 @@ export class AnalyseVipPage implements OnInit {
   ionViewDidEnter(): void {
   }
 
-  initChartsTop10(): void {
-    let ctx = this.vipTop10Element.nativeElement;
-    this.chart = echarts.init(ctx);
-    let top10PerDatas = this.top10SalesPerList;
-    if (!top10PerDatas || top10PerDatas.length === 0) return;
-
-    let top10List = [0.5,0.5];
-    let otherList = [0.5,0.5];
-    if (top10PerDatas[2]) {
-      top10List[0] = top10PerDatas[0] / top10PerDatas[2];
-      otherList[0] = 1 - top10List[0];
+  getCurrentDateString = () => {
+    switch(this.currentDateType) {
+      case E_DATE_TYPES.DAY:
+        return "日";
+      case E_DATE_TYPES.WEEK:
+        return "周";
+      case E_DATE_TYPES.MONTH:
+        return "月";
+      case E_DATE_TYPES.YEAR:
+        return "年";
+      default:
+        return "日";
     }
-    if (top10PerDatas[3]) {
-      top10List[1] = top10PerDatas[1] / top10PerDatas[3];
-      otherList[1] = 1 - top10List[1];
-    }
-
-    this.top10AmountPer = new Number(top10List[0]*100).toFixed(2);
-    this.top10CountPer = new Number(top10List[1]*100).toFixed(2);
-
-    this.chart.setOption({
-      legend: {
-        data: ['畅销','其他']
-      },
-      xAxis:  {
-        type: 'value',
-        show: false
-      },
-      yAxis: {
-        type: 'category',
-        data: ['销售','销量']
-      },
-      series : [
-        {
-          name:'畅销',
-          type:'bar',
-          stack: '总量',
-          data:top10List,
-          label: {
-            show:true,
-            color:"#4D4736",
-            formatter:(params)=>{
-              return this.priceFormat(top10PerDatas[params.dataIndex], 2)
-            }
-          }
-        },
-        {
-          name:'其他',
-          type:'bar',
-          stack: '总量',
-          data:otherList,
-          label: {
-            show:true,
-            color:"#ffffff",
-            formatter:(params)=>{
-              return this.priceFormat(top10PerDatas[params.dataIndex+2]-top10PerDatas[params.dataIndex],2)
-            }
-          }
-        }
-      ],
-      color:["#C0A64F", "#323232"]
-    });
   }
 
-  initChartsMaterial(): void {
-    let ctx = this.vipMatrialElement.nativeElement;
+  initChartsVipNewAndOld(): void {
+    // this.vipNewAndOldAmountList = [112,200]
+    let total = this.vipNewAndOldAmountList.reduce((prev, cur)=>(prev+cur), 0);
+    let ctx = this.vipNewAndOldElement.nativeElement;
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
-        type: 'scroll',
+        type: 'plain',
         orient: 'horizontal',
         show:true,
-        right: 10,
-        left: 10,
-        bottom: 20,
-        data: this.materialList.map(item=>item.name),
+        data: VIP_NAMES,
         selectedMode:false
       },
       series : [
         {
-          name:'材质分布图',
+          name:'新老客户销售比',
           type:'pie',
-          radius :'55%',
-          center: ['50%', '35%'],
-          data:this.materialList,
+          radius : ['25%', '55%'],
+          center: ['50%', '45%'],
+          data:this.vipNewAndOldAmountList,
           label: {
             show:true,
-            formatter:item=>this.priceFormat(item.value, 0)
+            position:"inside",
+            formatter:item=>{
+              let per = total === 0 ? 0 : (item.value*100 / total);
+              return new Number(per).toFixed(2)+"%";
+            }
           }
         }
       ],
-      // color:this.materialList.map(item=>item.color)
+      color:VIP_NAMES.map(item=>item.color)
     });
   }
 
-  initChartsQuarterMaterial(): void {
-    let ctx = this.vipQuarterMatrialElement.nativeElement;
+  initChartsCountPer(): void {
+    // this.countAndAmountPerList = [2.3,3500, 3.6,4500]
+    let ctx = this.vipCountPerElement.nativeElement;
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
@@ -209,7 +197,7 @@ export class AnalyseVipPage implements OnInit {
         right: 10,
         left: 10,
         bottom: 20,
-        data: this.quarterMaterialList.map(item=>item.name),
+        data: ["客单件"],
         selectedMode:false
       },
       grid: {
@@ -220,85 +208,35 @@ export class AnalyseVipPage implements OnInit {
       },
       xAxis:  {
         type: 'category',
-        data: QUARTER_NAMES
+        data: ["客单件"],
+        axisTick: {
+          show: false
+        }
       },
       yAxis: {
         type: 'value',
-        show:true,
+        show:false,
       },
-      series : this.quarterMaterialList.map((item)=>{
+      series : VIP_NAMES.map((item, index)=>{
         return {
           name:item.name,
           type: 'bar',
-          stack: '总量',
-          data:item.value,
-          label: {
-            show:false
-          }
-        }
-      }),
-    });
-  }
-
-  initChartsSex(): void {
-    let ctx = this.vipSexElement.nativeElement;
-    // this.salesSexList = [
-    //   {
-    //     name:'男',
-    //     color:'#2980D9',
-    //     value:100,
-    //   },
-    //   {
-    //     name:'女',
-    //     color:'#EB4986',
-    //     value:200
-    //   },
-    // ];
-    this.chart = echarts.init(ctx);
-    this.chart.setOption({
-      legend: {
-        type: 'plain',
-        orient: 'horizontal',
-        show:true,
-        right: 10,
-        left: 10,
-        bottom: 20,
-        data: this.salesSexList.map(item=>item.name),
-        selectedMode:false
-      },
-      series : [
-        {
-          name:'男女分布图',
-          type:'pie',
-          radius :'55%',
-          center: ['50%', '35%'],
-          data:this.salesSexList,
+          data:[this.countAndAmountPerList[index*2]],
           label: {
             show:true,
-            formatter:item=>this.priceFormat(item.value, 0)
+            formatter:item=>this.priceFormat(item.value,2)
+          },
+          itemStyle: {
+            color:item.color
           }
         }
-      ],
-      color:this.salesSexList.map(item=>item.color)
+      })
     });
   }
-
-  initChartsQuarterSex(): void {
-    let ctx = this.vipQuarterSexElement.nativeElement;
-    // this.quarterSexList = [
-    //   {
-    //     NID:'',
-    //     name:'男',
-    //     color:'#ff0000',
-    //     value:[100, 200, 239, 490],
-    //   },
-    //   {
-    //     NID:'',
-    //     name:'女',
-    //     color:'#ff00ff',
-    //     value:[130, 100, 139, 590],
-    //   },
-    // ];
+  
+  initChartsAmountPer(): void {
+    // this.countAndAmountPerList = [2.3,3500, 3.6,4500]
+    let ctx = this.vipAmountPerElement.nativeElement;
     this.chart = echarts.init(ctx);
     this.chart.setOption({
       legend: {
@@ -308,7 +246,7 @@ export class AnalyseVipPage implements OnInit {
         right: 10,
         left: 10,
         bottom: 20,
-        data: this.quarterSexList.map(item=>item.name),
+        data: ["客单价"],
         selectedMode:false
       },
       grid: {
@@ -319,93 +257,141 @@ export class AnalyseVipPage implements OnInit {
       },
       xAxis:  {
         type: 'category',
-        data: QUARTER_NAMES
+        data: ["客单价"],
+        axisTick: {
+          show: false
+        }
       },
       yAxis: {
         type: 'value',
-        show:true,
+        show:false,
       },
-      series : this.quarterSexList.map((item)=>{
+      series : VIP_NAMES.map((item, index)=>{
         return {
           name:item.name,
           type: 'bar',
-          stack: '总量',
-          data:item.value,
+          data:[this.countAndAmountPerList[index*2+1]],
           label: {
-            show:true
+            show:true,
+            formatter:item=>this.priceFormat(item.value)
+          },
+          itemStyle: {
+            color:item.color
           }
         }
       }),
-      color: this.quarterSexList.map(item=>item.color),
     });
   }
 
-  initChartsPrices(): void {
-    let names = this.priceList.map(item => item.price);
-    let ctx = this.vipPriceElement.nativeElement;
+  initChartsMonthSalesCount(): void {
+    let date = moment(moment().subtract(4, "month").format("YYYY-MM"));
+    let names = [];
+    for(let i=0; i<4; i++) {
+      names.push(date.format("YY-MM"));
+      date.add(1, "month");
+    }
+    let ctx = this.vipMonthSalesCountElement.nativeElement;
     this.chart = echarts.init(ctx);
     this.chart.setOption({
-      xAxis: {
+      xAxis:
+      {
         type: 'category',
-        data: this.priceList.map(item => item.price)
+        data: names,
+        axisTick: {
+          show: false
+        }
       },
       yAxis: {
         type: 'value',
-        show: false
+        show:false
       },
-      series: [
+      series : [
         {
-          data: this.priceList.map(item => item.value),
-          type: 'bar',
+          name:'老会员销售分布',
+          type:'line',
+          data:this.monthBuyCountList||[],
+          label: {
+            show: true,
+            color: '#84878c',
+            formatter:item=>this.priceFormat(item.value)
+          },
           itemStyle: {
             color:'#dc5569'
-          },
-          label: {
-            show:true,
-            position: 'top'
           }
         }
       ]
     });
   }
 
-  initChartsQuarterPrice(): void {
-    let ctx = this.vipQuarterPriceElement.nativeElement;
+  initChartsQuarterSalesCount(): void {
+    let ctx = this.vipQuarterSalesCountElement.nativeElement;
     this.chart = echarts.init(ctx);
     this.chart.setOption({
-      legend: {
-        type: 'plain',
-        orient: 'horizontal',
-        show:true,
-        top:10,
-        data: QUARTER_NAMES,
-        selectedMode:false
-      },
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis:  {
+      xAxis:
+      {
         type: 'category',
-        data: this.quarterPriceSource.types
+        data: QUARTER_NAMES,
+        axisTick: {
+          show: false
+        }
       },
       yAxis: {
         type: 'value',
-        show:true,
+        show:false
       },
-      series : this.quarterPriceList.map((item, index)=>{
-        return {
-          name:QUARTER_NAMES[index],
-          type: 'bar',
-          stack: '总量',
-          data:item.value,
+      series : [
+        {
+          name:'季度销量',
+          type:'line',
+          data:this.quarterBuyCountList||[],
           label: {
-            show:true
+            show: true,
+            color: '#84878c',
+            formatter:item=>this.priceFormat(item.value)
+          },
+          itemStyle: {
+            color:'#dc5569'
           }
         }
-      }),
+      ]
+    });
+  }
+
+  
+  initChartsBuyCount(): void {
+    let ctx = this.vipBuyCountElement.nativeElement;
+    this.chart = echarts.init(ctx);
+    let names = this.buyCount.map(item=>item.name);
+    let values = this.buyCount.map(item=>item.value);
+    // let values = [100,65,89,71];
+    this.chart.setOption({
+      xAxis:
+      {
+        type: 'category',
+        data: names,
+        axisTick: {
+          show: false
+        }
+      },
+      yAxis: {
+        type: 'value',
+        show:false
+      },
+      series : [
+        {
+          name:'销量分布',
+          type:'line',
+          data:values,
+          label: {
+            show: true,
+            color: '#84878c',
+            formatter:item=>this.priceFormat(item.value)
+          },
+          itemStyle: {
+            color:'#dc5569'
+          }
+        }
+      ]
     });
   }
 
@@ -421,77 +407,72 @@ export class AnalyseVipPage implements OnInit {
   }
 
   onRefresh() {
-    if (this.top10List) {
-      for(let item of this.top10List) {
-        if (this.materialSourceMap.has(item.material)) {
-          let mat = this.materialSourceMap.get(item.material);
-          item.material_name = mat && mat.name || "";
-        } else {
-          item.material_name = "";
-        }
+    if (!this.top3List) {
+      this.top3List = [];
+    }
+    this.top3List.map(item=>{
+      item.per = item.total_count === 0 ? 0 : (item.count / item.total_count);
+      item.perString = new Number(item.per*100).toFixed(2) + "%";
+      return item;
+    })
+
+    if (!this.repeatBuyPer) {
+      this.repeatBuyPer = {
+        all_count:0,
+        old_count:0,
+        current_count:0,
+        last_count:0,
+        last_all_count:0,
+        current_count_per:0,
+        last_count_per:0,
+        trend:0, // 趋势，-1下降，0不变，1上升
       }
     }
+    this.repeatBuyPer.current_count_per = this.repeatBuyPer.all_count===0?0:(this.repeatBuyPer.current_count/this.repeatBuyPer.all_count);
+    this.repeatBuyPer.last_count_per = this.repeatBuyPer.last_all_count===0?0:(this.repeatBuyPer.last_count/this.repeatBuyPer.last_all_count);
+    this.repeatBuyPer.trend = this.repeatBuyPer.current_count_per > this.repeatBuyPer.last_count_per ? 1 :
+    (this.repeatBuyPer.current_count_per < this.repeatBuyPer.last_count_per?-1:0); // 趋势，-1下降，0不变，1上升
 
-    if (this.materialList) {
-      for(let item of this.materialList) {
-        if (this.materialSourceMap.has(item._id)) {
-          let mat = this.materialSourceMap.get(item._id);
-          item.name = mat.name;
-          item.color = this.int2CssColor(mat.color_css);
-        } else {
-          item.name = "";
-          item.color = "#ff0000";
-        }
-      }
+    if (!this.repeatBuyCount) {
+      this.repeatBuyCount = {
+        current_all_count:0,
+        current:0, // 本年
+        current_per:0,
+        last_all_count:0,
+        last:0, // 上一年
+        last_per:0,
+        trend:0,
+        highest:0 // 最高消费次数
+      }; // 人均复购次数
     }
-
-    if (this.quarterMaterialSourceList) {
-      this.quarterMaterialList = [];
-      let materialMap = {};
-      this.materialSourceMap.forEach(item=>{
-        this.quarterMaterialList.push({
-          _id:item._id,
-          name:item.name,
-          color:this.int2CssColor(item.color_css),
-          value:new Array(this.quarterMaterialSourceList.length)
-        })
-        materialMap[item._id] = new Array(this.quarterMaterialSourceList.length);
-      })
-      this.quarterMaterialSourceList.forEach((item,index) => {
-        item.forEach(element => {
-          let mat = materialMap[element.material];
-          if (mat) {
-            mat[index] = element.value;
-          }
-        });
-      })
-      for(let item of this.quarterMaterialList) {
-        let mat = materialMap[item._id];
-        if (mat) {
-          item.value = mat;
-        }
-      }
+    this.repeatBuyCount.current_per = this.repeatBuyCount.current_all_count === 0 ? 0 : (this.repeatBuyCount.current / this.repeatBuyCount.current_all_count);
+    this.repeatBuyCount.last_per = this.repeatBuyCount.last_all_count === 0 ? 0 : (this.repeatBuyCount.last / this.repeatBuyCount.last_all_count);
+    this.repeatBuyCount.trend = this.repeatBuyCount.current_per > this.repeatBuyCount.last_per ? 1 :
+    (this.repeatBuyCount.current_per < this.repeatBuyCount.last_per?-1:0); // 趋势，-1下降，0不变，1上升
+    
+    if (!this.vaildVip) {
+      this.vaildVip = {
+        all_count:0, // 总会员数
+        vaild_count:0,// 有效会员数
+        other_count:0,
+      };
     }
-    if (this.quarterPriceSource) {
-      this.quarterPriceList = this.quarterPriceSource.list || [];
-    }
-
-    this.initChartsTop10();
-    this.initChartsMaterial();
-    this.initChartsSex();
+    this.vaildVip.other_count =  this.vaildVip.all_count - this.vaildVip.vaild_count;
+    
+    this.initChartsVipNewAndOld();
+    this.initChartsAmountPer();
+    this.initChartsCountPer();
     switch(this.currentDateType) {
       case E_DATE_TYPES.DAY:
       break;
       case E_DATE_TYPES.WEEK:
       break;
       case E_DATE_TYPES.MONTH:
-      this.initChartsPrices();
+      this.initChartsMonthSalesCount();
       break;
       case E_DATE_TYPES.YEAR:
-      this.initChartsQuarterMaterial();
-      this.initChartsQuarterSex();
-      this.initChartsPrices();
-      this.initChartsQuarterPrice();
+      this.initChartsQuarterSalesCount();
+      this.initChartsBuyCount();
       break;
       default:
       break;
@@ -503,10 +484,9 @@ export class AnalyseVipPage implements OnInit {
       case E_DATE_TYPES.DAY:
         this.analyseProvider.getVipAnalyseDayList(this.currentDateType).then((result)=>{
           if (result) {
-            this.top10List = result.analyseVipTop10;
-            this.top10SalesPerList = result.analyseVipSalesPer;
-            this.materialList = result.analyseVipMaterial;
-            this.salesSexList = result.analyseVipSex;
+            this.top3List = result.analyseVipShopTop;
+            this.vipNewAndOldAmountList = result.analyseVipDay.newAndOldAmount;
+            this.countAndAmountPerList = result.analyseVipDay.countAndAmountPer;
             this.onRefresh();
           }
         })
@@ -514,10 +494,10 @@ export class AnalyseVipPage implements OnInit {
       case E_DATE_TYPES.WEEK:
         this.analyseProvider.getVipAnalyseWeekList(this.currentDateType).then((result)=>{
           if (result) {
-            this.top10List = result.analyseVipTop10;
-            this.top10SalesPerList = result.analyseVipSalesPer;
-            this.materialList = result.analyseVipMaterial;
-            this.salesSexList = result.analyseVipSex;
+            this.top3List = result.analyseVipShopTop;
+            this.vipNewAndOldAmountList = result.analyseVipWeek.newAndOldAmount;
+            this.countAndAmountPerList = result.analyseVipWeek.countAndAmountPer;
+            this.repeatBuyPer = result.analyseVipWeek.repeatBuyPer;
             this.onRefresh();
           }
         })
@@ -525,11 +505,12 @@ export class AnalyseVipPage implements OnInit {
       case E_DATE_TYPES.MONTH:
         this.analyseProvider.getVipAnalyseMonthList(this.currentDateType).then((result)=>{
           if (result) {
-            this.top10List = result.analyseVipTop10;
-            this.top10SalesPerList = result.analyseVipSalesPer;
-            this.materialList = result.analyseVipMaterial;
-            this.salesSexList = result.analyseVipSex;
-            this.priceList = result.analyseVipPrice;
+            this.top3List = result.analyseVipShopTop;
+            this.vipNewAndOldAmountList = result.analyseVipMonth.newAndOldAmount;
+            this.countAndAmountPerList = result.analyseVipMonth.countAndAmountPer;
+            this.repeatBuyPer = result.analyseVipMonth.repeatBuyPer;
+            this.monthBuyCountList = result.analyseVipMonth.monthBuyCountList;
+            this.vaildVip = result.analyseVipMonth.vaildVip;
             this.onRefresh();
           }
         })
@@ -537,14 +518,14 @@ export class AnalyseVipPage implements OnInit {
       case E_DATE_TYPES.YEAR:
         this.analyseProvider.getVipAnalyseYearList(this.currentDateType).then((result)=>{
           if (result) {
-            this.top10List = result.analyseVipTop10;
-            this.top10SalesPerList = result.analyseVipSalesPer;
-            this.materialList = result.analyseVipMaterial;
-            this.salesSexList = result.analyseVipSex;
-            this.priceList = result.analyseVipPrice;
-            this.quarterMaterialSourceList = result.analyseVipMaterialList4Quarter;
-            this.quarterSexList = result.analyseVipSexList4Quarter;
-            this.quarterPriceSource = result.analyseVipPriceList4Quarter;
+            this.top3List = result.analyseVipShopTop;
+            this.vipNewAndOldAmountList = result.analyseVipYear.newAndOldAmount;
+            this.countAndAmountPerList = result.analyseVipYear.countAndAmountPer;
+            this.repeatBuyPer = result.analyseVipYear.repeatBuyPer;
+            this.repeatBuyCount = result.analyseVipYear.repeatBuyCount;
+            this.buyCount = result.analyseVipYear.buyCount;
+            this.quarterBuyCountList = result.analyseVipYear.quarterBuyCountList;
+            this.vaildVip = result.analyseVipYear.vaildVip;
             this.onRefresh();
           }
         })
@@ -570,6 +551,12 @@ export class AnalyseVipPage implements OnInit {
       return new Number(value/10000).toFixed(2)+'万';
     } else {
       return new Number(value/100000000).toFixed(2)+'亿';
+    }
+  }
+
+  getBarStyle = (item) => {
+    return {
+      width: (item.per*100 + '%')
     }
   }
 
