@@ -73,7 +73,7 @@
 	padding-bottom: 5px;
 	border: 1px solid #c9cbd5;
 	margin-bottom: 8px;
-	
+
 	/* height:100px; */
 }
 .analysis-vip-list .item .con-left {
@@ -100,12 +100,19 @@
 	background-size: 7px 7px;
 }
 .analysis-vip-list .item .bar {
+  position: relative;
 	width: 30%;
 	height: 100%;
 	margin:0;
 	background-color: #93c24e;
 	text-align: center;
 	line-height: 26px;
+}
+.analysis-vip-list .item .bar .bar-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform:translate(-50%, -50%);
 }
 
 .analysis-vip-list .item .count {

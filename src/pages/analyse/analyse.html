@@ -3,13 +3,13 @@
   <!-- main content start-->
   <div class="wrapper" style="height:100%">
     <div class="salesSummary-cont clearfix">
-      <!-- <div class="special-select pull-right"><span class="select-current">店铺销售汇总</span><span class="fa fa-angle-right"></span></div> -->
-      <!-- <bola-select class="special-select pull-right" [(ngModel)]="currentAnalyseType" [ngModelOptions]="{standalone: true}" (ngModelChange)="onAnalyseTypeChange()" [source]="analyseTypeList||[]"></bola-select> -->
-      <ion-select class="special-select pull-right" [(ngModel)]="currentAnalyseType" (ngModelChange)="onAnalyseTypeChange()" okText="确定" cancelText="取消">
-        <ion-option *ngFor="let data of analyseTypeList" value="{{data.value}}">{{data.label}}</ion-option>
-      </ion-select>
+      <div>
+        <ion-select class="special-select pull-right" [(ngModel)]="currentAnalyseType" (ngModelChange)="onAnalyseTypeChange()" okText="确定" cancelText="取消">
+          <ion-option *ngFor="let data of analyseTypeList" value="{{data.value}}">{{data.label}}</ion-option>
+        </ion-select>
+      </div>
     </div>
-    <section class="analysis-tab">
+    <div class="analysis-tab">
       <ul class="nav nav-tabs">
         <li class="{{currentDateType===1?'active':''}}"> <a (click)="onBtnDayClicked()" data-toggle="tab">今日</a> </li>
         <li class="{{currentDateType===2?'active':''}}"> <a (click)="onBtnWeekClicked()" data-toggle="tab">周</a> </li>
@@ -21,6 +21,6 @@
         <page-analyse-goods *ngIf="isGoodsType()" #analyseGoodsPage [onLoadSuccess]="onLoadSuccess"></page-analyse-goods>
         <page-analyse-vip *ngIf="isVipType()" #analyseVipPage [onLoadSuccess]="onLoadSuccess"></page-analyse-vip>
       </ion-content>
-    </section>
+    </div>
   </div>
 </div>
