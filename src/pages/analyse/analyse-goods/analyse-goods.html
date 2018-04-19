@@ -1,4 +1,4 @@
-<div class="tab-content">
+<div class="tab-content analyse-container">
   <div class="tab-pane active" id="today">
     <div class="panel panel-info">
       <div class="panel-heading"> <span class="info-square"></span>
@@ -16,59 +16,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
-              </tr>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
-              </tr>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
-              </tr>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
-              </tr>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
-              </tr>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
-              </tr>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
-              </tr>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
-              </tr>
-              <tr>
-                <td>BF1601-EY01</td>
-                <td>鳄鱼皮</td>
-                <td>9999</td>
-                <td>￥12345678.00</td>
+              <tr *ngFor="let item of top10List;let _index = index">
+                <td>{{item.NID}}</td>
+                <td>{{item.material_name}}</td>
+                <td>{{item.count}}</td>
+                <td>￥{{priceFormat(item.amount,2)}}</td>
               </tr>
             </tbody>
           </table>
@@ -91,46 +43,21 @@
         <h3 class="panel-title">销量材质分布图</h3>
       </div>
       <div class="panel-body analyse-chart-goods" #analyseGoodsMatrial></div>
+      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-goods" #analyseGoodsQuarterMatrial></div>
     </div>
     <div class="panel panel-info">
       <div class="panel-heading"> <span class="info-square"></span>
         <h3 class="panel-title">销量男女分布图</h3>
       </div>
       <div class="panel-body analyse-chart-goods" #analyseGoodsSex></div>
+      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-goods" #analyseGoodsQuarterSex></div>
     </div>
-    <div class="panel panel-info">
+    <div *ngIf="currentDateType===3||currentDateType===4" class="panel panel-info">
       <div class="panel-heading"> <span class="info-square"></span>
         <h3 class="panel-title">销售价格段分布图</h3>
       </div>
       <div class="panel-body analyse-chart-goods" #analyseGoodsPrice></div>
-    </div>
-    <div class="panel panel-info">
-      <div class="panel-heading"> <span class="info-square"></span>
-        <h3 class="panel-title">畅销TOP10</h3>
-      </div>
-      <div class="panel-body analyse-chart-shop-day-amount" #analyseDayAmount></div>
-      <div *ngIf="currentDateType===1" class="panel-body analyse-chart-shop-day-each" #analyseDayEach></div>
-      <div *ngIf="currentDateType===2" class="panel-body analyse-chart-shop-week-sales" #analyseWeekSales></div>
-      <div *ngIf="currentDateType===3" class="panel-body analyse-chart-shop-Month" #analyseMonthSales></div>
-      <div *ngIf="currentDateType===3" class="panel-body analyse-chart-shop-Month" #analyseMonthSalesCompare></div>
-      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-shop-week-sales" #analyse5YearSales></div>
-      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-shop-year" #analyseQuarterAmount></div>
-    </div>
-    <div class="panel panel-info">
-      <div class="panel-heading"> <span class="info-square"></span>
-        <h3 class="panel-title">店铺排名</h3>
-      </div>
-      <div class="panel-body ranking-list">
-        <div *ngFor="let shop of shopList;let shopIndex = index" class="ranking-item">
-          <span class="sign">No.</span>
-          <ul class="clearfix">
-            <li class="first"><span class="value">{{shopIndex}}</span></li>
-            <li><span class="name">{{shop.shop&&shop.shop.name}}</span><span class="cont">￥{{priceFormat(shop.amount,2)}}</span></li>
-            <li><span class="name">销售笔数</span><span class="cont">{{shop.count}}</span></li>
-            <li><span class="name">销售数量</span><span class="cont">{{shop.sub_count}}</span></li>
-          </ul>
-        </div>
-      </div>
+      <div *ngIf="currentDateType===4" class="panel-body analyse-chart-goods" #analyseGoodsQuarterPrice></div>
     </div>
   </div>
 </div>
