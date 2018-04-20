@@ -1,0 +1,106 @@
+<div class="sticky-header">
+  <header [headerData]="headerData"></header>
+  <!-- main content start-->
+  <ion-content class="main-content">
+    <!--body wrapper start-->
+    <div class="wrapper">
+      <form [formGroup]="customerGroup">
+        <div class="panel">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <span class="required">*</span>
+                  <label class="control-label">姓 &nbsp;名</label>
+                  <bola-form-text class="form-text" formControlName="name" placeholder="输入姓名" type="text"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <span class="required">*</span>
+                  <label class="control-label">性 &nbsp;别</label>
+                  <bola-form-text formControlName="sex" class="form-text" className="test" placeholder="请选择性别"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <span class="required">*</span>
+                  <label class="control-label">生 &nbsp;日</label>
+                  <bola-form-text formControlName="birthday" dateFormat="YYYY/MM/DD" isDate="true" class="form-text form-date" placeholder="请选择日期"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <span class="required">*</span>
+                  <label class="control-label">手 &nbsp;机</label>
+                  <bola-form-text class="form-text" formControlName="phone" placeholder="输入手机" type="text"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <span class="required">*</span>
+                  <label class="control-label">微 &nbsp;信</label>
+                  <bola-form-text class="form-text" formControlName="weixin" placeholder="输入微信" type="text"></bola-form-text>
+                </div>
+              </div>
+            </div>
+            <div class="mtop10"></div>
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label class="control-label">国 &nbsp;家</label>
+                  <bola-form-text class="form-text" formControlName="country" placeholder="输入国家" type="text"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label class="control-label">城 &nbsp;市</label>
+                  <bola-form-text class="form-text" formControlName="city" placeholder="输入城市" type="text"></bola-form-text>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">地 &nbsp;址</label>
+                  <bola-form-text class="form-text" formControlName="address" placeholder="输入地址" type="text"></bola-form-text>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">邮 &nbsp;编</label>
+                  <bola-form-text class="form-text" formControlName="zipcode" placeholder="输入邮编" type="text"></bola-form-text>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label class="control-label">标 &nbsp;签</label>
+                  <bola-form-text class="form-text" formControlName="tags" type="text"></bola-form-text>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">折 &nbsp;扣</label>
+                  <div class="form-text">{{getCurrentDiscount()}}</div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">余 &nbsp;额</label>
+                  <div class="form-text">{{customerProfile && customerProfile.balance||0}} 元</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!--body wrapper end-->
+
+  </ion-content>
+  <!-- main content end-->
+</div>
