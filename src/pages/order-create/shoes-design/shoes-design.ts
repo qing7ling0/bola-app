@@ -41,13 +41,13 @@ const FORM_OPTIONS = (data)=> {
   return ret;
 }
 const FORM_FOOTER_OPTIONS = (data)=> [
-  {key:'s_foot_size', label:'跟高', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_length', label:'左脚长度', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_zhiWei', label:'左脚趾围', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_left_fuWei', label:'左脚附维', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_length', label:'右脚长度', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_zhiWei', label:'右脚趾围', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
-  {key:'s_right_fuWei', label:'右脚附维', formatValue:(value)=>Utils.stringToInt(value), validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]}
+  {key:'s_foot_size', label:'跟高', formatValue:(value)=>value, validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'s_left_length', label:'左脚长度', formatValue:(value)=>value, validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'s_left_zhiWei', label:'左脚趾围', formatValue:(value)=>value, validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'s_left_fuWei', label:'左脚附维', formatValue:(value)=>value, validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'s_right_length', label:'右脚长度', formatValue:(value)=>value, validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'s_right_zhiWei', label:'右脚趾围', formatValue:(value)=>value, validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]},
+  {key:'s_right_fuWei', label:'右脚附维', formatValue:(value)=>value, validators:[{key:'required', validator:Validators.required}, {key:'pattern', validator:Validators.pattern(/^(-?\d+)(\.\d+)?$/)}]}
 ]
 
 const SHOES_PROPERTY_KEYS = [
