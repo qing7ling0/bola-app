@@ -1,4 +1,5 @@
-export const DEBUG = false;
+const _DEBUG = true;
+export const DEBUG = _DEBUG;
 
 // export const DEV_SERVER = 'http://192.168.0.105:3001';
 // export const DEV_SERVER = 'http://192.168.0.114:3001';
@@ -6,10 +7,10 @@ export const DEBUG = false;
 export const DEV_SERVER = 'http://127.0.0.1:3001';
 export const PROD_SERVER = 'http://106.14.138.141:3001';
 
-export const API_SERVER_ADDRESS = (DEBUG ? DEV_SERVER : PROD_SERVER) + '/api';
-export const API_LOGIN_SERVER_ADDRESS = (DEBUG ? DEV_SERVER : PROD_SERVER) + '/login';
-export const API_UPLOAD_SERVER_ADDRESS = (DEBUG ? DEV_SERVER : PROD_SERVER) + '/upload';
-export const API_FILE_SERVER_ADDRESS = (DEBUG ? DEV_SERVER : PROD_SERVER) + '/file';
+export const API_SERVER_ADDRESS = (_DEBUG ? DEV_SERVER : PROD_SERVER) + '/api';
+export const API_LOGIN_SERVER_ADDRESS = (_DEBUG ? DEV_SERVER : PROD_SERVER) + '/login';
+export const API_UPLOAD_SERVER_ADDRESS = (_DEBUG ? DEV_SERVER : PROD_SERVER) + '/upload';
+export const API_FILE_SERVER_ADDRESS = (_DEBUG ? DEV_SERVER : PROD_SERVER) + '/file';
 
 export const ACCOUNT_MAX_LENGTH = 20; // 账号密码最大长度
 export const ACCOUNT_MIN_LENGTH = 5; // 账号密码最小长度

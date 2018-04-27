@@ -126,6 +126,13 @@
                   <bola-form-text *ngIf="!isEditing()" formControlName="s_gui_ge" class="form-text" placeholder="输入规格"></bola-form-text>
                 </div>
               </div>
+              <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                  <label class="control-label">性 &nbsp;&nbsp; 别</label>
+                  <bola-select *ngIf="isEditing()" formControlName="sex" class="form-text" className="test" placeholder="请选择性别" [source]="sexDataList" [onChanged]="onPropertyChange"></bola-select>
+                  <bola-form-text *ngIf="!isEditing()" formControlName="sex" class="form-text" className="test" placeholder="请选择性别"></bola-form-text>
+                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-xs-12">
@@ -165,13 +172,6 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12 col-sm-6">
-                <div class="form-group">
-                  <label class="control-label">性 &nbsp;&nbsp; 别</label>
-                  <bola-select *ngIf="isEditing()" formControlName="sex" class="form-text" className="test" placeholder="请选择性别" [source]="sexDataList" [onChanged]="onPropertyChange"></bola-select>
-                  <bola-form-text *ngIf="!isEditing()" formControlName="sex" class="form-text" className="test" placeholder="请选择性别"></bola-form-text>
-                </div>
-              </div>
               <div *ngIf="isFemale()"  class="col-xs-12 col-sm-6">
                 <div class="form-group">
                   <label class="control-label">根 &nbsp;&nbsp; 高</label>

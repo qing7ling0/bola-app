@@ -4,7 +4,7 @@
   <ion-content class="main-content">
     <!--body wrapper start-->
     <div class="wrapper">
-      <div class="customer-row customer-header">
+      <div class="panel customer-row customer-header">
         <div class="customer-header-box">
           <ion-grid>
             <ion-row>
@@ -28,8 +28,8 @@
         </div>
       </div>
       <div class="customer-row customer-search">
-        <div class="panel panel-info customer-panel">
-          <form [formGroup]="phoneGroup">
+        <form [formGroup]="phoneGroup">
+          <div class="panel panel-info customer-panel">
             <div class="panel-heading">
               <span class="info-square"></span>
               <h3 class="panel-title">手机号</h3>
@@ -38,9 +38,9 @@
                 <button class="btn pull-left" (click)="btnSearchPhoneClicked()"><ion-icon name="search"></ion-icon></button>
               </div>
             </div>
-          </form>
-        </div>
-        <div class="panel panel-info customer-panel">
+          </div>
+        </form>
+        <div class="panel panel-info">
           <div class="panel-heading">
             <span class="info-square"></span>
             <h3 class="panel-title">组合查询</h3>

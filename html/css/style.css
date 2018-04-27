@@ -460,8 +460,8 @@ hr {
 	height: 58px;
 	padding: 14px 18px;
 	margin-top: 2px;
-	-webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
-	box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
+	/* -webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
+	box-shadow: 0 -3px 3px rgba(0, 0, 0, .15); */
 }
 .mobileNumber-confirm label, .mobileNumber-confirm input, .mobileNumber-confirm button {
 	vertical-align: middle;
@@ -498,8 +498,8 @@ hr {
 .panel {
 	padding-top: 2px;
 	border: none;
-	-webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
-	box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
+	/* -webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
+	box-shadow: 0 -3px 3px rgba(0, 0, 0, .15); */
 	border-radius: 0;
 }
 .panel-heading {
@@ -752,11 +752,11 @@ hr {
 }
 /*订单追踪*/
 .search-mod {
-	height: 58px;
-	padding: 14px 18px;
+	height: 68px;
+	padding: 14px 28px;
 	margin-top: 2px;
-	-webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
-	box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
+	/* -webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
+	box-shadow: 0 -3px 3px rgba(0, 0, 0, .15); */
 }
 .search-mod label, .search-mod input, .search-mod .btn {
 	vertical-align: middle;
@@ -972,19 +972,19 @@ footer.sticky-footer {
 }
 .state-overview .purple {
 	background: #6a8abe;
-	box-shadow: 0 5px 0 #5f7cab;
+	/* box-shadow: 0 5px 0 #5f7cab; */
 }
 .state-overview .red {
 	background: #fc8675;
-	box-shadow: 0 5px 0 #e27869;
+	/* box-shadow: 0 5px 0 #e27869; */
 }
 .state-overview .blue {
 	background: #5ab6df;
-	box-shadow: 0 5px 0 #51a3c8;
+	/* box-shadow: 0 5px 0 #51a3c8; */
 }
 .state-overview .green {
 	background: #4acacb;
-	box-shadow: 0 5px 0 #42b5b6;
+	/* box-shadow: 0 5px 0 #42b5b6; */
 }
 .state-overview .symbol, .state-overview .state-value {
 	display: inline-block;
@@ -1012,7 +1012,7 @@ footer.sticky-footer {
 
 .panel.deep-purple-box {
 	background: #49586e;
-	box-shadow: 0 5px 0 #424f63;
+	/* box-shadow: 0 5px 0 #424f63; */
 	color: #fff;
 }
 ul.bar-legend {
@@ -1213,7 +1213,7 @@ ul.pros-chart li:last-child {
 
 .green-box {
 	background: none repeat scroll 0 0 #65cea7;
-	box-shadow: 0 5px 0 #5bb996;
+	/* box-shadow: 0 5px 0 #5bb996; */
 	color: #fff;
 }
 .knob {
@@ -1242,7 +1242,7 @@ ul.pros-chart li:last-child {
 
 .panel.blue-box {
 	background: none repeat scroll 0 0 #5ab5de;
-	box-shadow: 0 5px 0 #51a3c7;
+	/* box-shadow: 0 5px 0 #51a3c7; */
 	color: #fff;
 }
 .twt-info h3 {
@@ -1263,7 +1263,7 @@ ul.pros-chart li:last-child {
 }
 .custom-trq-footer {
 	background: none repeat scroll 0 0 #4eb6b7;
-	box-shadow: 0 5px 0 #46a3a4;
+	/* box-shadow: 0 5px 0 #46a3a4; */
 	color: #fff;
 	border-top: none;
 }
@@ -1374,9 +1374,9 @@ ul.user-states li {
 	width: 2px;
 	display: block;
 	background: #ccc;
-	box-shadow: 5px 0 0 0px #ccc, 0px 5px 0 0px #ccc, 5px 5px 0 0px #ccc, 0px 10px 0 0px #ccc, 5px 10px 0 0px #ccc, 0px 15px 0 0px #ccc, 5px 15px 0 0px #ccc;
+	/* box-shadow: 5px 0 0 0px #ccc, 0px 5px 0 0px #ccc, 5px 5px 0 0px #ccc, 0px 10px 0 0px #ccc, 5px 10px 0 0px #ccc, 0px 15px 0 0px #ccc, 5px 15px 0 0px #ccc;
 	-webkit-box-shadow: 5px 0 0 0px #ccc, 0px 5px 0 0px #ccc, 5px 5px 0 0px #ccc, 0px 10px 0 0px #ccc, 5px 10px 0 0px #ccc, 0px 15px 0 0px #ccc, 5px 15px 0 0px #ccc;
-	-moz-box-shadow: 5px 0 0 0px #ccc, 0px 5px 0 0px #ccc, 5px 5px 0 0px #ccc, 0px 10px 0 0px #ccc, 5px 10px 0 0px #ccc, 0px 15px 0 0px #ccc, 5px 15px 0 0px #ccc;
+	-moz-box-shadow: 5px 0 0 0px #ccc, 0px 5px 0 0px #ccc, 5px 5px 0 0px #ccc, 0px 10px 0 0px #ccc, 5px 10px 0 0px #ccc, 0px 15px 0 0px #ccc, 5px 15px 0 0px #ccc; */
 }
 /* To-Do Check*/
 .to-do-list li .todo-check input[type=checkbox] {
@@ -2119,7 +2119,7 @@ input.spinner[type="text"], input.spinner[type="password"], input.spinner[type="
 ---------------------*/
 
 .cke_chrome {
-	box-shadow: 0 0 1px #c5c6ca !important;
+	/* box-shadow: 0 0 1px #c5c6ca !important; */
 }
 .cke_top, .cke_bottom {
 	background: #EFF0F4 !important;
@@ -2423,7 +2423,7 @@ div.tagsinput span.tag a {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	box-shadow: 0 5px 0 #e5e5e5;
+	/* box-shadow: 0 5px 0 #e5e5e5; */
 	width: 110%;
 	margin-left: -10px;
 }
@@ -2433,7 +2433,7 @@ div.tagsinput span.tag a {
 .most-popular {
 	background: #6bc5a4;
 	color: #fff;
-	box-shadow: 0 5px 0 #60b193;
+	/* box-shadow: 0 5px 0 #60b193; */
 }
 .most-popular .pricing-head {
 	position: relative;
@@ -4231,8 +4231,8 @@ ol.comment-list {
 	padding: 0 12px;
 	border-radius: 6px;
 	outline: 0;
-	-webkit-box-shadow: 0 0 9px rgba(0, 0, 0, .5);
-	box-shadow: 0 0 9px rgba(0, 0, 0, .5);
+	/* -webkit-box-shadow: 0 0 9px rgba(0, 0, 0, .5);
+	box-shadow: 0 0 9px rgba(0, 0, 0, .5); */
 }
 .order-box .order-box-hd {
 	border-bottom: 1px solid #a3a3a3;
@@ -4437,8 +4437,8 @@ ol.comment-list {
 	padding-top: 2px;
 	margin-bottom: 80px;
 	border: none;
-	-webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
-	box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
+	/* -webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, .15);
+	box-shadow: 0 -3px 3px rgba(0, 0, 0, .15); */
 }
 .allotList .allot-listInfo div.clearfix {
 	position: relative;

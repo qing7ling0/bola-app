@@ -21,6 +21,9 @@
   color: #fff;
   text-decoration: none;
 }
+.tabs-md .tab-button-text {
+  font-size: 16px;
+}
 
 .tabs-ios .tab-button:hover:not(.disable-hover), .tabs-ios .tab-button[aria-selected=true] {
   color: #fff;
