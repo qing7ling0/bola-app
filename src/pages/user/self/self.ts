@@ -29,11 +29,11 @@ const FORM_OPTIONS = (data)=> [
 ]
 
 @Component({
-  selector: 'page-customer-profile',
-  templateUrl: 'customer-profile.html'
+  selector: 'page-user-self',
+  templateUrl: 'self.html'
 })
 export class CustomerProfilePage implements OnInit {
-  headerData: HeaderData = {title:'会员信息', menuEnable:false, type:'customer-profile'};
+  headerData: HeaderData = {title:'会员信息', menuEnable:false, type:'user-self'};
 
   formOptions: Array<any>;
   customerGroup: FormGroup;

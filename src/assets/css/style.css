@@ -555,6 +555,9 @@ hr {
 	padding: 8px 16px 8px;
 	/* border-top: 1px solid #b1b1b1; */
 }
+.row {
+	display: block;
+}
 .row .form-group {
 	display: flex;
 	padding: 6px 10px 4px 22px;

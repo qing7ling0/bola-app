@@ -1,4 +1,4 @@
-const _DEBUG = true;
+const _DEBUG = false;
 export const DEBUG = _DEBUG;
 
 // export const DEV_SERVER = 'http://192.168.0.105:3001';
