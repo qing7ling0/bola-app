@@ -22,12 +22,22 @@
       margin: 25% auto;
   }
 
-.stepy-error {
+  .stepy-error {
       bottom: 50px;
   }
 
   .form-signin {
       max-width: 500px;
+  }
+  .custom-nav > li > a span {
+    font-size: 22px;
+  }
+
+  .header-title {
+    font-size: 20px;
+  }
+  .custom-nav .arrow {
+    font-size: 22px;
   }
 }
 

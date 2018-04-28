@@ -4,7 +4,7 @@
   <ion-content class="main-content">
     <!--body wrapper start-->
     <div class="wrapper">
-      <div class="customer-row customer-header">
+      <div class="panel customer-row customer-header">
         <div class="customer-header-box">
           <ion-grid>
             <ion-row>
@@ -28,31 +28,33 @@
         </div>
       </div>
       <div class="customer-row customer-search">
-        <div class="panel panel-info customer-panel">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="info-square"></span>
+            <h3 class="panel-title">组合查询</h3>
+          </div>
           <div class="panel-body">
             <form [formGroup]="searchGroup">
-              <ion-grid>
-                <ion-row>
-                  <ion-col col-12>
-                    <div class="search-input">
-                      <span>区域</span>
-                      <bola-select formControlName="region" class="form-text vip-tag" placeholder="区域标签" [source]="regionList" [onChanged]="onRegionChange"></bola-select>
-                    </div>
-                  </ion-col>
-                  <ion-col col-12>
-                    <div class="search-input">
-                      <span>店铺</span>
-                      <bola-select formControlName="shop" class="form-text vip-tag" placeholder="店铺" [source]="currentShopList"></bola-select>
-                    </div>
-                  </ion-col>
-                  <ion-col col-12>
-                    <div class="search-input">
-                      <span>日期</span>
-                      <ion-datetime formControlName="date" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date vip-tag" placeholder="订单日期"></ion-datetime>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
+              <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">区域</label>
+                    <bola-select formControlName="region" class="form-text vip-tag" placeholder="区域标签" [source]="regionList" [onChanged]="onRegionChange"></bola-select>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">店铺</label>
+                    <bola-select formControlName="shop" class="form-text vip-tag" placeholder="店铺" [source]="currentShopList"></bola-select>
+                  </div>
+                </div>
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label class="control-label">日期</label>
+                    <ion-datetime formControlName="date" displayFormat="YYYY/MM/DD" pickerFormat="YYYY MM DD" class="form-text form-date vip-tag" placeholder="订单日期"></ion-datetime>
+                  </div>
+                </div>
+              </div>
             </form>
             <div class="btn union-btn" (click)="btnSearchUnionClicked()">点击查询</div>
           </div>

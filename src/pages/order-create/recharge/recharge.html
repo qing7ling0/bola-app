@@ -7,10 +7,10 @@
     <div class="wrapper">
       <order-customer-edit #customerControl [onChange]="onCustomerChange"></order-customer-edit>
       <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">订单数据</h3>
+        </div>
         <form [formGroup]="orderGroup">
-          <div class="panel-heading">
-            <h3 class="panel-title">订单数据</h3>
-          </div>
           <div class="panel-body">
             <div class="row">
               <div class="col-xs-12 col-sm-6">
@@ -34,8 +34,8 @@
             </div>
           </div>
         </form>
-        <div class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">下单</a></div>
       </div>
+      <div class="order-action"> <a href="#" class="btn" (click)="createOrderClicked()">下单</a></div>
     </div>
     <!--body wrapper end-->
 

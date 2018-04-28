@@ -1,10 +1,10 @@
 <form [formGroup]="customerGroup">
-  <div *ngIf="isEditing()" class="mobileNumber-confirm">
+  <div *ngIf="isEditing()" class="panel mobileNumber-confirm">
     <label class="pull-left" for="mobileNumber">手机号</label>
     <input type="text" class="form-text" id="mobileNumber" formControlName="phone2" placeholder="输入手机号码">
     <button type="submit" class="btn pull-right" (click)="onPhoneSureBtnClicked()">确认</button>
   </div>
-  <div class="panel panel-special">
+  <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">基本信息</h3>
     </div>
@@ -51,16 +51,15 @@
           </div>
         </div>
       </div>
-      <div class="mtop10"></div>
       <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <label class="control-label">国 &nbsp;家</label>
             <ion-input *ngIf="isEditing()" class="form-text" formControlName="country" placeholder="输入国家" type="text"></ion-input>
             <bola-form-text *ngIf="!isEditing()" class="form-text" formControlName="country" placeholder="输入国家" type="text"></bola-form-text>
           </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-xs-12 col-sm-6">
           <div class="form-group">
             <label class="control-label">城 &nbsp;市</label>
             <ion-input *ngIf="isEditing()" class="form-text" formControlName="city" placeholder="输入城市" type="text"></ion-input>
