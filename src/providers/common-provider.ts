@@ -122,4 +122,8 @@ export class CommonProvider {
   changeSuborderState(id:any, data:any) {
     return this.api.updateDefault('suborder', id, data, true);
   }
+
+  getAppLastVersion(version) {
+    
+  }
 }

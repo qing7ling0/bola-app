@@ -62,6 +62,10 @@
   dependencies:
     tslib "^1.7.1"
 
+"@ionic-native/app-version@^4.7.0":
+  version "4.7.0"
+  resolved "http://registry.npm.taobao.org/@ionic-native/app-version/download/@ionic-native/app-version-4.7.0.tgz#117aba8bab2f6ca625a5e4773b47caffa8fc63f9"
+
 "@ionic-native/code-push@^4.5.3":
   version "4.5.3"
   resolved "http://registry.npm.taobao.org/@ionic-native/code-push/download/@ionic-native/code-push-4.5.3.tgz#624b62b42344918b8656d581a59b25b20070bcc6"
@@ -320,13 +324,13 @@ ansi-escapes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-3.0.0.tgz#ec3e8b4e9f8064fc02c3ac9b65f1c275bda8ef92"
 
-ansi-regex@*, ansi-regex@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-3.0.0.tgz#ed0317c322064f79466c02966bddb605ab37d998"
-
 ansi-regex@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
+
+ansi-regex@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-3.0.0.tgz#ed0317c322064f79466c02966bddb605ab37d998"
 
 ansi-styles@^2.2.1:
   version "2.2.1"
@@ -1195,6 +1199,10 @@ columnify@^1.5.2, columnify@~1.5.4:
     strip-ansi "^3.0.0"
     wcwidth "^1.0.0"
 
+com.synconset.imagepicker@~2.1.8:
+  version "2.1.10"
+  resolved "http://registry.npm.taobao.org/com.synconset.imagepicker/download/com.synconset.imagepicker-2.1.10.tgz#685e67374fd28541ab442adf484e539e29b51608"
+
 combine-source-map@~0.7.1:
   version "0.7.2"
   resolved "http://registry.npm.taobao.org/combine-source-map/download/combine-source-map-0.7.2.tgz#0870312856b307a87cc4ac486f3a9a62aeccc09e"
@@ -1524,6 +1532,10 @@ cordova-lib@7.1.0:
 cordova-plugin-add-swift-support@^1.6.0:
   version "1.7.1"
   resolved "http://registry.npm.taobao.org/cordova-plugin-add-swift-support/download/cordova-plugin-add-swift-support-1.7.1.tgz#91a3483d3c9092cf238aee69e526a15465e0cab8"
+
+cordova-plugin-app-version@^0.1.9:
+  version "0.1.9"
+  resolved "http://registry.npm.taobao.org/cordova-plugin-app-version/download/cordova-plugin-app-version-0.1.9.tgz#9db0607863337a710489302e5f50a904f1449bdb"
 
 cordova-plugin-code-push@^1.11.7:
   version "1.11.7"
@@ -2982,7 +2994,7 @@ import-lazy@^2.1.0:
   version "2.1.0"
   resolved "http://registry.npm.taobao.org/import-lazy/download/import-lazy-2.1.0.tgz#05698e3d45c88e8d7e9d92cb0584e77f096f3e43"
 
-imurmurhash@*, imurmurhash@^0.1.4:
+imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
 

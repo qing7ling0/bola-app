@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, Events, ToastController, ModalController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CodePush, InstallMode, SyncStatus, DownloadProgress } from '@ionic-native/code-push';
+import { AppVersion } from '@ionic-native/app-version';
 
 // import * as rasterizeHTML from 'rasterizehtml';
 // import rasterizeHTML from '../../../node_modules/rasterizehtml/dist/rasterizeHTML.allinone.js';
@@ -9,6 +10,7 @@ import { CodePush, InstallMode, SyncStatus, DownloadProgress } from '@ionic-nati
 import { ShopPage } from '../shop/shop'
 import { SignaturePage } from '../cart-pay/signature/signature'
 import { UserProvider } from '../../providers/user-provider'
+import { CommonProvider } from '../../providers/common-provider'
 import * as constants from '../../constants/constants'
 
 
@@ -31,10 +33,12 @@ export class HomePage implements OnInit {
     public events: Events,
     public navCtrl: NavController,
     public userProvider: UserProvider,
+    public commonProvider: CommonProvider,
     private formBuilder: FormBuilder,
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
-    private codePush: CodePush
+    private codePush: CodePush,
+    private appVersion: AppVersion
   ) {
     this.subscribeEvents();
   }
@@ -112,6 +116,8 @@ export class HomePage implements OnInit {
       this.statusText = this.getStatusText();
       this.updateFinish = true;
     }
+
+
   }
 
   getUpdateText = ()=> {
